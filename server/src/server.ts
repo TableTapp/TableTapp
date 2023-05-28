@@ -5,6 +5,7 @@ import { config } from './config/config';
 import Logging from './library/Logging';
 
 import genericRoute from './routes/genericRoute';
+import orderRoute from './routes/orderRoute';
 
 const router = express();
 
@@ -52,6 +53,7 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/generic', genericRoute);
+    router.use('/order', orderRoute);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
