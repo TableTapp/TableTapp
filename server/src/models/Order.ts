@@ -3,26 +3,36 @@ import mongoose, { Document, Schema } from "mongoose";
 enum OrderStatus{
     Requested = 'REQUESTED',
     Approved = 'APPROVED',
-    InProgress = 'IN_PROGRESS',
+    InProgress = 'IN PROGRESS',
     Delivered = "DELIVERED"
 };
 
-export interface IOrder {
-    TableNumber: string;
-    Item: string;
+export interface IOrderBase {
+    TableId: string;
+    CustomerId: string;
+    OrderItems: [object];
     Status: OrderStatus;
 };
 
-export interface IOrderModel extends IOrder, Document { };
+export interface IOrder extends IOrderBase, Document { };
 
 const OrderSchema: Schema = new Schema(
     {
-        TableNumber: {
-            type: Number,
+        TableId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Table',
             required: true
         },
-        Item: {
-            type: String,
+        CustomerId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Customer',
+            require: true
+        },
+        OrderItems: {
+            type: [{
+                type: Schema.Types.ObjectId,
+                ref: 'OrderItem'
+            }],
             require: true
         },
         Status: {
@@ -36,4 +46,4 @@ const OrderSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IOrder>('Order', OrderSchema);
+export default mongoose.model<IOrderBase>('Order', OrderSchema);
