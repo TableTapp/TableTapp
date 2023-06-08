@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 
-import genericRoute from './routes/genericRoute';
-import orderRoute from './routes/orderRoute';
+import genericRoutes from './routes/genericRoutes';
+import orderRoutes from './routes/orderRoutes';
 
 const router = express();
 
@@ -52,8 +52,8 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/generic', genericRoute);
-    router.use('/order', orderRoute);
+    router.use('/generic', genericRoutes);
+    router.use('/order', orderRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
