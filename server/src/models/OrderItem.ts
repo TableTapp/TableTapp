@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IOrderItemBase {
     ItemId: string;
     Quantity: number;
+    AdditionalRequests: string;
 };
 
 export interface IOrderItem extends IOrderItemBase, Document { };
@@ -17,6 +18,10 @@ const OrderItemSchema: Schema = new Schema(
         Quantity: {
             type: Number,
             require: true
+        },
+        AdditionalRequests: {
+            type: String,
+            required: false
         }
     },
     {

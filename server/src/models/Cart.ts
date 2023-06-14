@@ -1,7 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { IOrderItemBase } from "./OrderItem";
 
 export interface ICartBase {
-    OrderItems: [object];
+    OrderItems: IOrderItemBase[];
+    TotalPrice: number;
 };
 
 export interface ICart extends ICartBase, Document { };
@@ -13,6 +15,10 @@ const CartSchema: Schema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'OrderItem'
             }],
+            required: true
+        },
+        TotalPrice: {
+            type: Number,
             required: true
         }
     },

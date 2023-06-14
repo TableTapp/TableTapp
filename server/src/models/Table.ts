@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { ICustomer } from "./Customer";
 
 enum TableStatus {
     Reserved = "RESERVED",
@@ -7,7 +8,9 @@ enum TableStatus {
 };
 
 export interface ITableBase {
-    Customers: string;
+    TableNumber: number;
+    Customers: ICustomer[];
+    SeatsAvailable: number;
     Status: TableStatus;
 };
 
@@ -15,11 +18,19 @@ export interface ITable extends ITableBase, Document { };
 
 const TableSchema: Schema = new Schema(
     {
+        TableNumber: {
+            type: Number,
+            required: true
+        },
         Customers: {
             type: [{
                 type: Schema.Types.ObjectId,
                 ref: 'Customer'
             }],
+            required: true
+        },
+        SeatsAvailable: {
+            type: Number,
             required: true
         },
         Status: {

@@ -1,18 +1,14 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { IItemBase } from "./Item"
 
 export interface IMenuBase {
-    Category: string;
-    Items: [object];
+    Items: IItemBase[];
 };
 
 export interface IMenu extends IMenuBase, Document { };
 
 const MenuSchema: Schema = new Schema(
     {
-        Category: {
-            type: String,
-            required: true
-        },
         Items: {
             type: [{
                 type: Schema.Types.ObjectId,
