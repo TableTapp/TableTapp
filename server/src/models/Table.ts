@@ -10,7 +10,7 @@ enum TableStatus {
 export interface ITableBase {
     TableNumber: number;
     Customers: ICustomer[];
-    SeatsAvailable: number;
+    Seats: number;
     Status: TableStatus;
 };
 
@@ -29,7 +29,7 @@ const TableSchema: Schema = new Schema(
             }],
             required: true
         },
-        SeatsAvailable: {
+        Seats: {
             type: Number,
             required: true
         },
