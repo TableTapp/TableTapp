@@ -1,14 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-enum AddOnSize {
-    Small = "SML",
-    Medium = "MED",
-    Large = "LRG",
-};
-
 export interface IItemAddOnsBase {
     Name: string;
-    Size: AddOnSize;
     Price: number;
 };
 
@@ -19,10 +12,6 @@ const ItemAddOnsSchema: Schema = new Schema(
         Name: {
             type: String,
             required: true
-        },
-        Size: {
-            type: String,
-            required: false
         },
         Price: {
             type: Number,

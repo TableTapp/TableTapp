@@ -7,6 +7,7 @@ export interface IItemBase {
     Description: string;
     AddOns: IItemAddOnsBase[];
     Price: number;
+    ImgUrl: string;
 };
 
 export interface IItem extends IItemBase, Document { };
@@ -34,6 +35,10 @@ const ItemSchema: Schema = new Schema(
         },
         Price: {
             type: Number,
+            require: true
+        },
+        ImgUrl: {
+            type: String,
             require: true
         }
     },
