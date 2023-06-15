@@ -4,8 +4,15 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 
-import genericRoute from './routes/genericRoute';
-import orderRoute from './routes/orderRoute';
+import genericRoutes from './routes/genericRoutes';
+import orderRoutes from './routes/orderRoutes';
+import tableRoutes from './routes/tableRoutes';
+import customerRoutes from './routes/customerRoutes';
+import vendorRoutes from './routes/vendorRoutes';
+import menuRoutes from './routes/menuRoutes';
+import itemRoutes from './routes/itemRoutes';
+import orderItemRoutes from './routes/orderItemRoutes';
+import cartRoutes from './routes/cartRoutes';
 
 const router = express();
 
@@ -52,8 +59,15 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/generic', genericRoute);
-    router.use('/order', orderRoute);
+    router.use('/generic', genericRoutes);
+    router.use('/customer', customerRoutes);
+    router.use('/vendor', vendorRoutes);
+    router.use('/table', tableRoutes);
+    router.use('/order', orderRoutes);
+    router.use('/item', itemRoutes);
+    router.use('/orderItem', orderItemRoutes);
+    router.use('/cart', cartRoutes);
+    router.use('/menu', menuRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
