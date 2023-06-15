@@ -1,9 +1,10 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { ICategory } from "./Category";
 import { IItemAddOnsBase } from "./ItemAddOns";
 
 export interface IItemBase {
     Name: string;
-    Category: string;
+    Category: ICategory;
     Description: string;
     AddOns: IItemAddOnsBase[];
     Price: number;
@@ -19,7 +20,10 @@ const ItemSchema: Schema = new Schema(
             required: true
         },
         Category: {
-            type: String,
+            type: {
+                type: Schema.Types.ObjectId,
+                ref: 'Category'
+            },
             require: true
         },
         Description: {
