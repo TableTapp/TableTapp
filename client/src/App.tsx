@@ -1,53 +1,71 @@
-import { useState, useEffect } from 'react'
-import { Container, Heading, Highlight, Center, AbsoluteCenter, VStack, HStack, Button, Box, Card, StackDivider, Flex, Spacer, useTimeout } from '@chakra-ui/react';
-import { OrderComponent } from './components/Order';
-import axios from 'axios';
+import React, { useState } from 'react'
+import { Container } from '@chakra-ui/react';
+
+// Customer Views
+import ScannerView from './views/customer/scanner-view';
+import ItemView from './views/customer/item-view';
+import MenuView from './views/customer/menu-view';
+import CartView from './views/customer/cart-view';
+
+// Restaurant Views
+
+const CUSTOMER_KEY = 'CUSTOMER';
+const RESTAURANT_KEY = 'RESTAURANT';
+
+const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
+const CUSTOMER_MENU = 'CUSTOMER_MENU';
+const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
+const CUSTOMER_CART = 'CUSTOMER_CART';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<Array<any>>([]);
-  const [ordersReceived, setOrdersReceived] = useState<boolean>(false);
-  useEffect(() => {
-    async function loadOrders() {
-      const response = await axios.get(`http://127.0.0.1:9090/order`);
-      setData(response.data.results);
-      setTimeout(() => {
-        console.log("Delayed for 1 second.");
-        setLoading(false);
-      }, 1000);
-    }
-    if (loading) { loadOrders(); setOrdersReceived(true); }
-  });
+	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_SCANNER);
+	const [itemId, setItemId] = useState<string>('');
+	
+	const handleMenuBack = () => {
+		setCurrentViewKey(CUSTOMER_MENU);
+	};
+	
+	const handleToCart = () => {
+		setCurrentViewKey(CUSTOMER_CART);
+	};
 
-  const orders = data.map((order) => {
-    console.log(order)
-    return (
-      <OrderComponent id={order._id}/>
-    );
-  });
+	const handleToItem = (id: string) => {
+		setItemId(id);
+		setCurrentViewKey(CUSTOMER_ITEM_DETAILS);
+	};
 
-  return (
-    <>
-      <Container maxW='2xl' padding="0">
-        <Card w='100vw' color={'blackAlpha.900'} borderRadius={0} padding={3}>
-          <Flex>
-            <Heading>
-              TableTapp
-            </Heading>
-            <Spacer />
-            <Button colorScheme='teal' size='lg' isLoading={loading} loadingText='Orders' onClick={() => setLoading(true)}>
-              Get Orders
-            </Button>
-          </Flex>
-        </Card>
-        <AbsoluteCenter>
-          <HStack spacing={5}>
-            {ordersReceived ? orders : <Heading>Click Get Orders</Heading>}
-          </HStack>
-        </AbsoluteCenter>
-      </Container>
-    </>
-  );
+	const handleScannerResult = (scanResult: string) => {
+		console.log(`App.tsx ${scanResult}`);
+		setCurrentViewKey(CUSTOMER_MENU);
+	};
+
+	let currentView = <></>;
+	if (platform == CUSTOMER_KEY) {
+		switch (currentViewKey) {
+			case CUSTOMER_SCANNER:
+				currentView = <ScannerView scannerResult={handleScannerResult}/>;
+				break;
+			case CUSTOMER_MENU:
+				currentView = <MenuView goToItem={handleToItem} goToCart={handleToCart}/>;
+				break;	
+			case CUSTOMER_ITEM_DETAILS:
+				currentView = <ItemView id={itemId} handleBack={handleMenuBack}/>;
+				break;	
+			case CUSTOMER_CART:
+				currentView = <CartView handleBack={handleMenuBack}/>;
+				break;
+			default:
+				console.log("Error Customer key does not exist");
+				break;
+		}
+	}
+
+	return (
+		<Container h={'100%'} w={'100vw'} p={0} bg={'blackAlpha.50'}>
+			{currentView}
+		</Container>
+	);
 }
 
 export default App
