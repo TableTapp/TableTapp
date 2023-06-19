@@ -1,7 +1,14 @@
 import React from 'react';
 import { Box, Heading, VStack, HStack, Text, Button } from "@chakra-ui/react";
 
-const TableSummary = ({ table, onAccept, onDecline }) => {
+interface TableSummaryProps {
+  table: any;
+  onAccept: () => void;
+  onDecline: () => void;
+}
+
+const TableSummary: React.FC<TableSummaryProps> = (props: TableSummaryProps) => {
+  const { table, onAccept, onDecline } = props;
   return (
     <Box bg="gray.50" p={4} w="100%" h="100%" position="fixed" left={0} top={0} zIndex={10}>
       <VStack align="start">
@@ -11,7 +18,7 @@ const TableSummary = ({ table, onAccept, onDecline }) => {
         </HStack>
 
         <VStack align="start">
-          {table.order.map((item, index) => (
+          {table.order.map((item:any, index:any) => (
             <Text key={index}>{item.quantity}x {item.name} - ${item.price}</Text>
           ))}
         </VStack>

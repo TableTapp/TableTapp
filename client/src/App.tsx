@@ -8,6 +8,7 @@ import MenuView from './views/customer/menu-view';
 import CartView from './views/customer/cart-view';
 
 // Restaurant Views
+import RestaurantMenuView from './views/restaurant/restaurant-menu-view';
 
 const CUSTOMER_KEY = 'CUSTOMER';
 const RESTAURANT_KEY = 'RESTAURANT';
@@ -17,9 +18,12 @@ const CUSTOMER_MENU = 'CUSTOMER_MENU';
 const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
 const CUSTOMER_CART = 'CUSTOMER_CART';
 
+const RESTAURANT_MENU = 'RESTAURANT_MENU';
+
+
 function App() {
-	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_SCANNER);
+	const [platform, setPlatfrom] = useState<string>(RESTAURANT_KEY);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(RESTAURANT_MENU);
 	const [itemId, setItemId] = useState<string>('');
 	
 	const handleMenuBack = () => {
@@ -57,6 +61,15 @@ function App() {
 				break;
 			default:
 				console.log("Error Customer key does not exist");
+				break;
+		}
+	} else if (platform == RESTAURANT_KEY) {
+		switch (currentViewKey) {
+			case RESTAURANT_MENU:
+				currentView = <RestaurantMenuView />;
+				break;
+			default:
+				console.log("Error restaurant key does not exist");
 				break;
 		}
 	}

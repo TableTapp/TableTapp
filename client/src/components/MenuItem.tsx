@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
 
-const MenuItem = ({ item, onSave }) => {
+interface MenuItemProps {
+  item: any;
+  onSave: (updatedItem: any) => void;
+}
+
+const MenuItem: React.FC<MenuItemProps> = (props: MenuItemProps) => {
+  const { item, onSave } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [updatedItem, setUpdatedItem] = useState({ ...item });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setUpdatedItem({ ...updatedItem, [e.target.name]: e.target.value });
   }
 
