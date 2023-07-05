@@ -6,6 +6,7 @@ import ScannerView from './views/customer/scanner-view';
 import ItemView from './views/customer/item-view';
 import MenuView from './views/customer/menu-view';
 import CartView from './views/customer/cart-view';
+import LoginView from './views/customer/login-view';
 
 // Restaurant Views
 
@@ -16,6 +17,7 @@ const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER';
 const CUSTOMER_MENU = 'CUSTOMER_MENU';
 const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
 const CUSTOMER_CART = 'CUSTOMER_CART';
+const CUSTOMER_LOGIN = 'CUSTOMER_LOGIN';
 
 function App() {
 	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
@@ -37,7 +39,7 @@ function App() {
 
 	const handleScannerResult = (scanResult: string) => {
 		console.log(`App.tsx ${scanResult}`);
-		setCurrentViewKey(CUSTOMER_MENU);
+		setCurrentViewKey(CUSTOMER_LOGIN);
 	};
 
 	let currentView = <></>;
@@ -54,6 +56,9 @@ function App() {
 				break;	
 			case CUSTOMER_CART:
 				currentView = <CartView handleBack={handleMenuBack}/>;
+				break;
+			case CUSTOMER_LOGIN:
+				currentView = <LoginView goToMenu={handleMenuBack}/>
 				break;
 			default:
 				console.log("Error Customer key does not exist");
