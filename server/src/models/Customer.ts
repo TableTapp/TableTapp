@@ -1,36 +1,20 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { IUser } from "./User";
 
 export interface ICustomerBase {
-    Username: string;
-    Password: string;
-    Name: string;
-    Phone: string;
-    Email: string;
+    User: IUser;
 };
 
 export interface ICustomer extends ICustomerBase, Document { };
 
 const CustomerSchema: Schema = new Schema(
     {
-        Username: {
-            type: String,
+        User: {
+            type: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
             required: true
-        },
-        Password: {
-            type: String,
-            required: true
-        },
-        Name: {
-            type: String,
-            required: true
-        },
-        Phone: {
-            type: String,
-            required: false
-        },
-        Email: {
-            type: String,
-            required: false
         }
     },
     {
