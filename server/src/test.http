@@ -1,0 +1,8 @@
+
+# GET http://localhost:9090/customer
+
+
+POST http://localhost:9090/auth/signup
+
+Content-Type: application/application/x-www-form-urlencoded
+username="user2"&password="password"&name="user2"

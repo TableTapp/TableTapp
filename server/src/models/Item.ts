@@ -23,12 +23,11 @@ const ItemSchema: Schema = new Schema(
             type: {
                 type: Schema.Types.ObjectId,
                 ref: 'Category'
-            },
-            require: true
+            }
         },
         Description: {
             type: String,
-            require: false
+            required: false
         },
         AddOns: {
             type: [{

@@ -1,8 +1,12 @@
 import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
-import { config } from './config/config';
 import Logging from './library/Logging';
+import passport from 'passport';
+import session from 'express-session';
+import flash from 'express-flash';
+import cookieParser from 'cookie-parser';
+import { config } from './config/config';
 
 import genericRoutes from './routes/genericRoutes';
 import orderRoutes from './routes/orderRoutes';
@@ -13,8 +17,10 @@ import menuRoutes from './routes/menuRoutes';
 import itemRoutes from './routes/itemRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import cartRoutes from './routes/cartRoutes';
+import authRoutes from './routes/authRoutes';
+require('./middleware/authMiddleware')(passport);
 
-const router = express();
+const app = express();
 
 // Only change the connection String
 mongoose.connect(config.mongo.url, { w: 'majority', retryWrites: true })
@@ -30,7 +36,16 @@ mongoose.connect(config.mongo.url, { w: 'majority', retryWrites: true })
 // on startup create a new database only use this database if in local mode. Check if local database and compare with remote. Prompt a upload option.
 
 const StartServer = () => {
-    router.use((req, res, next) => {
+    app.use(flash());
+    app.use(session({
+        secret: "SECRET",
+        resave: false,
+        saveUninitialized: false
+    }));
+    app.use(cookieParser());
+    app.use(passport.initialize());
+    app.use(passport.session());
+    app.use((req, res, next) => {
         /** Log the req */
         Logging.info(`Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
@@ -42,11 +57,11 @@ const StartServer = () => {
         next();
     });
 
-    router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
     /** Rules of our API */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
@@ -59,21 +74,22 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/generic', genericRoutes);
-    router.use('/customer', customerRoutes);
-    router.use('/vendor', vendorRoutes);
-    router.use('/table', tableRoutes);
-    router.use('/order', orderRoutes);
-    router.use('/item', itemRoutes);
-    router.use('/orderItem', orderItemRoutes);
-    router.use('/cart', cartRoutes);
-    router.use('/menu', menuRoutes);
+    app.use('/generic', genericRoutes);
+    app.use('/customer', customerRoutes);
+    app.use('/vendor', vendorRoutes);
+    app.use('/table', tableRoutes);
+    app.use('/order', orderRoutes);
+    app.use('/item', itemRoutes);
+    app.use('/orderItem', orderItemRoutes);
+    app.use('/cart', cartRoutes);
+    app.use('/menu', menuRoutes);
+    app.use('/auth', authRoutes);
 
     /** Healthcheck */
-    router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
+    app.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
 
     /** Error handling */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         const error = new Error('Not found');
 
         Logging.error(error);
@@ -83,5 +99,5 @@ const StartServer = () => {
         });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
 };

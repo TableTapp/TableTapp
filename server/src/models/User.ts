@@ -6,7 +6,7 @@ export interface IUserBase {
     Password: string;
     Name: string;
     Phone: string;
-    Email: string;
+    matchPassword(password: string): Promise<boolean>;
 };
 
 export interface IUser extends IUserBase, Document { };
@@ -19,19 +19,19 @@ const UserSchema: Schema = new Schema(
         },
         Password: {
             type: String,
-            require: true
+            required: true
         },
         Name: {
             type: String,
-            require: true
+            required: false
         },
         Phone: {
             type: String,
-            require: false
+            required: false
         },
         Email: {
             type: String,
-            require: false
+            required: false
         }
     },
     {

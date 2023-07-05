@@ -9,22 +9,24 @@
     "server": "nodemon src/server.ts"
   },
   "devDependencies": {
-    "typescript": "^5.0.4",
-		"@types/lodash": "^4.14.192",
-		"@types/request": "^2.48.8",
-		"typescript": "^4.9.3"
-	},
+    "@types/cookie-parser": "^1.4.3",
+    "@types/express": "^4.17.17",
+    "@types/express-flash": "^0.0.2",
+    "@types/express-session": "^1.17.7",
+    "typescript": "^5.0.4"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
     "joi": "^17.9.2",
-    "mongoose": "^7.2.1"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.17",
-    "typescript": "^5.0.4"
+    "mongoose": "^7.2.1",
+    "session": "^0.1.0",
+    "ts-node": "^10.9.1"
   }
 }

@@ -1,36 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { IUserBase } from "./User";
 
 export interface IVendorBase {
-    Username: string;
-    Password: string;
-    Name: string;
-    Phone: string;
-    Email: string;
+    User: IUserBase;
 };
 
 export interface IVendor extends IVendorBase, Document { };
 
 const VendorSchema: Schema = new Schema(
     {
-        Username: {
-            type: String,
-            required: true
-        },
-        Password: {
-            type: String,
-            require: true
-        },
-        Name: {
-            type: String,
-            require: true
-        },
-        Phone: {
-            type: String,
-            require: false
-        },
-        Email: {
-            type: String,
-            require: false
+        User: {
+            type: {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            }
         }
     },
     {
