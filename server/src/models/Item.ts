@@ -24,11 +24,11 @@ const ItemSchema: Schema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Category'
             },
-            require: true
+            required: true
         },
         Description: {
             type: String,
-            require: false
+            required: false
         },
         AddOns: {
             type: [{
@@ -39,11 +39,11 @@ const ItemSchema: Schema = new Schema(
         },
         Price: {
             type: Number,
-            require: true
+            required: true
         },
         ImgUrl: {
             type: String,
-            require: true
+            required: true
         }
     },
     {
