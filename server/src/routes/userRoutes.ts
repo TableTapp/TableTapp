@@ -4,6 +4,6 @@ import auth from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/user', auth.verifyJwtToken , userController.getUser);
+router.get('/user', auth.verifyAccessToken, userController.getUser);
 
 export = router;
