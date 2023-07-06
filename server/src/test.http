@@ -1,0 +1,8 @@
+POST http://localhost:9090/auth/signup HTTP/1.1
+
+{
+    "Username" : "user1",
+    "Password" : "password",
+    "Name" : "user1name",
+    "Email" : "user1@gmail.com"
+}

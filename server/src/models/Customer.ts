@@ -13,8 +13,7 @@ const CustomerSchema: Schema = new Schema(
             type: {
                 type: Schema.Types.ObjectId,
                 ref: 'User'
-            },
-            required: true
+            }
         }
     },
     {

@@ -13,6 +13,7 @@ import menuRoutes from './routes/menuRoutes';
 import itemRoutes from './routes/itemRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import cartRoutes from './routes/cartRoutes';
+import authRoutes from './routes/authRoutes';
 
 const router = express();
 
@@ -68,6 +69,7 @@ const StartServer = () => {
     router.use('/orderItem', orderItemRoutes);
     router.use('/cart', cartRoutes);
     router.use('/menu', menuRoutes);
+    router.use('/auth', authRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
