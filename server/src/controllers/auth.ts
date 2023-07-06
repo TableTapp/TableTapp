@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
-import authConfig from '../middleware/auth';
+import authUtils from '../middleware/auth';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const JWT_AGE = parseInt(process.env.JWT_AGE || '0');
+const COOKIE_AGE = parseInt(process.env.COOKIE_AGE || '0');
 
 enum SigninMsgs {
 	SignInSuccess = "Sign in successful.",
@@ -15,10 +15,16 @@ enum SigninMsgs {
 const postSignup = async (req: Request, res: Response) => {
 	try {
 		const user = await User.create(req.body);
-		const token = authConfig.createToken(user._id);
-		res.cookie('jwt', token, {
+		const accessToken = authUtils.createAccessToken(user._id);
+		const refreshToken = authUtils.createRefreshToken(user._id);
+
+		res.cookie('jwt', accessToken, {
 			httpOnly: true,
-			maxAge: JWT_AGE
+			maxAge: COOKIE_AGE
+		});
+		res.cookie('refresh', refreshToken, {
+			httpOnly: true,
+			maxAge: COOKIE_AGE
 		});
 		res.status(200).json({
 			user: user._id
@@ -40,13 +46,17 @@ const postSignin = async (req: Request, res: Response) => {
 		const verified = await user.verify(Password);
 		if (!verified) throw Error(SigninMsgs.IncorrectUsername);
 
-		const token = authConfig.createToken(user._id);
+		const accessToken = authUtils.createAccessToken(user._id);
+		const refreshToken = authUtils.createRefreshToken(user._id);
 
-		res.cookie('jwt', token, {
+		res.cookie('jwt', accessToken, {
 			httpOnly: true,
-			maxAge: JWT_AGE
+			maxAge: COOKIE_AGE
 		});
-
+		res.cookie('refresh', refreshToken, {
+			httpOnly: true,
+			maxAge: COOKIE_AGE
+		});
 		res.status(200).json({
 			User: user._id,
 			Message: SigninMsgs.SignInSuccess
