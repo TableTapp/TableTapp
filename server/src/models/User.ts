@@ -31,7 +31,8 @@ const UserSchema: Schema = new Schema(
         },
         Password: {
             type: String,
-            required: true
+            required: true,
+            minlength: [8, 'Password must be at least 8 characters long']
         },
         Name: {
             type: String,
