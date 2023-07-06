@@ -42,16 +42,16 @@ const UserSchema: Schema = new Schema(
 
 UserSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-    if (!this.username) {
-        this.username = this.email;
+    this.Password = await bcrypt.hash(this.Password, salt);
+    if (!this.Username) {
+        this.Username = this.Email;
     }
     next();
 });
 
 UserSchema.methods.matchPassword = async function (password: string) {
     try {
-        return await bcrypt.compare(password, this.password);
+        return await bcrypt.compare(password, this.Password);
     } catch (error) {
         throw Error("Incorrect Password");
     }

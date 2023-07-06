@@ -3,10 +3,10 @@ import User from '../models/User';
 
 const LocalStrategy = passportLocal.Strategy;
 
-module.exports = (passport: any) => {
+const configPassport = (passport: any) => {
     passport.use("local-signup", new LocalStrategy({
-        usernameField : 'username',
-        passwordField : 'password',
+        usernameField : 'Username',
+        passwordField : 'Password',
         passReqToCallback : true
     },
     async (req, username, password, done) => {
@@ -27,8 +27,8 @@ module.exports = (passport: any) => {
     }));
 
     passport.use("local-signin", new LocalStrategy({ 
-        usernameField: "username" 
-    }, 
+        usernameField: "Username" 
+    },
     async (username, password, done) => {
         try {
             const user = await User.findOne({ Username: username });
@@ -51,8 +51,11 @@ module.exports = (passport: any) => {
             done(err, user);
         });
     });
-
 };
+
+export default {
+    configPassport
+}
 
 // const initSignup = (passport: any) => { passport.use("local-signup", new LocalStrategy({
 //         usernameField : 'username',

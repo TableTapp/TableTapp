@@ -18,7 +18,7 @@ import itemRoutes from './routes/itemRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import cartRoutes from './routes/cartRoutes';
 import authRoutes from './routes/authRoutes';
-require('./middleware/authMiddleware')(passport);
+import setupAuth from './middleware/authMiddleware';
 
 const app = express();
 
@@ -45,6 +45,7 @@ const StartServer = () => {
     app.use(cookieParser());
     app.use(passport.initialize());
     app.use(passport.session());
+    setupAuth.configPassport(passport);
     app.use((req, res, next) => {
         /** Log the req */
         Logging.info(`Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
