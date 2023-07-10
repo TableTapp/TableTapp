@@ -3,6 +3,12 @@
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.12.16"
+    "framer-motion": "^10.12.16",
+    "jsonwebtoken": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/jsonwebtoken": "^9.0.2"
   }
 }

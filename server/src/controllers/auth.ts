@@ -17,17 +17,14 @@ const postSignup = async (req: Request, res: Response) => {
 		const user = await User.create(req.body);
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
-
-		res.cookie('jwt', accessToken, {
-			httpOnly: true,
-			maxAge: COOKIE_AGE
-		});
-		res.cookie('refresh', refreshToken, {
+		res.cookie('jwt', refreshToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE
 		});
 		res.status(200).json({
-			user: user._id
+			User: user._id,
+            Message: SigninMsgs.SignInSuccess,
+            Token: accessToken
 		});
 	} catch (error: any) {
 		const errors = getSignupErrors(error);
@@ -49,17 +46,14 @@ const postSignin = async (req: Request, res: Response) => {
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
 
-		res.cookie('jwt', accessToken, {
-			httpOnly: true,
-			maxAge: COOKIE_AGE
-		});
-		res.cookie('refresh', refreshToken, {
+		res.cookie('jwt', refreshToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE
 		});
 		res.status(200).json({
 			User: user._id,
-			Message: SigninMsgs.SignInSuccess
+			Message: SigninMsgs.SignInSuccess,
+            Token: accessToken
 		});
 
 	} catch (error: any) {
