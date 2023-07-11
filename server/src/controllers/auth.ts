@@ -17,7 +17,7 @@ const postSignup = async (req: Request, res: Response) => {
 		const user = await User.create(req.body);
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
-
+		user.updateOne({ RefreshToken: refreshToken });
 		res.cookie('jwt', accessToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE
@@ -48,7 +48,7 @@ const postSignin = async (req: Request, res: Response) => {
 
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
-
+		user.RefreshToken = refreshToken; user.save();
 		res.cookie('jwt', accessToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE

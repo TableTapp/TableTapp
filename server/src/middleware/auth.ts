@@ -11,13 +11,13 @@ const COOKIE_AGE = parseInt(process.env.COOKIE_AGE || '0');
 
 const createAccessToken = (id: Types.ObjectId) => {
 	return jwt.sign({ id }, JWT_ACCESS_SECRET, {
-		expiresIn: '5s'
+		expiresIn: '1h'
 	});
 }
 
 const createRefreshToken = (id: Types.ObjectId) => {
 	return jwt.sign({ id }, JWT_REFRESH_SECRET, {
-		expiresIn: '1y'
+		expiresIn: '1d'
 	});
 }
 
@@ -27,13 +27,9 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
 	jwt.verify(token, JWT_ACCESS_SECRET, async (error: any, decodedToken: any) => {
 		if (error) res.status(403).json(error);
 		const user = await User.findById(decodedToken.id);
-		if (user) {
-			req.user = user;
-			next();
-		}
-		else {
-			res.status(404).json({ Error: "User not found." })
-		}
+		if (!user) res.status(404).json({ Error: "User not found." })
+		req.headers['user'] = user?._id.toString(); // Figure out how to send user in request
+		next();
 	});
 }
 
@@ -47,7 +43,6 @@ const verifyRefreshToken = (req: Request, res: Response, next: NextFunction) => 
 			httpOnly: true,
 			maxAge: COOKIE_AGE
 		});
-		req.headers.authorization = accessToken;
 		next();
 	});
 }

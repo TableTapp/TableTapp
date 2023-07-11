@@ -9,6 +9,7 @@ export interface IUserBase {
     Password: string;
     Name: string;
     Phone: string;
+    RefreshToken: string;
     verify(password: string): Promise<boolean>;
 };
 
@@ -39,6 +40,10 @@ const UserSchema: Schema = new Schema(
             required: true
         },
         Phone: {
+            type: String,
+            required: false
+        },
+        RefreshToken: {
             type: String,
             required: false
         }

@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import User from '../models/User';
 
 const getUser = async (req: Request, res: Response) => {
-	res.status(200).json(req.user);
+    const user = await User.findById(req.headers['user']);
+	res.status(200).json(user);
 }
 
 export default {
