@@ -19,7 +19,7 @@ const createAccessToken = (id: Types.ObjectId) => {
 
 const createRefreshToken = (id: Types.ObjectId) => {
 	return jwt.sign({ id }, JWT_REFRESH_SECRET, {
-        expiresIn: `${ACCESS_TOKEN_EXPIRY}`
+        expiresIn: `${REFRESH_TOKEN_EXPIRY}`
 	});
 }
 
