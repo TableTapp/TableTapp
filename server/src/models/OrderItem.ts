@@ -17,7 +17,7 @@ const OrderItemSchema: Schema = new Schema(
         },
         Quantity: {
             type: Number,
-            require: true
+            required: true
         },
         AdditionalRequests: {
             type: String,
