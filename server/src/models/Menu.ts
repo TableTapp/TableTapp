@@ -1,5 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 import { IItemBase } from "./Item"
+import Item from "./Item";
 
 export interface IMenuBase {
     Items: IItemBase[];
@@ -14,7 +15,7 @@ const MenuSchema: Schema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Item'
             }],
-            require: true
+            required: true
         }
     },
     {
@@ -22,5 +23,10 @@ const MenuSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+MenuSchema.pre('save', async function (next) {
+    this.Items = await Item.find();
+    next();
+});
 
 export default mongoose.model<IMenuBase>('Menu', MenuSchema);
