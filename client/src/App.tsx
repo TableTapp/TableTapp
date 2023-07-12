@@ -7,6 +7,9 @@ import ItemView from './views/customer/item-view';
 import MenuView from './views/customer/menu-view';
 import CartView from './views/customer/cart-view';
 import LoginView from './views/customer/login-view';
+import StartedView from './views/customer/started-view';
+import AccountView from './views/customer/createaccount-view';
+import ConfirmView from './views/customer/confirm-view';
 
 // Restaurant Views
 
@@ -18,6 +21,9 @@ const CUSTOMER_MENU = 'CUSTOMER_MENU';
 const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
 const CUSTOMER_CART = 'CUSTOMER_CART';
 const CUSTOMER_LOGIN = 'CUSTOMER_LOGIN';
+const CUSTOMER_GETSTARTED = 'CUSTOMER_GETSTARTED';
+const CUSTOMER_CREATEACCOUNT = 'CUSTOMER_CREATEACCOUNT';
+const CUSTOMER_CONFIRMEMAIL = 'CUSTOMER_CONFIRMEMAIL';
 
 function App() {
 	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
@@ -39,8 +45,26 @@ function App() {
 
 	const handleScannerResult = (scanResult: string) => {
 		console.log(`App.tsx ${scanResult}`);
-		setCurrentViewKey(CUSTOMER_LOGIN);
+		setCurrentViewKey(CUSTOMER_GETSTARTED);
 	};
+
+	const handleToLogin = () => {
+		setCurrentViewKey(CUSTOMER_LOGIN)
+	};
+
+	const handleGetStarted = () => {
+		setCurrentViewKey(CUSTOMER_CREATEACCOUNT)
+	};
+
+	const handleCreateAccount = () => {
+		setCurrentViewKey(CUSTOMER_CONFIRMEMAIL)
+	}
+
+	// const handleToConfirmEmail = () => {
+	// 	setCurrentViewKey(CUSTOMER_CONFIRMEMAIL)
+	// }
+
+
 
 	let currentView = <></>;
 	if (platform == CUSTOMER_KEY) {
@@ -59,6 +83,15 @@ function App() {
 				break;
 			case CUSTOMER_LOGIN:
 				currentView = <LoginView goToMenu={handleMenuBack}/>
+				break;
+			case CUSTOMER_GETSTARTED:
+				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleGetStarted}/>
+				break;
+			case CUSTOMER_CREATEACCOUNT:
+				currentView = <AccountView goToCreateAccount={handleCreateAccount} goBack={handleGetStarted}/>
+				break;
+			case CUSTOMER_CONFIRMEMAIL:
+				currentView = <ConfirmView goToLogin={handleToLogin} />
 				break;
 			default:
 				console.log("Error Customer key does not exist");

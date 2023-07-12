@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
-import Logo from "../../assets/Logo.svg"
+import Logo from "../../assets/Logo.svg";
 
 // Components
 import { 
@@ -21,7 +21,7 @@ import {
     HStack
 } from "@chakra-ui/react";
 
-import { LockIcon, CloseIcon, ExternalLinkIcon
+import { LockIcon, CloseIcon
 } from '@chakra-ui/icons'
 
 interface LoginProps {
@@ -42,7 +42,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const handleClick = () => setShow(!show)
 
     const handleForgotPassword = async () => {
-
+        
     }
 
     const handleLogin = async () => {
@@ -73,7 +73,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
                     <VStack marginTop={50}>
-                        <Box align='center'>
+                        <Box alignItems='center'>
                             <Image src={Logo} boxSize='40%'/>
                         </Box>
                         <Heading size='xl' colorScheme='' textAlign='center' padding='0.9rem'>
