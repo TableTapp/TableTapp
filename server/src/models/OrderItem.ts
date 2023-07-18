@@ -8,7 +8,7 @@ export interface IOrderItemBase {
 
 export interface IOrderItem extends IOrderItemBase, Document { };
 
-const OrderItemSchema: Schema = new Schema(
+export const OrderItemSchema: Schema = new Schema(
     {
         ItemId: {
             type: Schema.Types.ObjectId,
@@ -29,5 +29,10 @@ const OrderItemSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+OrderItemSchema.pre('findOne', function (next) { 
+    this.populate("ItemId", { options: { strictPopulate: false }});
+    next();
+});
 
 export default mongoose.model<IOrderItemBase>('OrderItem', OrderItemSchema);

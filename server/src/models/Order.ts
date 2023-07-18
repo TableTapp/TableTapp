@@ -10,7 +10,7 @@ enum OrderStatus{
 export interface IOrderBase {
     TableId: string;
     CustomerId: string;
-    OrderItems: [object];
+    OrderItems: object[];
     Status: OrderStatus;
 };
 

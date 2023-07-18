@@ -1,62 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { IMenuResponse, ICartResponse, ITableResponse, IMenuBase, ITableBase, ICart } from '../../utils/serverEntities';
-import axios from 'axios';
 
-// Components
-import { Button, Center, Flex, Spacer, VStack } from '@chakra-ui/react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+
+// UI Components
+import { 
+    Button, 
+    Center, 
+    Flex, 
+    Slide, 
+    Spacer, 
+    VStack 
+} from '@chakra-ui/react';
 import Header from '../../components/Header';
 import { ItemStack } from '../../components/ItemStack';
+
+// Utils
+import { 
+    ITableBase, 
+    ICart, 
+    IItemPopulated,
+    ICartPopulated
+} from '../../utils/serverEntities';
+import axios from 'axios';
+import _ from 'lodash';
 
 interface MenuProps {
     menuId: string;
     tableId: string;
     cartId: string;
     goToCart: () => void;
-    goToItem: (id: string) => void
+    goToItem: (ItemId: string, cart: ICart) => void;
+}
+
+enum TableStatus {
+    Reserved = "RESERVED",
+    Occupied = "OCCUPIED",
+    Open = "OPEN",
 }
 
 const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
-    const { menuId, tableId, cartId, goToCart } = props;
-    const [menu, setMenu] = useState<IMenuBase>({
-        Category: '', 
-        Items: [
-            {Id:'98098', Name: 'Item 1', Category: 'Cat12', Description: 'Item 1 description', Price: 5.95},
-            {Id:'9898', Name: 'Item 2', Category: 'Cat12', Description: 'Item 2 description', Price: 3.25},
-            {Id:'9809', Name: 'Item 3', Category: 'Cat12', Description: 'Item 3 description', Price: 10.24}
-        ]
-    });
-    const [tableDetails, setTableDetails] = useState<ITableBase>({Customers: ['','',''], Status: 'RESERVED' });
-    const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
+    const { 
+        menuId, 
+        tableId, 
+        cartId, 
+        goToCart, 
+        goToItem 
+    } = props;
 
-    const TABLE_NUMBER = 1;
+    const [menu, setMenu] = useState<IItemPopulated[]>([]);
+    const [groupedMenuItems, setGroupedMenuItems] = useState<IItemPopulated[][]>([]);
+    const [tableDetails, setTableDetails] = useState<ITableBase>({
+        Customers: [], 
+        Status: TableStatus.Open, 
+        Seats: 0, 
+        TableNumber: 0 
+    });
+    const [cart, setCart] = useState<ICartPopulated>({OrderItems: [], TotalPrice: 0});
+
+    const getTable = useCallback(async () => {
+        const tableResponse = await axios.get(`http:///127.0.0.1:9090/table/${tableId}`);
+        const table: ITableBase = {
+            Customers: tableResponse.data.result.Customers,
+            Status: tableResponse.data.result.Status,
+            Seats: tableResponse.data.result.Seats,
+            TableNumber: tableResponse.data.result.TableNumber
+        };
+        setTableDetails(table);
+    }, [tableId]);
+
+    const getCart = useCallback(async () => {
+        const cartResponse = await axios.get(`http://127.0.0.1:9090/cart/${cartId}`);
+        const cart: ICartPopulated = {
+            _id: cartResponse.data.result._id,
+            OrderItems: cartResponse.data.result.OrderItems,
+            TotalPrice: cartResponse.data.result.TotalPrice
+        };
+        setCart(cart);
+    }, [cartId]);
+
+    const getMenuItems = useCallback(async () => {
+        const menuResponse = await axios.get(`http://127.0.0.1:9090/menu/${menuId}`);
+        const items: IItemPopulated[] = [];
+        try {
+            menuResponse.data.result.Items.map(async (itemId: string) => {
+                const item = await axios.get(`http://127.0.0.1:9090/item/${itemId}`);
+                const itemResponse: IItemPopulated = {
+                    _id: item.data.result._id,
+                    Name: item.data.result.Name,
+                    Description: item.data.result.Description,
+                    Price: item.data.result.Price,
+                    Category: {
+                        Name: item.data.result.Category.Name,
+                        _id: item.data.result.Category._id
+                    }
+                };
+                items.push(itemResponse);
+            });
+            setMenu(items);
+        } finally {
+            setMenu(items); 
+        }
+    }, [menuId]);
+
+    const groupItems = useCallback(() => {
+        const groupedItems = Object.values(menu.reduce((acc, item) => {
+            acc[item.Category.Name] = acc[item.Category.Name] ?? [];
+            acc[item.Category.Name].push(item);
+            return acc;
+        }, {} as {[key: string]: IItemPopulated[]}));
+
+        setGroupedMenuItems(groupedItems);
+    },[menu]);
 
     useEffect(() => {
-        async function getMenuItems() {
-            const response = await axios.get<IMenuResponse>(`http://127.0.0.1:9090/item/${menuId}`);
-            setMenu(response.data.results);
-        }
-        async function getTableDetails() {
-            const response = await axios.get<ITableResponse>(`http://127.0.0.1:9090/table/${tableId}`);
-            setTableDetails(response.data.results);
-        }
-        async function getCartDetails() {
-            const response = await axios.get<ICartResponse>(`http://127.0.0.1:9090/cart/${cartId}`);
-            setCart(response.data.results);
-        }
-        getMenuItems();
-        getTableDetails();
-        getCartDetails();
-    }, [menuId, tableId, cartId]);
+        _.delay(getMenuItems, 200);
+        getCart();
+        getTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menuId]);
+
+    useEffect(() => {
+        _.delay(groupItems, 250);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [menu, groupItems]);
 
     const handleViewCart = () => {
         goToCart();
+    };
+
+    const itemClick = (itemId: string) => {
+        goToItem(itemId, cart);
     };
 
     return (
         <>
             <Center>
 				<Button 
-					colorScheme='blue' 
+					colorScheme='red' 
 					size='lg' 
 					position='fixed' 
 					bottom={0} 
@@ -65,14 +145,36 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
 					zIndex={4} 
 					onClick={handleViewCart}
 				>
-					<Flex width='80vw'>Cart <Spacer />${cart.TotalPrice}</Flex>
+					<Flex 
+                        width='80vw'
+                    >
+                        ({cart.OrderItems.length})Cart <Spacer />${cart.TotalPrice}
+                    </Flex>
 				</Button>
-			</Center>
+			</Center> 
 			<VStack gap={2}>
-				<Header menu headerOptions={{ title: 'Menu', subtitle: `Table ${TABLE_NUMBER}`, tableDetails: tableDetails}}/>
-                <ItemStack rowClick={props.goToItem} order={false} stackHeader='Cat 12' items={menu.Items}/> 
-                <ItemStack rowClick={props.goToItem} order={false} stackHeader='Cat 10' items={menu.Items}/>               
-              
+				<Header 
+                    menu 
+                    headerOptions={{ 
+                    title: 'Menu', 
+                    subtitle: `Table ${tableDetails.TableNumber}`, 
+                    tableDetails: tableDetails
+                    }}
+                />
+                    {groupedMenuItems.map((group) => {
+                        return (
+                            // <Slide direction="top" in={true}>
+                                <ItemStack
+                                    addNewItem={()=>{return}} 
+                                    rowClick={itemClick} 
+                                    order={false} 
+                                    stackHeader={group[0].Category.Name} 
+                                    items={group}
+                                />
+                            // </Slide>
+                        );
+                    })
+                    }
 			</VStack>
         </>
     );

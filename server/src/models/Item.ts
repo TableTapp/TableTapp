@@ -20,11 +20,9 @@ const ItemSchema: Schema = new Schema(
             required: true
         },
         Category: {
-            type: {
-                type: Schema.Types.ObjectId,
-                ref: 'Category'
-            },
-            require: true
+            type: Schema.Types.ObjectId,
+            ref: 'Category',
+            required: true
         },
         Description: {
             type: String,
@@ -42,8 +40,7 @@ const ItemSchema: Schema = new Schema(
             require: true
         },
         ImgUrl: {
-            type: String,
-            require: true
+            type: String
         }
     },
     {
@@ -51,5 +48,10 @@ const ItemSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+ItemSchema.pre('findOne', function (next) { 
+    this.populate("Category", { options: { strictPopulate: false }});
+    next();
+});
 
 export default mongoose.model<IItemBase>('Item', ItemSchema);

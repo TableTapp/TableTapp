@@ -13,11 +13,7 @@ import {
 import _ from 'lodash';
 import { CloseIcon } from '@chakra-ui/icons';
 import { Search } from './Search';
-
-interface ITableBase {
-	Customers: string[],
-	Status: string
-}
+import { ITableBase } from '../utils/serverEntities';
 
 interface IHeaderOptions {
     title: string;
