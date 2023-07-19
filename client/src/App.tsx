@@ -9,8 +9,12 @@ import CartView from './views/customer/cart-view';
 
 // Restaurant Views
 
+// Landing Page View
+import LandingPage from './views/splashscreen/landingpage-view';
+
 const CUSTOMER_KEY = 'CUSTOMER';
 const RESTAURANT_KEY = 'RESTAURANT';
+const LANDING_PAGE_KEY = 'LANDING_PAGE';
 
 const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
 const CUSTOMER_MENU = 'CUSTOMER_MENU';
@@ -19,7 +23,7 @@ const CUSTOMER_CART = 'CUSTOMER_CART';
 
 function App() {
 	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_SCANNER);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(LANDING_PAGE_KEY);
 	const [itemId, setItemId] = useState<string>('');
 	
 	const handleMenuBack = () => {
@@ -55,6 +59,9 @@ function App() {
 			case CUSTOMER_CART:
 				currentView = <CartView handleBack={handleMenuBack}/>;
 				break;
+			case LANDING_PAGE_KEY:
+				currentView = <LandingPage />;
+				break;
 			default:
 				console.log("Error Customer key does not exist");
 				break;
@@ -62,7 +69,7 @@ function App() {
 	}
 
 	return (
-		<Container h={'100%'} w={'100vw'} p={0} bg={'blackAlpha.50'}>
+		<Container h={'100%'} w={'100vw'} p={0} bg={'blackAlpha.50'} maxWidth={'none'}>
 			{currentView}
 		</Container>
 	);
