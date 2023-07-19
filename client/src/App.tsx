@@ -10,7 +10,7 @@ import LoginView from './views/customer/login-view';
 import StartedView from './views/customer/started-view';
 import AccountView from './views/customer/createaccount-view';
 import ForgotPasswordView from './views/customer/forgotpassword-view';
-//import ConfirmView from './views/customer/confirm-view';
+import ConfirmView from './views/customer/confirm-view';
 
 // Restaurant Views
 
@@ -54,17 +54,21 @@ function App() {
 		setCurrentViewKey(CUSTOMER_LOGIN)
 	};
 
+	const handleToGetStarted = () => {
+		setCurrentViewKey(CUSTOMER_GETSTARTED)
+	};
+
 	const handleCreateAccount = () => {
 		setCurrentViewKey(CUSTOMER_CREATEACCOUNT)
-	}
+	};
 
 	const handleToForgotPassword = () => {
 		setCurrentViewKey(CUSTOMER_FORGOTPASSWORD)
-	}
+	};
 
-	// const handleToConfirmEmail = () => {
-	// 	setCurrentViewKey(CUSTOMER_CONFIRMEMAIL)
-	// }
+	const handleToConfirmEmail = () => {
+		setCurrentViewKey(CUSTOMER_CONFIRMEMAIL)
+	}
 
 
 
@@ -90,14 +94,14 @@ function App() {
 				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleMenuBack} goToCreateAccount={handleCreateAccount}/>
 				break;
 			case CUSTOMER_CREATEACCOUNT:
-				currentView = <AccountView goToCreateAccount={handleCreateAccount} goBack={handleGetStarted}/>
+				currentView = <AccountView goToCreateAccount={handleToConfirmEmail} goToStartedView={handleToGetStarted}/>
 				break;
 			case CUSTOMER_FORGOTPASSWORD:
 				currentView = <ForgotPasswordView goToLogin={handleToLogin}/>
 				break;
-			// case CUSTOMER_CONFIRMEMAIL:
-			// 	currentView = <ConfirmView goToLogin={handleToLogin} />
-			// 	break;
+			case CUSTOMER_CONFIRMEMAIL:
+				currentView = <ConfirmView goToLogin={handleToLogin}/>
+				break;
 			default:
 				console.log("Error Customer key does not exist");
 				break;

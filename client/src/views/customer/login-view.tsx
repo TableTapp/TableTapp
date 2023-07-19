@@ -79,18 +79,19 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
-                    <VStack marginTop={50}>
+                    <VStack marginTop='12vh'>
                         <Box align='center' marginBottom='4rem'>
                             <Image src={Logo} boxSize='40%'/>
                         </Box>
-                        <Heading size='xl' colorScheme='' textAlign='center' padding='1rem'>
+                        <Heading size='xl' color='#2D3748' textAlign='center' padding='1rem'>
                             Sign In
                         </Heading>
                         <InputGroup size = 'lg' w='70%'>
                             <InputLeftElement>
                                 <Avatar size='xs' src='https://bit.ly/broken-link' bg='#D9D9D9' />
                             </InputLeftElement>
-                            <Input 
+                            <Input
+                                focusBorderColor='red.400' 
                                 placeholder='Email'
                                 onChange={handleUsernameInput}
                             />
@@ -100,6 +101,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                                 <LockIcon boxSize={6} color='#D9D9D9'/>
                             </InputLeftElement>
                             <Input
+                                focusBorderColor='red.400'
                                 pr='4.5rem'
                                 type={show ? 'text' : 'password'}
                                 placeholder='Password'
@@ -120,7 +122,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                         w='70%'
                         variant='solid'
                         _hover={{
-                            bg: 'red.500',
+                            bg: 'red.300',
                             }}
                         onClick={handleLogin}
                         >
