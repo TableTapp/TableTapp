@@ -17,7 +17,7 @@
   },
   "scripts": {
     "install-server": "cd server && npm install",
-    "start-server": "cd server && nodemon src/server.ts",
+    "start-server": "cd server && npm install && nodemon src/server.ts",
     "install-client": "cd client && npm install",
     "build-client": "cd client && npm run tsc && npm run vite build",
     "start-client": "cd client && npm run vite"
