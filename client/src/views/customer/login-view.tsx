@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from 'axios';
 import Logo from "../../assets/Logo.svg";
+import apple from "../../assets/apple.svg"
+import meta from "../../assets/meta.svg"
+import google from "../../assets/google.svg"
 
 // Components
 import { 
     Flex,
     Button,
+    IconButton,
     VStack,
     Input, 
     Box,
@@ -17,15 +21,14 @@ import {
     InputRightElement,
     Center,
     Divider,
-    Link,
-    HStack
+    HStack,
 } from "@chakra-ui/react";
 
 import { LockIcon, CloseIcon
 } from '@chakra-ui/icons'
 
 interface LoginProps {
-    goToForgotPassword?: () => void;
+    goToForgotPassword: () => void;
     goToMenu: () => void;
     //need entries for google, facebook, and apple login
 }
@@ -34,71 +37,73 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const {goToForgotPassword, goToMenu } = props;
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
 
     //show password when clicking "show"
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
 
-    const handleForgotPassword = async () => {
-        
-    }
+    const handleUsernameInput = (event:any) => {setUserEmail(event.target.value);};
+    const handlePasswordInput = (event:any) => {setUserPassword(event.target.value);};
 
-    const handleLogin = async () => {
-        setIsLoading(true);
-        setError("");
-        goToMenu();
+    const handleLogin =  async () => {
+
+        //console.log(userEmail);
+        //console.log(userPassword);
 
         try {
         // Call axios API endpoint here
         // Pass email and password as parameters to the API endpoint
+            const response = await axios.post("http://127.0.0.1:9090/auth/signin", { Username: userEmail, Password: userPassword });
+            console.log(response);
+            goToMenu();
+        } catch(e){
+            console.log("Error: ", e); // Update the error state
+        } 
+    }
 
-            async function getLoginDetails () {
-                const response = await axios.post("/api/login", { userEmail, userPassword });
-                // Handle the response from the server
-                // ...
-            }
+    const handleForgotPassword = async () => {
+        goToForgotPassword();
+    }
 
-
-        } catch (error) {
-            setError("Login failed. Please try again."); // Update the error state
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const handleGoogle = async () => {
+        //go to Google API call
+    }
+    const handleMeta = async () => {
+        //go to Meta API call
+    }
+    const handleApple = async () => {
+        //go to Apple API call
+    }
 
     return (
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
                     <VStack marginTop={50}>
-                        <Box alignItems='center'>
+                        <Box align='center' marginBottom='4rem'>
                             <Image src={Logo} boxSize='40%'/>
                         </Box>
-                        <Heading size='xl' colorScheme='' textAlign='center' padding='0.9rem'>
+                        <Heading size='xl' colorScheme='' textAlign='center' padding='1rem'>
                             Sign In
                         </Heading>
-                        <InputGroup size = 'lg' w='90%'>
+                        <InputGroup size = 'lg' w='70%'>
                             <InputLeftElement>
-                                <Avatar size='xs' src='https://bit.ly/broken-link' color='#2D3748' />
+                                <Avatar size='xs' src='https://bit.ly/broken-link' bg='#D9D9D9' />
                             </InputLeftElement>
                             <Input 
                                 placeholder='Email'
-                                value={userEmail}
-                                onChange={(e) => setUserEmail(e.target.value)}
+                                onChange={handleUsernameInput}
                             />
                         </InputGroup>
-                        <InputGroup size='lg' w='90%'>
+                        <InputGroup size='lg' w='70%'>
                             <InputLeftElement>
-                                <LockIcon color='#2D3748'/>
+                                <LockIcon boxSize={6} color='#D9D9D9'/>
                             </InputLeftElement>
                             <Input
                                 pr='4.5rem'
                                 type={show ? 'text' : 'password'}
                                 placeholder='Password'
-                                value={userPassword}
-                                onChange={(e) => setUserPassword(e.target.value)}
+                                onChange={handlePasswordInput}
                             />
                             <InputRightElement width='4.5rem'>
                                 <Button h='1.75rem' size='sm' onClick={handleClick}>
@@ -112,25 +117,25 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                         bg='red.400' 
                         colorScheme="white"
                         size='lg'
-                        w='90%'
+                        w='70%'
                         variant='solid'
                         _hover={{
-                            bg: 'red.400',
+                            bg: 'red.500',
                             }}
                         onClick={handleLogin}
                         >
                             Log In
                         </Button>
-                        <Link size='sm' colorScheme='gray.100' isExternal>
+                        <Button size='sm' colorScheme='gray.100' onClick={handleForgotPassword} variant='link' >
                         Forgot Password?
-                        </Link>
+                        </Button>
                         
-                        <Divider orientation='horizontal' colorScheme='#2D3748' w='65%'/>
+                        <Divider orientation='horizontal' color='#D9D9D9' w='65%'/>
                         
-                        <HStack>
-                            <CloseIcon/>
-                            <CloseIcon/>
-                            <CloseIcon/>
+                        <HStack  spacing='1rem'>
+                            <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={google} boxSize='100%'/>} onClick={handleGoogle}/>
+                            <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={meta} boxSize='100%'/>} onClick={handleMeta}/>
+                            <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={apple} boxSize='100%' onClick={handleApple}/>}/>
                         </HStack>
                     </VStack>
                 </Box>

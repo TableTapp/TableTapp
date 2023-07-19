@@ -51,11 +51,11 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                         </Heading>
                     </VStack>
                     <VStack padding='0.3rem'>
-                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='blackAlpha.300' placeholder="First Name"/>
-                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='blackAlpha.300' placeholder="Last Name"/>
-                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='blackAlpha.300' placeholder="Email Address"/>
+                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='#D4D9DF' placeholder="First Name"/>
+                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='#D4D9DF' placeholder="Last Name"/>
+                        <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='b#D4D9DF' placeholder="Email Address"/>
                         <InputGroup>
-                            <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='blackAlpha.300' placeholder="Password"/>
+                            <Input size = 'lg' w='90%' variant='filled' borderRadius='none' bg='#D4D9DF' placeholder="Password"/>
                             <InputRightElement width='4.5rem'>
                                 <Button size='xs' onClick={handleClick}>
                                 {show ? 'Hide' : 'Show'}
@@ -81,17 +81,17 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                     <VStack>
                         <HStack>
                             <Text color='#2D3748'>
-                                By signing up you agree with our
+                                By signing up you agree with our{' '}
                             </Text>
-                            <Link color='#2D3748'>
-                                Privacy Policy
-                            </Link>
+                                <Link color='#2D3748'>
+                                    Privacy Policy
+                                </Link>
                             <Text color='#2D3748'>
-                                &
+                                &{''}
                             </Text>
-                            <Link color='#2D3748'>
-                                Terms of Service
-                            </Link>
+                                <Link color='#2D3748'>
+                                    Terms of Service
+                                </Link>
                         </HStack>
                     </VStack>
                     <Button

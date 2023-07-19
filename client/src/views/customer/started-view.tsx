@@ -18,22 +18,22 @@ import {
 } from "@chakra-ui/react";
 
 interface getStartedProps {
-    goToLogin?: () => void;
+    goToLogin: () => void;
     goToGetStarted: () => void;
-    goToForgotPassword?: () => void;
+    goToCreateAccount: () => void;
 }
 
 const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
-    const {goToLogin, goToGetStarted, goToForgotPassword} = props;
+    const {goToLogin, goToGetStarted, goToCreateAccount} = props;
 
-    //write logic for these
-    // const handleLogin = async () => {
-    //     goToLogin();
-    // };
-    // const handleForgotPassword = async () => {
-    //     goToForgotPassword();
-    // };
-    
+   
+    const handleLogin = async () => {
+        goToLogin();
+    };
+    const handleCreateAccount = async () => {
+        goToCreateAccount();
+    };
+
     const handleGetStarted = async () => {
         goToGetStarted();
     };
@@ -65,16 +65,20 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
                             Get Started
                         </Button>
                     </VStack>
-                    <VStack marginTop='1.5vh'>
-                        <HStack>
-                            <Text color='white'>
-                                Already have an account?
-                            </Text>
-                            <Link color='white'>
-                                Login
-                            </Link>
+                    <Box alignItems='baseline'>
+                        <HStack marginTop='1.5vh' align='baseline'>
+                                <Text color='white' align='center'>
+                                    Already have an account? {' '}
+                                    <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleLogin} variant='link'>
+                                        Login 
+                                    </Button>
+                                    . Or you can {' '}
+                                    <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleCreateAccount} variant='link'>
+                                        Create a new account
+                                    </Button>
+                                </Text>
                         </HStack>
-                    </VStack>
+                    </Box>
                 </Box>
             </Center>
         </Flex>
