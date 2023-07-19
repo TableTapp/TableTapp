@@ -10,5 +10,12 @@
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/jsonwebtoken": "^9.0.2"
+  },
+  "scripts": {
+    "install-server": "cd server && npm install",
+    "start-server": "cd server && nodemon src/server.ts",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run tsc && npm run vite build",
+    "start-client": "cd client && npm run vite"
   }
 }
