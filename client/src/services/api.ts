@@ -61,3 +61,8 @@ axios.interceptors.response.use(
 //         }
 //     }
 // }
+
+export default {
+    accessToken,
+    axios
+}
