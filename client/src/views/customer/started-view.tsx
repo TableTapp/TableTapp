@@ -65,19 +65,17 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
                             Get Started
                         </Button>
                     </VStack>
-                    <Box alignItems='baseline'>
-                        <HStack marginTop='1.5vh' align='baseline'>
-                                <Text color='white' align='center'>
-                                    Already have an account? {' '}
-                                    <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleLogin} variant='link'>
-                                        Login 
-                                    </Button>
-                                    . Or you can {' '}
-                                    <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleCreateAccount} variant='link'>
-                                        Create a new account
-                                    </Button>
-                                </Text>
-                        </HStack>
+                    <Box align ='center' marginTop='1.5vh'>
+                        <Text color='white' align='center'>
+                            Already have an account? {' '}
+                            <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleLogin} variant='link'>
+                                Login 
+                            </Button>
+                            . Or you can {' '}
+                            <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleCreateAccount} variant='link'>
+                                Create a new account
+                            </Button>
+                        </Text>
                     </Box>
                 </Box>
             </Center>

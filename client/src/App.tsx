@@ -88,7 +88,7 @@ function App() {
 				currentView = <CartView handleBack={handleMenuBack}/>;
 				break;
 			case CUSTOMER_LOGIN:
-				currentView = <LoginView goToMenu={handleMenuBack} goToForgotPassword={handleToForgotPassword}/>
+				currentView = <LoginView goToMenu={handleMenuBack} goToForgotPassword={handleToForgotPassword} goToGetStarted={handleToGetStarted}/>
 				break;
 			case CUSTOMER_GETSTARTED:
 				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleMenuBack} goToCreateAccount={handleCreateAccount}/>
@@ -100,7 +100,7 @@ function App() {
 				currentView = <ForgotPasswordView goToLogin={handleToLogin}/>
 				break;
 			case CUSTOMER_CONFIRMEMAIL:
-				currentView = <ConfirmView goToLogin={handleToLogin}/>
+				currentView = <ConfirmView goToLogin={handleToLogin} goToGetStarted={handleToGetStarted}/>
 				break;
 			default:
 				console.log("Error Customer key does not exist");

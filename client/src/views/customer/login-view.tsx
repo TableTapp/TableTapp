@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import axios from 'axios';
-import Logo from "../../assets/Logo.svg";
+import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
 import meta from "../../assets/meta.svg"
 import google from "../../assets/google.svg"
@@ -30,13 +30,14 @@ import { LockIcon, CloseIcon
 interface LoginProps {
     goToForgotPassword: () => void;
     goToMenu: () => void;
+    goToGetStarted: () => void;
     //need entries for google, facebook, and apple login
 }
 // Define a Login page component
 const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    const {goToForgotPassword, goToMenu } = props;
+    const {goToForgotPassword, goToMenu, goToGetStarted } = props;
 
     //show password when clicking "show"
     const [show, setShow] = useState(false)
@@ -65,6 +66,10 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
         goToForgotPassword();
     }
 
+    const handleBack = async () => {
+        goToGetStarted();
+    }
+
     const handleGoogle = async () => {
         //go to Google API call
     }
@@ -81,7 +86,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
                     <VStack marginTop='12vh'>
                         <Box align='center' marginBottom='4rem'>
-                            <Image src={Logo} boxSize='40%'/>
+                            <Image src={Logo2} boxSize='40%'/>
                         </Box>
                         <Heading size='xl' color='#2D3748' textAlign='center' padding='1rem'>
                             Sign In
@@ -139,6 +144,20 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={meta} boxSize='100%'/>} onClick={handleMeta}/>
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={apple} boxSize='100%' onClick={handleApple}/>}/>
                         </HStack>
+                        <Button
+                            colorScheme='red.400' 
+                            color='red.400'
+                            size='lg'
+                            marginTop='7vh'
+                            w='70vw'
+                            variant='outline'
+                            _hover={{
+                                bg: 'red.300',
+                                }}
+                            onClick={handleBack}
+                            >
+                            Back to Get Started
+                        </Button>
                     </VStack>
                 </Box>
             </Center>
