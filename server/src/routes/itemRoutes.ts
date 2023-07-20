@@ -1,7 +1,6 @@
 import express from 'express';
 import controller from '../controllers/generic';
 import Item from '../models/Item';
-import auth from '../middleware/auth';
 
 const router = express.Router();
 
