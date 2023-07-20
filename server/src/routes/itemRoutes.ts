@@ -6,18 +6,18 @@ import auth from '../middleware/auth';
 const router = express.Router();
 
 // GET all data config 
-router.get('/', auth.verifyAccessToken, controller.getAll(Item));
+router.get('/', controller.getAll(Item));
 
 // GET single data config 
-router.get('/:id', auth.verifyAccessToken, controller.get(Item));
+router.get('/:id', controller.get(Item));
 
 // POST new data config
-router.post('/', auth.verifyAccessToken, controller.create(Item));
+router.post('/', controller.create(Item));
 
 // UPDATE a data config
-router.patch('/:id', auth.verifyAccessToken, controller.update(Item));
+router.patch('/:id', controller.update(Item));
 
 // DELETE a data config
-router.delete('/:id', auth.verifyAccessToken, controller.deleteOne(Item));
+router.delete('/:id', controller.deleteOne(Item));
 
 export = router;
