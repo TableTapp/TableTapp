@@ -17,10 +17,14 @@ const postSignup = async (req: Request, res: Response) => {
 		const user = await User.create(req.body);
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
-		res.cookie('jwt', refreshToken, {
+		res.cookie('refresh', refreshToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE
 		});
+        res.cookie('access', accessToken, {
+            httpOnly: true,
+            maxAge: COOKIE_AGE
+        });
 		res.status(200).json({
 			User: user._id,
             Message: SigninMsgs.SignInSuccess,
@@ -46,10 +50,14 @@ const postSignin = async (req: Request, res: Response) => {
 		const accessToken = authUtils.createAccessToken(user._id);
 		const refreshToken = authUtils.createRefreshToken(user._id);
 
-		res.cookie('jwt', refreshToken, {
+		res.cookie('refresh', refreshToken, {
 			httpOnly: true,
 			maxAge: COOKIE_AGE
 		});
+        res.cookie('access', accessToken, {
+            httpOnly: true,
+            maxAge: COOKIE_AGE
+        });
 		res.status(200).json({
 			User: user._id,
 			Message: SigninMsgs.SignInSuccess,
@@ -64,7 +72,7 @@ const postSignin = async (req: Request, res: Response) => {
 }
 
 const postSignout = async (req: Request, res: Response) => {
-	res.cookie('jwt', '', {
+	res.cookie('access', '', {
 		maxAge: 1
 	});
 	res.status(200).json({
