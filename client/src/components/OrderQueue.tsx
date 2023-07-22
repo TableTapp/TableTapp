@@ -64,7 +64,7 @@ const OrderQueues: React.FC = () => {
         >
           Order Queue
         </Heading>
-        <Flex direction="row" gap={6} ml="-54%">
+        <Flex direction="row" gap={8} ml="-54%">
           {filteredOrderQueues.map((order) => (
             <Button
               key={order.id}
@@ -157,39 +157,8 @@ const OrderQueues: React.FC = () => {
           ))}
         </Flex>
         {selectedOrder && <TableSummary order={selectedOrder} onClose={handleCloseDrawer} />}
-        {/* {orderQueues.length >= 4 && (
-          <Box
-            as="button"
-            position="absolute"
-            onClick={handleViewAllOrders}
-            right={238}
-            bottom={540}
-            
-            m={4} // Add margin for spacing
-            p={2} // Add padding for the box
-            width="90px"
-            height="70px"
-            
-            borderRadius="10px"
-            background="#F56565"
-            boxShadow="0px 0px 4px 0px rgba(0, 0, 0, 0.25)"
-            mt="14px"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Text
-              fontSize="15px"
-              color="#fff"
-              textAlign="center"
-            >
-              View All +
-            </Text>
-        </Box>
-        )} */}
       </VStack>
     </Box>
-
   )
 }
 export default OrderQueues;

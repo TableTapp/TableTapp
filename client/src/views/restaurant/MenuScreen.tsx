@@ -24,7 +24,7 @@ const MenuScreen: React.FC = () => {
     <Box width="100%" height="100%" flexShrink={0} borderRadius="10px" background="#gray.100" p={5} >
         <OrderQueues />
         <Categories/>
-        <ItemList/>
+        <ItemList menuId='64a67f586e0c9689237cac3b'/>
   </Box>
   );
 };

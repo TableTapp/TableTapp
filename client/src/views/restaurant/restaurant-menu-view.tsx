@@ -1,7 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useState } from 'react';
 import { Flex, Box, VStack, Text, Button } from "@chakra-ui/react";
+import TableScreen from './TableScreen';
 import MenuScreen from './MenuScreen';
+import OrderScreen from './OrderScreen';
+import CustomerScreen from './CustomerScreen';
 
 const RestaurantMenuView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('menu');
@@ -13,13 +16,13 @@ const RestaurantMenuView: React.FC = () => {
   const renderContent = () => {
     switch (selectedTab) {
       case 'tables':
-        return null; // Placeholder for Tables screen
+        return <TableScreen/>; // Placeholder for Tables screen
       case 'menu':
         return <MenuScreen/>;
       case 'orders':
-        return null; // Placeholder for Orders screen
+        return <OrderScreen/>; // Placeholder for Orders screen
       case 'customers':
-        return null; // Placeholder for Customers screen
+        return <CustomerScreen/>; // Placeholder for Customers screen
       default:
         return null;
     }
@@ -123,6 +126,18 @@ const RestaurantMenuView: React.FC = () => {
 			Customers
 		</Button>
 	</VStack>
+	<Box
+		sx={{ userSelect: 'none' }}
+		position="absolute"
+		bottom="1rem"
+		left="50%"
+		transform="translateX(-50%)"
+		textAlign="center"
+		fontWeight="bold"
+		fontSize="15px"
+		>
+		© 2023 TableTapp
+	</Box>
 	</Box>
 
 	  <Box flex="1" p={5} ml="5%">

@@ -12,34 +12,34 @@ import {
   chakra,
 } from '@chakra-ui/react';
 
-interface Item {
-    id: number;
-    name: string;
-    description: string;
-    price: string;
-    image: string;
-    category: string;
-  }
+interface IItem {
+  Id: string;
+  Name: string;
+  Description: string;
+  Price: number;
+  Quantity: number;
+  Category: string;
+}
 
 interface AddItemProps {
-  onAddItem: (newItem: Item) => void;
+  onAddItem: (newItem: IItem) => void;
   onClose: () => void;
 }
 
 const AddItem: React.FC<AddItemProps> = ({ onAddItem, onClose }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
+  const [Name, setName] = useState('');
+  const [Description, setDescription] = useState('');
+  const [Price, setPrice] = useState<number>(0);
+  const [Category, setCategory] = useState('');
 
   const handleAddItem = () => {
-    const newItem: Item = {
-      id: Date.now(),
-      name,
-      description,
-      price,
-      image: '',
-      category,
+    const newItem: IItem = {
+      Id:"",
+      Name,
+      Description,
+      Price,
+      Quantity: 0,
+      Category,
     };
     onAddItem(newItem);
     onClose();
@@ -48,24 +48,24 @@ const AddItem: React.FC<AddItemProps> = ({ onAddItem, onClose }) => {
   return (
     <Box p={4}>
       <Heading as="h3" size="md" mb={4}>
-        Add Item
+        Add IItem
       </Heading>
       <VStack spacing={4} align="start">
         <FormControl>
           <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <Input value={Name} onChange={(e) => setName(e.target.value)} />
         </FormControl>
         <FormControl>
           <FormLabel>Description</FormLabel>
-          <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+          <Input value={Description} onChange={(e) => setDescription(e.target.value)} />
         </FormControl>
         <FormControl>
           <FormLabel>Price</FormLabel>
-          <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+          <Input value={Price.toString()} onChange={(e) => setPrice(Number(e.target.value))} type='number'/>
         </FormControl>
         <FormControl>
           <FormLabel>Category</FormLabel>
-          <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <Select value={Category} onChange={(e) => setCategory(e.target.value)}>
             <option value="specials">Specials</option>
             <option value="drinks">Drinks</option>
             <option value="appetizers">Appetizers</option>

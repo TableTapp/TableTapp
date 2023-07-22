@@ -14,7 +14,7 @@ const MenuSchema: Schema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Item'
             }],
-            require: true
+            required: true
         }
     },
     {

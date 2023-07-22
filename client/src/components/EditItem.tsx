@@ -1,64 +1,64 @@
 import React, { useState } from 'react';
 import { Box, Heading, VStack, FormControl, FormLabel, Input, Select, Button, Spacer, chakra } from '@chakra-ui/react';
 
-interface Item {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  image: string;
-  category: string;
+interface IItem {
+  Id: string;
+  Name: string;
+  Description: string;
+  Price: number;
+  Category: string;
+  Quantity:number;
 }
 
 interface EditItemProps {
-  item: Item;
-  onSaveChanges: (updatedItem: Item) => void;
-  onDelete: (itemId: number) => void; // Added onDelete prop
+  item: IItem;
+  onSaveChanges: (updatedItem: IItem) => void;
+  onDelete: (itemId: string) => void; // Added onDelete prop
   onClose: () => void;
 }
 
 const EditItem: React.FC<EditItemProps> = ({ item, onSaveChanges, onDelete, onClose }) => {
-  const [name, setName] = useState(item.name);
-  const [description, setDescription] = useState(item.description);
-  const [price, setPrice] = useState(item.price);
-  const [category, setCategory] = useState(item.category);
+  const [Name, setName] = useState(item.Name);
+  const [Description, setDescription] = useState(item.Description);
+  const [Price, setPrice] = useState(item.Price);
+  const [Category, setCategory] = useState(item.Category);
 
   const handleSaveChanges = () => {
-    const updatedItem: Item = {
+    const updatedItem: IItem = {
       ...item,
-      name,
-      description,
-      price,
-      category,
+      Name,
+      Description,
+      Price,
+      Category,
     };
     onSaveChanges(updatedItem);
   };
 
   const handleDelete = () => {
-    onDelete(item.id);
+    onDelete(item.Id);
   };
 
   return (
     <Box p={4}>
       <Heading as="h3" size="md" mb={4}>
-        Edit Item
+        Edit IItem
       </Heading>
       <VStack spacing={4} align="start">
         <FormControl>
           <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <Input value={Name} onChange={(e) => setName(e.target.value)} />
         </FormControl>
         <FormControl>
           <FormLabel>Description</FormLabel>
-          <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+          <Input value={Description} onChange={(e) => setDescription(e.target.value)} />
         </FormControl>
         <FormControl>
           <FormLabel>Price</FormLabel>
-          <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+          <Input value={Price} onChange={(e) => setPrice(Number(e.target.value))} type='number'/>
         </FormControl>
         <FormControl>
           <FormLabel>Category</FormLabel>
-          <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <Select value={Category} onChange={(e) => setCategory(e.target.value)}>
             <option value="specials">Specials</option>
             <option value="drinks">Drinks</option>
             <option value="appetizers">Appetizers</option>

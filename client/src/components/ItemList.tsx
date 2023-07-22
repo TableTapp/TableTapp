@@ -1,119 +1,84 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box, SimpleGrid, Text, chakra, Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
 import Food from './Food_Pics/food.jpg';
 import EditItem from './EditItem';
 import AddItem from './AddItem';
+import axios from 'axios';
 
-interface Item {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  category: string;
-  image: string;
+interface IItem {
+  Id: string;
+  Name: string;
+  Description: string;
+  Price: number;
+  Quantity: number;
+  Category: string;
 }
 
-const ItemList: React.FC = () => {
-  const items: Item[] = [
-    {
-      id: 1,
-      name: 'Item 1',
-      description: 'Description of Item 1',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 2,
-      name: 'Item 2',
-      description: 'Description of Item 2',
-      price: '$15.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 3,
-      name: 'Item 3',
-      description: 'Description of Item 3',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 4,
-      name: 'Item 4',
-      description: 'Description of Item 4',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 5,
-      name: 'Item 5',
-      description: 'Description of Item 5',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 6,
-      name: 'Item 6',
-      description: 'Description of Item 6',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 7,
-      name: 'Item 7',
-      description: 'Description of Item 7',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 8,
-      name: 'Item 8',
-      description: 'Description of Item 8',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 9,
-      name: 'Item 9',
-      description: 'Description of Item 9',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 10,
-      name: 'Item 10',
-      description: 'Description of Item 10',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-  {
-      id: 11,
-      name: 'Item 11',
-      description: 'Description of Item 11',
-      price: '$10.99',
-      image: Food,
-      category: 'drinks',
-  },
-    // Item data here
-  ];
+interface ItemProps {
+  menuId: string;
+}
 
-  const [itemsList, setItemsList] = useState<Item[]>(items);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
+  const {
+    menuId
+  } = props;
+
+  const [menu, setMenu] = useState<IItem[]>([]);
+
+  const getMenuItems = useCallback(async () => {
+    const menuResponse =  await axios.get(`http://127.0.0.1:9090/menu/${menuId}`)
+    const items: IItem[] = [];
+    try {
+      menuResponse.data.result.Items.map(async (itemId: string) => {
+        const item = await axios.get(`http://127.0.0.1:9090/item/${itemId}`)
+        const itemResponse = {
+          Id: item.data.result._id,
+          Name: item.data.result.Name,
+          Description: item.data.result.Description,
+          Price: item.data.result.Price,
+          Quantity: item.data.result.Quantity,
+          Category: item.data.result.Category
+        };
+        items.push(itemResponse);
+      });
+      setMenu(items);
+    } 
+    catch (error){
+      console.log(error)
+    } finally {
+        setMenu(items);
+    }
+  }, [menuId]);
+
+  const createNewItem = useCallback( async(item:IItem) => {
+    const payload = {
+      Name: item.Name,
+      Description: item.Description,
+      Price: item.Price,
+      Quantity: item.Quantity,
+      Category: item.Category
+    }
+    try{
+      console.log(item)
+      const response = await axios.post(`http://127.0.0.1:9090/item/`,payload)
+    }
+    catch (error){
+      console.log(error)
+    }
+  },[])
+
+  useEffect(() => {
+    getMenuItems()
+  },[])
+
+  const [itemsList, setItemsList] = useState<IItem[]>(menu);
+  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [isAddItemModalOpen, setAddItemModalOpen] = useState(false);
   
 
 
-  const handleItemClick = (item: Item) => {
+  const handleItemClick = (item: IItem) => {
     setSelectedItem(item);
   };
 
@@ -121,17 +86,17 @@ const ItemList: React.FC = () => {
     setSelectedItem(null);
   };
 
-  const handleSaveChanges = (updatedItem: Item) => {
+  const handleSaveChanges = (updatedItem: IItem) => {
     const updatedItems = itemsList.map((item) =>
-      item.id === updatedItem.id ? { ...item, ...updatedItem } : item
+      item.Id === updatedItem.Id ? { ...item, ...updatedItem } : item
     );
 
     setItemsList(updatedItems);
     handleCloseModal();
   };
 
-  const handleDeleteItem = (itemId: number) => {
-    const updatedItems = itemsList.filter((item) => item.id !== itemId);
+  const handleDeleteItem = (itemId: string) => {
+    const updatedItems = itemsList.filter((item) => item.Id !== itemId);
   
     setItemsList(updatedItems);
     handleCloseModal();
@@ -145,18 +110,18 @@ const ItemList: React.FC = () => {
     setAddItemModalOpen(false);
   };
 
-  const handleAddItem = (newItem: Item) => {
-    const updatedItemsList = [...itemsList, newItem];
-    setItemsList(updatedItemsList);
+  const handleAddItem = (newItem: IItem) => {
+    createNewItem(newItem);
+    getMenuItems();
   };
 
   return (
-    <Box p={4} position="absolute" top="47%" left="23%" sx={{ userSelect: 'none' }}>
-      <Box height="320px" overflowY="scroll">
-        <SimpleGrid columns={4} spacing={4}>
-          {itemsList.map((item) => (
+    <Box p={4} position="absolute" top="49%" left="23%" sx={{ userSelect: 'none' }}>
+      <Box height="320px" overflowY="scroll" css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+        <SimpleGrid columns={4} spacing={8}>
+          {menu.map((item) => (
             <Box
-              key={item.id}
+              key={item.Id}
               as="div"
               borderWidth="1px"
               borderRadius="10px"
@@ -175,7 +140,7 @@ const ItemList: React.FC = () => {
               <Box bg="#f6dec8" width="150px" height="80px" mx="auto" my="4" borderRadius="10px"/>
               <Box p={4}>
                 <Text fontWeight="bold" fontSize="17px" mt={-6}>
-                  {item.name}
+                  {item.Name}
                 </Text>
                 <chakra.p
                   color="var(--gray-700, #2D3748)"
@@ -191,7 +156,7 @@ const ItemList: React.FC = () => {
                   whiteSpace="nowrap"
                   className="truncate"
                 >
-                  {item.description.length > 11 ? `${item.description.slice(0, 11)}...` : item.description}
+                  {item.Description.length > 11 ? `${item.Description.slice(0, 11)}...` : item.Description}
                 </chakra.p>
                 <Text
                   color="var(--gray-700, #2D3748)"
@@ -203,7 +168,7 @@ const ItemList: React.FC = () => {
                   lineHeight="20px"
                   mt={-5}
                 >
-                  {item.price}
+                  {item.Price}
                 </Text>
               </Box>
             </Box>

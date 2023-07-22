@@ -30,7 +30,7 @@ const Categories: React.FC = () => {
         <Heading color="#2D3748" fontSize={24} fontFamily="Inter" fontWeight={600}>
           Categories
         </Heading>
-        <HStack spacing={4}>
+        <HStack spacing={8}>
           {categories.map((category) => (
             <Box
               as="button"

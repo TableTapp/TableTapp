@@ -18,19 +18,19 @@ const CustomerSchema: Schema = new Schema(
         },
         Password: {
             type: String,
-            require: true
+            required: true
         },
         Name: {
             type: String,
-            require: true
+            required: true
         },
         Phone: {
             type: String,
-            require: false
+            required: false
         },
         Email: {
             type: String,
-            require: false
+            required: false
         }
     },
     {
