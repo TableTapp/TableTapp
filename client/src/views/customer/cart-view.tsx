@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useState } from 'react';
+
+// UI Components
 import {
     Box,
     Button,
     Center,
-    Flex,
-    IconButton,
-	ButtonGroup,
-    Img,
-    Spacer,
     Text,
     VStack,
-	Textarea,
     TableContainer,
     Table,
     Thead,
@@ -20,48 +17,57 @@ import {
     Td,
     Tfoot
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { AddIcon, ArrowBackIcon, ChatIcon, MinusIcon } from '@chakra-ui/icons';
 import Header from '../../components/Header';
-import { ItemCard } from '../../components/ItemCard';
-import { ICart, ICartResponse } from '../../utils/serverEntities';
+import { PaymentDrawer } from '../../components/PaymentDrawer';
 import { ItemStack } from '../../components/ItemStack';
+
+// Utils
+import { ICartPopulated, IOrderItemPopulated } from '../../utils/serverEntities';
+import _ from 'lodash';
+import api from '../../services/api';
 
 interface cartViewProps {
 	handleBack: () => void;
+    handlePayment: () => void;
 	id: string;
     itemsId: string;
 }
 
 
 const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
-	const { handleBack, id } = props;
-	const [amount, setAmount] = useState<number>(1);
-    const [cart, setCart] = useState<ICart>({
-        OrderItems: [
-            {ItemId: 'ert', Quantity: 3}, 
-            {ItemId: 'tged', Quantity: 2}
-        ], TotalPrice: 89.8
-    });
-	const [specialInstructions, setSpecialInstructions] = useState<string>();
-	const [showSpecialInstructions, setShowSpecialInstructions] = useState<boolean>(false);
+	const { handleBack, handlePayment, id } = props;
+    const [orderItems, setOrderItems] = useState<IOrderItemPopulated[]>([]);
+    const [PaymentDrawerIsOpen, setPaymentDrawerIsOpen] = useState<boolean>(false);
 
+    const [cart, setCart] = useState<ICartPopulated>({
+        OrderItems: [], 
+        TotalPrice: 0
+    });
 
 	const handleCheckout = () => {
-        return
+        setPaymentDrawerIsOpen(!PaymentDrawerIsOpen);
 	};	
+
+    const handleToPayment = () => {
+        handlePayment();
+    };
 
     const handleBackToMenu = () => {
         handleBack();
 	};
 
+    const getCart = useCallback(async () => {
+        const cartData = await api.getCart(id);
+        setCart(cartData);
+        console.log(cartData.OrderItems)
+        setOrderItems(cartData.OrderItems);
+    }, [id]);
+
 	useEffect(() => {
 		// Perform any initialization or side effects here
-        async function getCartDetails() {
-            const response = await axios.get<ICartResponse>(`http://127.0.0.1:9090/cart/${id}`);
-            setCart(response.data.results);
-        }
-        getCartDetails();
+        setOrderItems([]);
+        getCart();
+        console.log(cart)
 	}, [id]);
 
 	// Render your view component here
@@ -69,8 +75,9 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
 		<>
 			<Center>
 				<Button 
-					colorScheme='blue' 
+					colorScheme='red' 
 					size='lg' 
+                    w={'90%'}
 					position='fixed' 
 					bottom={0} 
 					marginBottom={4} 
@@ -81,9 +88,29 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
 					Checkout
 				</Button>
 			</Center>
+            <PaymentDrawer 
+                paymentTotal={_.round(cart.TotalPrice + cart.TotalPrice*0.12, 2)} 
+                onPayment={handleToPayment} 
+                isDrawerOpen={PaymentDrawerIsOpen} 
+                onDrawerClose={handleCheckout}
+            />
 			<VStack gap={2}>
-				<Header cart headerOptions={{ title: 'Cart', subtitle: 'Restaurant Name', onCartClose: handleBackToMenu }}/>
-                <ItemStack order stackHeader='Items' orderItems={cart.OrderItems}/>
+				<Header 
+                    cart 
+                    headerOptions={{ 
+                        title: 'Cart', 
+                        subtitle: 'Restaurant Name', 
+                        onCartClose: handleBackToMenu 
+                    }}
+                />
+                <ItemStack 
+                    rowClick={() => {return}} 
+                    order 
+                    stackHeader='Items' 
+                    cart={cart} 
+                    orderItems={orderItems} 
+                    addNewItem={handleBackToMenu}
+                />
 				<Box bg='white' w={'100vw'} h={60}>
 					<TableContainer>
                         <Table>
@@ -100,7 +127,7 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
                                         <Text>Subtotal</Text>
                                     </Td>
                                     <Td isNumeric>
-                                        <Text as='b'>$20.4</Text>
+                                        <Text>${cart.TotalPrice}</Text>
                                     </Td>
                                 </Tr>
                                 <Tr>
@@ -108,18 +135,7 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
                                         <Text>Fee</Text>
                                     </Td>
                                     <Td isNumeric>
-                                        <Text as='b'>$9.50</Text>
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td w={'100%'}>
-                                        <Center>
-                                            <ButtonGroup>
-                                                <Button>15%</Button>
-                                                <Button>18%</Button>
-                                                <Button>25%</Button>
-                                            </ButtonGroup>
-                                        </Center> 
+                                        <Text>${_.round(cart.TotalPrice*0.12, 2)}</Text>
                                     </Td>
                                 </Tr>
                             </Tbody>
@@ -129,13 +145,16 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
                                         <Text as='b'>Total</Text>
                                     </Td>
                                     <Td isNumeric>
-                                        <Text as='b'>{cart.TotalPrice}</Text>
+                                        <Text as='b'>
+                                            ${_.round(cart.TotalPrice + cart.TotalPrice*0.12, 2)}
+                                        </Text>
                                     </Td>
                                 </Tr>
                             </Tfoot>
                         </Table>
                     </TableContainer>
 				</Box>
+                <Box padding={10}></Box>
 			</VStack>
 		</>
 	);

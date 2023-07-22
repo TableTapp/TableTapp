@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Box,
     Center,
@@ -10,44 +10,79 @@ import {
     VStack
 } from '@chakra-ui/react';
 import { ItemDisplay } from './ItemDisplay';
-import { IItem, IItemResponse, IOrderItemBase } from '../utils/serverEntities';
+import { ICart, ICartPopulated, IItemPopulated, IOrderItemPopulated } from '../utils/serverEntities';
 import { DeleteIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
-interface ItemProps {
-    ItemOptions?: IItem,
-    OderItemOptions?: IOrderItemBase,
+interface ItemCardProps {
+    ItemOptions?: IItemPopulated;
+    OrderItemOptions?: IOrderItemPopulated;
+    Cart?: ICartPopulated;
     Order: boolean;
 }
 
-export const ItemCard: React.FC<ItemProps> = (props: ItemProps) => {
-    const { ItemOptions, OderItemOptions, Order } = props;
+export const ItemCard: React.FC<ItemCardProps> = (props: ItemCardProps) => {
+    const { 
+        ItemOptions,
+        OrderItemOptions,
+        Order, 
+        Cart
+    } = props;
 
-    const orderList = Order && OderItemOptions ? OderItemOptions : null; 
-    const itemList = !Order && ItemOptions ? ItemOptions : null; 
+    const [cart, setCart] = useState<ICartPopulated>(Cart || {
+        OrderItems: [],
+        TotalPrice: 0,
+        _id: ''
+    });
 
-    const [orderItem, setOrderItem] = useState<IItem>({Id:'98098', Name: 'Item 1', Category: 'Cat12', Description: 'Item 1 description', Price: 5.95});
+    const [itemDetails, setItemDetails] = useState<IItemPopulated>({ 
+        _id: '', 
+        Price: 0, 
+        Name: '', 
+        Category: { Name: '' }, 
+        Description: ''
+    }); 
+
+    const [orderItemDetails, setOrderItemDetails] = useState<IOrderItemPopulated>(OrderItemOptions || {
+        _id: '',
+        ItemId: { 
+            _id: '', 
+            Name: '', 
+            Price: 0, 
+            Category: '', 
+            Description: ''
+        },
+        Quantity: 0,
+        AdditionalRequests: ''
+    });
+
+    const deleteCartItem = useCallback(async () => {
+        setCart(Order && Cart ? Cart : cart);
+        const updatedOrderItems: string[] = cart.OrderItems
+            .filter((orderItem) => orderItem._id !== orderItemDetails._id)
+            .map((orderItem) => orderItem._id) as string[];
+        const payload: ICart = {
+            OrderItems: updatedOrderItems,
+            TotalPrice: cart.TotalPrice - (orderItemDetails.ItemId.Price * orderItemDetails.Quantity)
+        }
+        await axios.patch(`http://127.0.0.1:9090/cart/${cart._id}`, payload);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cart]);
 
     useEffect(() => {
-        // async function getItem() {
-        //     const response = await axios.get<IItemResponse>(`http://127.0.0.1:9090/item/${orderList?.ItemId}`);
-        //     setOrderItem(response.data.results);
-        // }
+        setItemDetails(ItemOptions ? ItemOptions : itemDetails);
+        setOrderItemDetails(OrderItemOptions ? OrderItemOptions : orderItemDetails);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ItemOptions]);
 
-        // if (Order) {
-        //     getItem();
-        // }
-    }, []);
-
-   
     let layout;
     if (!Order) {
         layout = (
             <Flex width={'87vw'} >
                 <VStack align='left' spacing={2}>
-                    <Heading size='md'>{itemList?.Name}</Heading>
-                    <Text fontSize='sm'>{itemList?.Description}</Text>
-                    <Text as='b' fontSize='sm'>${itemList?.Price}</Text>
+                    <Heading size='md'>{itemDetails?.Name}</Heading>
+                    <Text fontSize='sm' isTruncated maxWidth={200}>{itemDetails?.Description}</Text>
+                    <Text as='b' fontSize='sm'>${itemDetails?.Price}</Text>
                 </VStack>
                 <Spacer />
                 <ItemDisplay add />
@@ -56,11 +91,11 @@ export const ItemCard: React.FC<ItemProps> = (props: ItemProps) => {
     } else {
         layout = (
             <Flex width={'87vw'} gap={3} >
-                <ItemDisplay quantity={orderList?.Quantity} />
+                <ItemDisplay quantity={orderItemDetails?.Quantity} />
                 <Center p={4}>
                     <VStack align='left' spacing={2}>
-                        <Heading size='md'>{orderItem?.Name}</Heading>
-                        <Text as='b' fontSize='sm'>${orderItem?.Price}</Text>
+                        <Heading size='md'>{orderItemDetails.ItemId?.Name}</Heading>
+                        <Text as='b' fontSize='sm'>${orderItemDetails.ItemId?.Price}</Text>
                     </VStack>
                 </Center>
                 <Spacer />
@@ -72,12 +107,12 @@ export const ItemCard: React.FC<ItemProps> = (props: ItemProps) => {
                         zIndex={3}
                         borderRadius='full'
                         icon={<DeleteIcon />}
+                        onClick={() => deleteCartItem()}
                     />
                 </Center>
             </Flex>
         );
     }
-    
 
     return (
         <Box bg='white'>

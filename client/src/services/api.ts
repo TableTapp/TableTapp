@@ -1,68 +1,109 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { ICartPopulated, IItem, IItemPopulated, ITableBase } from '../utils/serverEntities';
 
 const apiBaseUrl = 'http://127.0.0.1:9090';
-let accessToken : string = '';
 
-const renewAccessToken = async () => {
+async function getCart(id: string) {
     try {
-        const res = await axios.post("http://127.0.0.1:9090/auth/refresh");
-        return res.data.Token;
+        const response = await axios.get(`${apiBaseUrl}/cart/${id}`);
+        const cartData: ICartPopulated = {
+            OrderItems: response.data.result.OrderItems,
+            TotalPrice: response.data.result.TotalPrice,
+            _id: response.data.result._id
+        };
+        return cartData;
     }
     catch (error) {
-        return error;
+        throw error;
     }
 }
 
-axios.interceptors.request.use(config => {
-    if (accessToken)
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
-    return config;
-}, (error) => { Promise.reject(error); });
-
-axios.interceptors.response.use(
-    (response: AxiosResponse) => {
-        return response;
-    },
-    async (error: AxiosError) => {
-        const originalRequest = error?.config;
-        if (error?.response && error?.response?.status === 401 && 
-            originalRequest) {
-            // && !originalRequest._retry
-            // originalRequest._retry = true;
-            try {
-                accessToken = await renewAccessToken();
-                originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-                return axios(originalRequest);
-
-            } catch (refreshError) {
-                console.error(refreshError);
-                throw refreshError;
-            }
-        }
-        throw Promise.reject(error);
+async function putCart(id: string | undefined, payload: any) {
+    try {
+        return (await axios.patch(`${apiBaseUrl}/cart/${id}`, payload)).data;
+    } catch (error) {
+        throw error;
     }
-);
+}
 
-// const sendRequest = async (url: string, payload: any = {}, token: string = "") => {
+async function getItem(id: string, populate: boolean) {
+    try {
+        const response = await axios.get(`${apiBaseUrl}/item/${id}`);
+        if (populate) {
+            return <IItemPopulated> {
+                _id: response.data.result._id,
+                Name: response.data.result.Name,
+                Description: response.data.result.Description,
+                Price: response.data.result.Price,
+                Category: {
+                    Name: response.data.result.Category.Name,
+                    _id: response.data.result.Category._id
+                }
+            };
+        }
+        else {
+            return <IItem> {
+                _id: response.data.result._id,
+                Name: response.data.result.Name,
+                Description: response.data.result.Description,
+                Price: response.data.result.Price,
+                Category: response.data.result.Category,
+                AddOns: response.data.result.ItemAddOns
+            };
+        }
+    }
+    catch (error) {
+        throw error;
+    }
+}
 
-//     try {
-//         return await axios.post(url, payload, {
-//             headers: { Authorization: `Bearer ${token}` }
-//         });
-//     }
-//     catch (error: any) {
-//         if (error.response && error.response.status === 403) {
-//             const newAccessToken = await renewAccessToken();
-//             return await axios.post(url, payload, {
-//                 headers: { Authorization: `Bearer ${newAccessToken}` }
-//             });
-//         } else {
-//             console.error(error);
-//         }
-//     }
-// }
+async function putItem(id: string, payload: any) {
+    try {
+        return (await axios.patch(`${apiBaseUrl}/orderItem/${id}`, payload)).data; 
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function postItem(payload: any) {
+    try {
+        return (await axios.post(`${apiBaseUrl}/orderItem/`, payload)).data; 
+    } catch (error) {
+        throw error;
+    }  
+}
+
+async function getTable(id: string) {
+    try {
+        const tableResponse = await axios.get(`${apiBaseUrl}/table/${id}`);
+        const table: ITableBase = {
+            Customers: tableResponse.data.result.Customers,
+            Status: tableResponse.data.result.Status,
+            Seats: tableResponse.data.result.Seats,
+            TableNumber: tableResponse.data.result.TableNumber
+        };
+        return table;
+    } catch (error) {
+        throw error;
+    }
+
+}
+
+async function getMenu(id: string) {
+    try {
+        return (await axios.get(`${apiBaseUrl}/menu/${id}`)).data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 export default {
-    accessToken,
-    axios
+    getCart,
+    putCart,
+    getItem,
+    postItem,
+    putItem,
+    getTable,
+    getMenu
 }
