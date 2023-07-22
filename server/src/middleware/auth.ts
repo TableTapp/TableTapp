@@ -9,7 +9,6 @@ const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'MISSING_SECRET';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'MISSING_SECRET';
 const ACCESS_TOKEN_EXPIRY = process.env.ACCESS_TOKEN_EXPIRY || 'MISSING_SECRET';
 const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY || 'MISSING_SECRET';
-const COOKIE_AGE = parseInt(process.env.COOKIE_AGE || '0');
 
 const createAccessToken = (id: Types.ObjectId) => {
 	return jwt.sign({ id }, JWT_ACCESS_SECRET, {
@@ -24,8 +23,7 @@ const createRefreshToken = (id: Types.ObjectId) => {
 }
 
 const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    const token = authHeader ? authHeader.split(' ')[1] : undefined;
+    const token = req.cookies.access;
     if (token == null) 
         return res.status(401).json({ Error: 'Access token not found' });
 	jwt.verify(token, JWT_ACCESS_SECRET, async (error: any, decodedToken: any) => {
@@ -33,7 +31,10 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
             return res.status(403).json(error);
 		const user = await User.findById(decodedToken.id);
 		if (user) {
-            req.body = user;
+            req.body = {
+                ...req.body,
+                user: user,
+            };
 			return next();
 		}
         return res.status(404).json({ Error: 'User not found' });
