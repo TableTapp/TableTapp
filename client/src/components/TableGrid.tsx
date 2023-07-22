@@ -119,7 +119,7 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
-              cursor="pointer"
+              
               onClick={() => handleTableClick(number)}
               position="relative"
             >
