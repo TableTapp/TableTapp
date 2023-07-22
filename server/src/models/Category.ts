@@ -15,7 +15,7 @@ const CategorySchema: Schema = new Schema(
         },
         ImgUrl: {
             type: String,
-            required: true
+            required: false
         }
     },
     {
@@ -23,5 +23,4 @@ const CategorySchema: Schema = new Schema(
         timestamps: true
     }
 );
-
 export default mongoose.model<ICategoryBase>('Category', CategorySchema);
