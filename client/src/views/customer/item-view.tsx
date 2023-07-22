@@ -24,10 +24,10 @@ import {
 } from '@chakra-ui/icons';
 
 // Utils	
-import axios from 'axios';
 import { ItemAddOns } from '../../components/ItemAddOns';
 import { ICart, ICartPopulated, IItem, IOrderItem, IOrderItemPopulated } from '../../utils/serverEntities';
 import _ from 'lodash';
+import api from '../../services/api';
 
 interface ItemViewProps {
 	handleBack: () => void;
@@ -51,25 +51,13 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 
 
 	const getItem = useCallback(async () => {
-		try {
-			const response = await axios.get(`http://127.0.0.1:9090/item/${id}`);
-			const item: IItem = {
-				_id: response.data.result._id,
-				Name: response.data.result.Name,
-				Description: response.data.result.Description,
-				Price: response.data.result.Price,
-				Category: response.data.result.Category,
-				AddOns: response.data.result.ItemAddOns
-			};
-			setItemDetails(item)
-		} catch (error) {
-			console.log(error);
-		}
+        const item = await api.getItem(id, false) as IItem;
+		setItemDetails(item)
 	}, []);
 
 
 	const addItem = async () => {
-		let orderItemResponse;
+		let orderItemData;
 		let orderItemId = '';
 		let priceSign = 1;
 		const payload = {
@@ -87,17 +75,16 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 		});
 		console.log(addItem, id, addItem.includes(id))
 		if (addItem.includes(id)) {
-
-			orderItemResponse = await axios.patch(`http://127.0.0.1:9090/orderItem/${orderItemId}`, payload);
+			orderItemData = await api.putItem(orderItemId, payload);
 			console.log('Item already in cart');
 		} else {
-			orderItemResponse = await axios.post(`http://127.0.0.1:9090/orderItem/`, payload);
+			orderItemData = await api.postItem(payload);
 			const cartPayload: ICart = {
-				OrderItems: [...cart.OrderItems, orderItemResponse.data.result ? orderItemResponse.data.result._id : orderItemResponse.data.results._id],
+                OrderItems: [...cart.OrderItems, orderItemData.result ? orderItemData.result._id : orderItemData.results._id],
 				TotalPrice: _.map(cart.OrderItems, (oi: IOrderItemPopulated) => oi.ItemId.Price * oi.Quantity).reduce((a, b) => a + b, 0) + (itemDetails.Price * amount * priceSign),
 			};
-			const cartResponse = await axios.patch(`http://127.0.0.1:9090/cart/${cart._id}`, cartPayload);
-			setCart(cartResponse.data.result);
+			const cartData = await api.putCart(cart._id, cartPayload);
+			setCart(cartData.result);
 		}
 	}	
 
