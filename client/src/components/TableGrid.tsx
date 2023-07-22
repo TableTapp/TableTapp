@@ -1,4 +1,4 @@
-import React, {useState} from 'react';import {
+import React, {useState, useEffect} from 'react';import {
   Box,
   Heading,
   Flex,
@@ -14,7 +14,9 @@ import React, {useState} from 'react';import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Icon,
 } from '@chakra-ui/react';
+import { InfoIcon, WarningIcon } from '@chakra-ui/icons';
 
 interface TableInfo {
   number: string;
@@ -55,6 +57,26 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
   const emptyTables = tableData.flat().filter(table => table.status === 'empty').length;
   const reservedTables = tableData.flat().filter(table => table.status === 'reserved').length;
   const occupiedTables = tableData.flat().filter(table => table.status === 'occupied').length;
+
+  const [occupiedTableNumbers, setOccupiedTableNumbers] = useState<string[]>([]);
+
+  // ... Other code ...
+
+  // Function to randomly select an occupied table for the notification
+  const showRandomNotification = () => {
+    const occupiedTables = tableData.flat().filter(table => table.status === 'occupied');
+    if (occupiedTables.length > 0) {
+      const randomTable = occupiedTables[Math.floor(Math.random() * occupiedTables.length)];
+      setOccupiedTableNumbers([randomTable.number]);
+    }
+  };
+
+  useEffect(() => {
+    showRandomNotification();
+  }, []);
+  
+
+
 
   return (
     <Box p={4} sx={{ userSelect: 'none' }}>
@@ -97,8 +119,9 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
-              cursor="pointer"
+              
               onClick={() => handleTableClick(number)}
+              position="relative"
             >
               <Text
                 fontSize="2xl" // Increase the size of the font for the table number
@@ -125,6 +148,15 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
                 >
                   {`${seats} Seats`}
                 </Text>
+              )}
+              {status === 'occupied' && occupiedTableNumbers.includes(number) && (
+                <WarningIcon
+                  position="absolute" // Position the notification icon absolutely
+                  top="5px" // Adjust the top position to place it in the upper right corner
+                  right="5px" // Adjust the right position to place it in the upper right corner
+                  color="red.500"
+                  boxSize={6}
+                />
               )}
             </Box>
           ))}

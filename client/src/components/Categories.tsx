@@ -45,6 +45,7 @@ const Categories: React.FC = () => {
               justifyContent="center"
               flexDirection="column" // Display the icon and text in a column layout
               onClick={() => handleCategoryClick(category.name)}
+              _hover={{ boxShadow: '0px 0px 8px 0px rgba(0, 0, 0, 0.4)' }} // Add the hover styles here
               cursor="pointer"
             >
               {category.icon}
