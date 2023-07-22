@@ -1,68 +1,86 @@
-import { Heading, Table, TableContainer, Tbody, Td, Thead, Tr, Th, VStack, Tfoot, Button } from '@chakra-ui/react'
-import { ReactNode } from 'react';
+import React from 'react';
+import { 
+    Table, 
+    TableContainer, 
+    Tbody, 
+    Td, 
+    Thead, 
+    Tr, 
+    Th, 
+    Tfoot, 
+    Button 
+} from '@chakra-ui/react'
 import { ItemCard } from './ItemCard';
-import React, { useEffect, useState } from 'react';
-import { IItem, IOrderItemBase } from '../utils/serverEntities';
+import { ICartPopulated, IItemPopulated, IOrderItemPopulated } from '../utils/serverEntities';
 import { AddIcon } from '@chakra-ui/icons';
 
 interface ItemStackProps {
     stackHeader: string;
-    items?: IItem[]; 
-    orderItems?: IOrderItemBase[];
+    items?: IItemPopulated[];
+    orderItems?: IOrderItemPopulated[];
+    cart?: ICartPopulated;
     order: boolean;
     rowClick: (id: string) => void;
+    addNewItem: () => void;
 }
 
+
 export const ItemStack: React.FC<ItemStackProps> = (props: ItemStackProps) => {
-    const { stackHeader, items, orderItems, order, rowClick } = props;
+    const { 
+        stackHeader, 
+        items, 
+        orderItems,
+        order, 
+        cart, 
+        rowClick, 
+        addNewItem 
+    } = props;
 
     const handleRowClick = (id: string) => {
-        console.log('click', id)
+        console.log('clicked', id)
         rowClick(id);
     };
-    useEffect(() => {
-        // load items from menu
-    }, []);
 
-    let listItems;
-
-    if (!order && items) {
-        items?.map((item) => {
-            listItems = (      
-            <Tr key={item.Id} onClick={() => handleRowClick(item.Id)}>
-                <Td>
-                    <ItemCard 
-                        ItemOptions={{
-                            Id: item.Id,
-                            Name:item.Name,
-                            Description:item.Description,
-                            Category:item.Category,
-                            Price: item.Price
-                        }}
-                        Order={false}
-                    />
-                </Td>
-            </Tr>
-            );
-        })
-    } else if (order && orderItems) {
-        orderItems?.map((item) => {
-            listItems = (
-                <Tr key={item.ItemId} onClick={() => handleRowClick(item.ItemId)}>
+    const list = () => {
+        if (!order && items) {
+            return (items?.map((item) => (
+                <Tr key={item._id} onClick={() => handleRowClick(item?._id as string)}>
                     <Td>
                         <ItemCard 
-                            OderItemOptions={{
+                            ItemOptions={{
+                                _id: item._id,
+                                Name: item.Name,
+                                Description: item.Description,
+                                Category: item.Category,
+                                Price: item.Price
+                            }}
+                            Order={false}
+                        />
+                    </Td>
+                </Tr>
+            )));
+        } else if (order && orderItems) {
+            return (orderItems?.map((item) => (
+                <Tr key={item._id}>
+                    <Td>
+                        <ItemCard 
+                            Cart={cart}
+                            OrderItemOptions={{
+                                _id: item._id,
                                 ItemId: item.ItemId,
-                                Quantity: item.Quantity
+                                Quantity: item.Quantity,
+                                AdditionalRequests: item.AdditionalRequests
                             }}
                             Order
                         />
                     </Td>
                 </Tr>
-            );
-        })
-    }
-    
+            )));
+        }
+    };
+
+    const listItems = list();
+  
     return (
         <TableContainer bg={'white'}>
             <Table variant='simple' p={0}>
@@ -76,7 +94,14 @@ export const ItemStack: React.FC<ItemStackProps> = (props: ItemStackProps) => {
                 </Tbody>
                 {order && <Tfoot>
                     <Tr>
-                        <Button leftIcon={<AddIcon />} size={'sm'} m={4}>Add Item</Button>
+                        <Button 
+                            leftIcon={<AddIcon />} 
+                            size={'sm'} 
+                            m={4}
+                            onClick={addNewItem}
+                        >
+                            Add Item
+                        </Button>
                     </Tr>
                 </Tfoot>}
             </Table>

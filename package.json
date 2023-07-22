@@ -3,6 +3,23 @@
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "framer-motion": "^10.12.16"
+    "framer-motion": "^10.12.16",
+    "jsonwebtoken": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/jsonwebtoken": "^9.0.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.2",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "install-server": "cd server && npm install",
+    "start-server": "cd server && npm install && nodemon src/server.ts",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run tsc && npm run vite build",
+    "start-client": "cd client && npm run vite"
   }
 }
