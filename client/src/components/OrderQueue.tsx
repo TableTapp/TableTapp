@@ -80,6 +80,8 @@ const OrderQueues: React.FC = () => {
               justifyContent="space-between"
               padding="0 10px"
               onClick={() => handleOrderClick(order)}
+              _hover={{ boxShadow: '0px 0px 8px 0px rgba(0, 0, 0, 0.4)' }} // Add the hover styles here
+              cursor="pointer"
               >
               <Box
                 display="flex"
