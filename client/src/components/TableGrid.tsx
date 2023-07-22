@@ -16,7 +16,7 @@ import React, {useState, useEffect} from 'react';import {
   useDisclosure,
   Icon,
 } from '@chakra-ui/react';
-import { InfoIcon } from '@chakra-ui/icons';
+import { InfoIcon, WarningIcon } from '@chakra-ui/icons';
 
 interface TableInfo {
   number: string;
@@ -150,7 +150,7 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
                 </Text>
               )}
               {status === 'occupied' && occupiedTableNumbers.includes(number) && (
-                <InfoIcon
+                <WarningIcon
                   position="absolute" // Position the notification icon absolutely
                   top="5px" // Adjust the top position to place it in the upper right corner
                   right="5px" // Adjust the right position to place it in the upper right corner
