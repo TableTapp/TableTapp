@@ -26,7 +26,7 @@ const ItemSchema: Schema = new Schema(
         },
         Description: {
             type: String,
-            require: false
+            required: false
         },
         AddOns: {
             type: [{
@@ -37,7 +37,7 @@ const ItemSchema: Schema = new Schema(
         },
         Price: {
             type: Number,
-            require: true
+            required: true
         },
         ImgUrl: {
             type: String

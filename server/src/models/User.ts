@@ -1,35 +1,44 @@
 import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from 'bcrypt';
 
+const { isEmail } = require('validator');
+
 export interface IUserBase {
+    Email: string;
     Username: string;
     Password: string;
     Name: string;
     Phone: string;
-    matchPassword(password: string): Promise<boolean>;
+    verify(password: string): Promise<boolean>;
 };
 
 export interface IUser extends IUserBase, Document { };
 
 const UserSchema: Schema = new Schema(
     {
+        Email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            validate: [isEmail, 'Please enter a valid email']
+        },
         Username: {
             type: String,
-            required: true
+            required: false,
+            unique: true,
+            lowercase: true
         },
         Password: {
             type: String,
-            required: true
+            required: true,
+            minlength: [8, 'Password must be at least 8 characters long']
         },
         Name: {
             type: String,
-            required: false
+            required: true
         },
         Phone: {
-            type: String,
-            required: false
-        },
-        Email: {
             type: String,
             required: false
         }
@@ -42,18 +51,18 @@ const UserSchema: Schema = new Schema(
 
 UserSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-    if (!this.username) {
-        this.username = this.email;
+    this.Password = await bcrypt.hash(this.Password, salt);
+    if (!this.Username) {
+        this.Username = this.Email;
     }
     next();
 });
 
-UserSchema.methods.matchPassword = async function (password: string) {
+UserSchema.methods.verify = async function(password: string) {
     try {
-        return await bcrypt.compare(password, this.password);
+        return await bcrypt.compare(password, this.Password);
     } catch (error) {
-        throw Error("Incorrect Password");
+        throw Error("Unexpected error");
     }
 }
 

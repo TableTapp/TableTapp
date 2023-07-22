@@ -14,8 +14,11 @@ import itemRoutes from './routes/itemRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import cartRoutes from './routes/cartRoutes';
 import categoryRoutes from './routes/categoryRoutes';
+import userRoutes from './routes/userRoutes';
+import authRoutes from './routes/authRoutes';
+import cookies from 'cookie-parser';
 
-const router = express();
+const app = express();
 
 // Only change the connection String
 mongoose.connect(config.mongo.url, { w: 'majority', retryWrites: true })
@@ -31,7 +34,7 @@ mongoose.connect(config.mongo.url, { w: 'majority', retryWrites: true })
 // on startup create a new database only use this database if in local mode. Check if local database and compare with remote. Prompt a upload option.
 
 const StartServer = () => {
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         /** Log the req */
         Logging.info(`Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
@@ -43,11 +46,12 @@ const StartServer = () => {
         next();
     });
 
-    router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(cookies());
 
     /** Rules of our API */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
@@ -60,22 +64,25 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/generic', genericRoutes);
-    router.use('/customer', customerRoutes);
-    router.use('/vendor', vendorRoutes);
-    router.use('/table', tableRoutes);
-    router.use('/order', orderRoutes);
-    router.use('/item', itemRoutes);
-    router.use('/orderItem', orderItemRoutes);
-    router.use('/cart', cartRoutes);
-    router.use('/menu', menuRoutes);
-    router.use('/category', categoryRoutes);
+
+    app.use('/generic', genericRoutes);
+    app.use('/customer', customerRoutes);
+    app.use('/vendor', vendorRoutes);
+    app.use('/table', tableRoutes);
+    app.use('/order', orderRoutes);
+    app.use('/item', itemRoutes);
+    app.use('/orderItem', orderItemRoutes);
+    app.use('/cart', cartRoutes);
+    app.use('/menu', menuRoutes);
+    app.use('/category', categoryRoutes);
+    app.use('/auth', authRoutes);
+    app.use('/account', userRoutes);
 
     /** Healthcheck */
-    router.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
+    app.get('/ping', (req, res, next) => res.status(200).json({ ping: 'pong' }));
 
     /** Error handling */
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         const error = new Error('Not found');
 
         Logging.error(error);
@@ -85,5 +92,5 @@ const StartServer = () => {
         });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
 };

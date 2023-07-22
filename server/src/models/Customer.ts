@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IUserBase } from "./User";
+import { IUser } from "./User";
 
 export interface ICustomerBase {
-    User: IUserBase;
+    User: IUser;
 };
 
 export interface ICustomer extends ICustomerBase, Document { };
