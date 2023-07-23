@@ -40,8 +40,7 @@ const ItemSchema: Schema = new Schema(
             required: true
         },
         ImgUrl: {
-            type: String,
-            required: true
+            type: String
         }
     },
     {
@@ -49,5 +48,10 @@ const ItemSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+ItemSchema.pre('findOne', function (next) { 
+    this.populate("Category", { options: { strictPopulate: false }});
+    next();
+});
 
 export default mongoose.model<IItemBase>('Item', ItemSchema);

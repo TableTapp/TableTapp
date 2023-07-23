@@ -10,16 +10,17 @@ import {
     Td,
     Checkbox
 } from '@chakra-ui/react';
+import { IAddOn } from '../utils/serverEntities';
 
 
-interface ItemOptionsProps {
+interface ItemAddOnsProps {
     itemOptions: {
         category: string;
-        items: {Option: string, Id: string, Price: number}[]
+        AddOns: IAddOn[]
     };
 }
 
-export const ItemOptions: React.FC<ItemOptionsProps> = (props: ItemOptionsProps) => {
+export const ItemAddOns: React.FC<ItemAddOnsProps> = (props: ItemAddOnsProps) => {
     const { itemOptions } = props;
     return (
         <TableContainer bg={'white'} w={'100%'}>
@@ -32,16 +33,16 @@ export const ItemOptions: React.FC<ItemOptionsProps> = (props: ItemOptionsProps)
                     </Tr>
                 </Thead>
                 <Tbody>
-                {itemOptions.items.map((item) => (
-                    <Tr key={item.Id}>
+                {itemOptions.AddOns.map((addOn) => (
+                    <Tr key={addOn._id}>
                         <Td>
                             <Checkbox />
                         </Td>
                         <Td alignItems={'flex-start'}  alignContent={'start'} alignSelf={'left'}>
-                            {item.Option}
+                            {addOn.Name}
                         </Td>
                         <Td isNumeric>
-                            <Text as={'b'} fontSize='md'>+ ${item.Price}</Text>
+                            <Text as={'b'} fontSize='md'>+ ${addOn.Price}</Text>
                         </Td>
                     </Tr>
                 ))}
