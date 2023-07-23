@@ -38,7 +38,7 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
     if (tableStatus === 'empty') {
       return '#38A169'; // Empty table color
     } else if (tableStatus === 'reserved') {
-      return '#DD6B20'; // Reserved table color
+      return '#CCCC00	'; // Reserved table color
     } else {
       return '#E53E3E'; // Occupied table color
     }
