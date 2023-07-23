@@ -5,15 +5,18 @@ import { useState } from "react";
 // Components
 import { 
     Flex,
+    IconButton,
     Button,
     VStack,
     Input, 
     Text,
     Box,
     Heading,
-    Center,
-
+    Center
 } from "@chakra-ui/react";
+
+import {ArrowBackIcon
+} from '@chakra-ui/icons'
 
 interface ForgotPasswordProps {
     goToLogin: () => void;
@@ -22,9 +25,11 @@ interface ForgotPasswordProps {
 const ForgotPasswordView: React.FC<ForgotPasswordProps> = (props: ForgotPasswordProps) => {
     const [userEmail, setUserEmail] = useState("");
     const {goToLogin} = props;
+    var emailEntry;
 
     const handleSendEmail = async () => {
         //api call for sending an email
+        emailEntry = true;
     }
     const handleEmailEntry = (event:any) => {setUserEmail(event.target.value);};
 
@@ -36,7 +41,17 @@ const ForgotPasswordView: React.FC<ForgotPasswordProps> = (props: ForgotPassword
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
-                    <VStack marginTop="20vh">
+                    <IconButton
+                        aria-label="none"
+                        variant='outline'
+                        color='red.400'
+                        isRound={true}
+                        icon={<ArrowBackIcon/>}
+                        onClick={handleToLogin}
+                        marginLeft='2vw'
+                        marginTop='2vw'
+                    />
+                    <VStack marginTop="15vh">
                         <Heading size='xl' color='#2D3748' textAlign='center' padding='2rem' >
                             Password Recovery
                         </Heading>
@@ -45,13 +60,18 @@ const ForgotPasswordView: React.FC<ForgotPasswordProps> = (props: ForgotPassword
                             Please enter your email for the account you want to reset your password for.
                             </Text>
                         </Box>
-                        <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                        <Input size = 'lg' variant='filled' borderRadius='none' backgroundColor='#D4D9DF' color='#2D3748' focusBorderColor ='red.400' placeholder="Enter your email" _placeholder={{color: 'white' }} onChange={handleEmailEntry}/>
-                        </Box>
+                        <Input
+                                focusBorderColor='red.400'
+                                pr='4.5rem'
+                                w = '70%'
+                                placeholder='Recovery Email'
+                                _placeholder={{}}
+                                onChange={handleEmailEntry}
+                            />
                         <Button
                             bg='red.400' 
                             color='white'
-                            marginTop='1.5vh'
+                            marginTop=''
                             size='lg'
                             w='70%'
                             variant='solid'
@@ -72,23 +92,8 @@ const ForgotPasswordView: React.FC<ForgotPasswordProps> = (props: ForgotPassword
                         </Box>
                     </VStack>
                     <VStack marginTop="5vh">
-                        <Button
-                            colorScheme='red.400' 
-                            color='red.400'
-                            size='lg'
-                            marginTop='7vh'
-                            w='70vw'
-                            variant='outline'
-                            _hover={{
-                                bg: 'red.300',
-                                }}
-                            onClick={handleToLogin}
-                            >
-                            Back to Login
-                        </Button>
                     </VStack>
                 </Box>
-
             </Center>
         </Flex>
 

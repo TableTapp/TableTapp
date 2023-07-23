@@ -8,20 +8,17 @@ import {
     VStack,
     Input,
     InputGroup,
-    InputLeftElement,
-    InputLeftAddonProps,
+    IconButton,
     InputRightElement,
     Text,
     Box,
-    Image,
     Heading,
     Center,
-    Divider,
-    Link,
-    HStack,
-    InputLeftAddon
+    Link
 } from "@chakra-ui/react";
 
+import {ArrowBackIcon
+} from '@chakra-ui/icons'
 
 //pass account details
 interface createAccountProps {
@@ -49,7 +46,15 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
     const handlePasswordInput = (event:any) => {setUserEmail(event.target.value);};
 
     const handleCreateAccount = async () => {
-        goToCreateAccount();
+        try {
+            // Call axios API endpoint here
+            // Pass email and password as parameters to the API endpoint
+                //const response = await axios.post("http://127.0.0.1:9090/auth/signin", { Username: userEmail, Password: userPassword });
+                //console.log(response);
+                goToCreateAccount();
+            } catch(e){
+                console.log("Error: ", e); // Update the error state
+            } 
     };
 
     const handleBack = async () => {
@@ -60,35 +65,71 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
+                <IconButton
+                        aria-label="none"
+                        variant='outline'
+                        color='red.400'
+                        isRound={true}
+                        icon={<ArrowBackIcon/>}
+                        onClick={handleBack}
+                        marginLeft='2vw'
+                        marginTop='2vw'
+                    />
                     <VStack>
-                        <VStack marginTop='12.5vh'>
+                        <VStack marginTop='9.5vh'>
                             <Heading size='xl' color='#2D3748' textAlign='center' padding='1.5rem'>
                                 Create Account
                             </Heading>
                             <VStack>
-                                <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                                <Input size = 'lg' variant='filled' borderRadius='none' backgroundColor='#D4D9DF' color='#2D3748' focusBorderColor ='red.400' placeholder="First Name" _placeholder={{color: 'white' }} onChange={handleFirstNameInput}/>
-                                </Box>
-                                <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                                <Input size = 'lg' variant='filled' borderRadius='none' backgroundColor='#D4D9DF' color='#2D3748' focusBorderColor ='red.400' placeholder="Last Name" _placeholder={{color: 'white' }} onChange={handleLastNameInput}/>
-                                </Box>
-                                <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                                <Input size = 'lg' variant='filled' borderRadius='none' backgroundColor='#D4D9DF' color='#2D3748' focusBorderColor ='red.400' placeholder="Email Address" _placeholder={{color: 'white' }} onChange={handleEmailInput}/>
-                                </Box>
-                                <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                                <Input size = 'lg' variant='filled' borderRadius='none' backgroundColor='#D4D9DF' color='#2D3748' focusBorderColor ='red.400' placeholder="Phone Number" _placeholder={{color: 'white' }} onChange={handlePhoneInput}/>
-                                </Box>
-                                
-                                <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
-                                    <InputGroup>
-                                        <Input size = 'lg' variant='filled' borderRadius='none' bg='#D4D9DF' color='#2D3748' placeholder="Password" _placeholder={{color: 'white' }} type={show ? 'text' : 'password'}/>
-                                        <InputRightElement width='4.5rem' marginTop='0.3rem'>
-                                            <Button size='xs' onClick={handleClick}>
-                                            {show ? 'Hide' : 'Show'}
-                                            </Button>
-                                        </InputRightElement>
-                                    </InputGroup>
-                                </Box>
+                                <Input
+                                    focusBorderColor='red.400'
+                                    pr='4.5rem'
+                                    w = '100%'
+                                    placeholder='First Name'
+                                    _placeholder={{}}
+                                    onChange={handleFirstNameInput}
+                                />
+                                <Input
+                                    focusBorderColor='red.400'
+                                    pr='4.5rem'
+                                    w = '100%'
+                                    placeholder='Lase Name'
+                                    _placeholder={{}}
+                                    onChange={handleLastNameInput}
+                                />
+                                <Input
+                                    focusBorderColor='red.400'
+                                    pr='4.5rem'
+                                    w = '100%'
+                                    placeholder='Email Address'
+                                    _placeholder={{}}
+                                    onChange={handleEmailInput}
+                                />
+                                <Input
+                                    focusBorderColor='red.400'
+                                    pr='4.5rem'
+                                    w = '100%'
+                                    placeholder='Phone Number'
+                                    _placeholder={{}}
+                                    onChange={handlePhoneInput}
+                                />
+                                <InputGroup>
+                                    <Input
+                                        focusBorderColor='red.400'
+                                        pr='4.5rem'
+                                        w = '100%'
+                                        type={show ? 'text' : 'password'}
+                                        placeholder='Password'
+                                        _placeholder={{}}
+                                        onChange={handleFirstNameInput}
+                                    />
+                                    <InputRightElement width='4.5rem' marginTop='0.1rem'>
+                                        <Button size='xs' onClick={handleClick}>
+                                        {show ? 'Hide' : 'Show'}
+
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>                                        
                             </VStack>    
                         </VStack>
                         <VStack marginTop='5vh'>
@@ -120,20 +161,6 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                 </Text>
                             </Box>
                         </VStack>
-                        <Button
-                            colorScheme='red.400' 
-                            color='red.400'
-                            size='lg'
-                            marginTop='7vh'
-                            w='70vw'
-                            variant='outline'
-                            _hover={{
-                                bg: 'red.300',
-                                }}
-                            onClick={handleBack}
-                            >
-                            Back to Get Started
-                        </Button>
                     </VStack>
                 </Box>
             </Center>

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
@@ -21,10 +21,10 @@ import {
     InputRightElement,
     Center,
     Divider,
-    HStack,
+    HStack
 } from "@chakra-ui/react";
 
-import { LockIcon, CloseIcon
+import { LockIcon, ArrowBackIcon
 } from '@chakra-ui/icons'
 
 interface LoginProps {
@@ -84,6 +84,16 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
+                <IconButton
+                    aria-label="none"
+                    variant='outline'
+                    color='red.400'
+                    isRound={true}
+                    icon={<ArrowBackIcon/>}
+                    onClick={handleBack}
+                    marginLeft='2vw'
+                    marginTop='2vw'
+                />
                     <VStack marginTop='12vh'>
                         <Box align='center' marginBottom='4rem'>
                             <Image src={Logo2} boxSize='40%'/>
@@ -144,20 +154,6 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={meta} boxSize='100%'/>} onClick={handleMeta}/>
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={apple} boxSize='100%' onClick={handleApple}/>}/>
                         </HStack>
-                        <Button
-                            colorScheme='red.400' 
-                            color='red.400'
-                            size='lg'
-                            marginTop='7vh'
-                            w='70vw'
-                            variant='outline'
-                            _hover={{
-                                bg: 'red.300',
-                                }}
-                            onClick={handleBack}
-                            >
-                            Back to Get Started
-                        </Button>
                     </VStack>
                 </Box>
             </Center>

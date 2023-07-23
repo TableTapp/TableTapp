@@ -50,7 +50,7 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
                             TableTapp
                         </Heading>
                     </VStack>
-                    <VStack marginTop='40vh'>
+                    <VStack marginTop='35vh'>
                         <Button
                         bg='white' 
                         color='#2D3748'
@@ -60,20 +60,31 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
                         _hover={{
                             bg: 'white',
                             }}
+                        onClick={handleLogin}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                        bg='red.400' 
+                        color='white'
+                        size='lg'
+                        w='72%'
+                        variant='outline'
+                        border='1px'
+                        borderColor='white'
+                        _hover={{
+                            bg: 'red.500',
+                            }}
                         onClick={handleGetStarted}
                         >
-                            Get Started
+                            View Menu
                         </Button>
                     </VStack>
-                    <Box align ='center' marginTop='1.5vh'>
+                    <Box align ='center' marginTop='1vh'>
                         <Text color='white' align='center'>
-                            Already have an account? {' '}
-                            <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleLogin} variant='link'>
-                                Login 
-                            </Button>
-                            . Or you can {' '}
+                            Or you can create a {' '}
                             <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleCreateAccount} variant='link'>
-                                Create a new account
+                                new account
                             </Button>
                         </Text>
                     </Box>
