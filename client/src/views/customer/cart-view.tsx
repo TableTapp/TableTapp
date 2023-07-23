@@ -24,7 +24,7 @@ import { ItemStack } from '../../components/ItemStack';
 // Utils
 import { ICartPopulated, IOrderItemPopulated } from '../../utils/serverEntities';
 import _ from 'lodash';
-import axios from 'axios';
+import api from '../../services/api';
 
 interface cartViewProps {
 	handleBack: () => void;
@@ -57,19 +57,10 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
 	};
 
     const getCart = useCallback(async () => {
-        try {
-            const response = await axios.get(`http://127.0.0.1:9090/cart/${id}`);
-            const cartData: ICartPopulated = {
-                OrderItems: response.data.result.OrderItems,
-                TotalPrice: response.data.result.TotalPrice,
-                _id: response.data.result._id
-            };
-            setCart(cartData);
-            console.log(response.data.result.OrderItems)
-            setOrderItems(response.data.result.OrderItems);
-        } catch (error) {
-            console.log(error);
-        }
+        const cartData = await api.getCart(id);
+        setCart(cartData);
+        console.log(cartData.OrderItems)
+        setOrderItems(cartData.OrderItems);
     }, [id]);
 
 	useEffect(() => {
