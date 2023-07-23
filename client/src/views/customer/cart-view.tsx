@@ -3,14 +3,9 @@ import {
     Box,
     Button,
     Center,
-    Flex,
-    IconButton,
 	ButtonGroup,
-    Img,
-    Spacer,
     Text,
     VStack,
-	Textarea,
     TableContainer,
     Table,
     Thead,
@@ -21,9 +16,7 @@ import {
     Tfoot
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { AddIcon, ArrowBackIcon, ChatIcon, MinusIcon } from '@chakra-ui/icons';
 import Header from '../../components/Header';
-import { ItemCard } from '../../components/ItemCard';
 import { ICart, ICartResponse } from '../../utils/serverEntities';
 import { ItemStack } from '../../components/ItemStack';
 
@@ -36,15 +29,15 @@ interface cartViewProps {
 
 const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
 	const { handleBack, id } = props;
-	const [amount, setAmount] = useState<number>(1);
+	// const [amount, setAmount] = useState<number>(1);
     const [cart, setCart] = useState<ICart>({
         OrderItems: [
             {ItemId: 'ert', Quantity: 3}, 
             {ItemId: 'tged', Quantity: 2}
         ], TotalPrice: 89.8
     });
-	const [specialInstructions, setSpecialInstructions] = useState<string>();
-	const [showSpecialInstructions, setShowSpecialInstructions] = useState<boolean>(false);
+	// const [specialInstructions, setSpecialInstructions] = useState<string>();
+	// const [showSpecialInstructions, setShowSpecialInstructions] = useState<boolean>(false);
 
 
 	const handleCheckout = () => {
@@ -83,7 +76,7 @@ const CartView: React.FC<cartViewProps> = (props: cartViewProps) => {
 			</Center>
 			<VStack gap={2}>
 				<Header cart headerOptions={{ title: 'Cart', subtitle: 'Restaurant Name', onCartClose: handleBackToMenu }}/>
-                <ItemStack order stackHeader='Items' orderItems={cart.OrderItems}/>
+                <ItemStack rowClick={() => {return}} order stackHeader='Items' orderItems={cart.OrderItems}/>
 				<Box bg='white' w={'100vw'} h={60}>
 					<TableContainer>
                         <Table>

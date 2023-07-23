@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Image, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Box,  Container, Image, Spacer, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import { PersonCard } from '../../../components/PersonCard';
 

@@ -10,9 +10,8 @@ import {
     VStack
 } from '@chakra-ui/react';
 import { ItemDisplay } from './ItemDisplay';
-import { IItem, IItemResponse, IOrderItemBase } from '../utils/serverEntities';
+import { IItem, IOrderItemBase } from '../utils/serverEntities';
 import { DeleteIcon } from '@chakra-ui/icons';
-import axios from 'axios';
 
 interface ItemProps {
     ItemOptions?: IItem,
@@ -26,17 +25,10 @@ export const ItemCard: React.FC<ItemProps> = (props: ItemProps) => {
     const orderList = Order && OderItemOptions ? OderItemOptions : null; 
     const itemList = !Order && ItemOptions ? ItemOptions : null; 
 
-    const [orderItem, setOrderItem] = useState<IItem>({Id:'98098', Name: 'Item 1', Category: 'Cat12', Description: 'Item 1 description', Price: 5.95});
+    const [orderItem, setOrderItem] = useState<IItem>({} as IItem);
 
     useEffect(() => {
-        // async function getItem() {
-        //     const response = await axios.get<IItemResponse>(`http://127.0.0.1:9090/item/${orderList?.ItemId}`);
-        //     setOrderItem(response.data.results);
-        // }
-
-        // if (Order) {
-        //     getItem();
-        // }
+        setOrderItem({Id:'98098', Name: 'Item 1', Category: 'Cat12', Description: 'Item 1 description', Price: 5.95});
     }, []);
 
    
@@ -77,7 +69,6 @@ export const ItemCard: React.FC<ItemProps> = (props: ItemProps) => {
             </Flex>
         );
     }
-    
 
     return (
         <Box bg='white'>

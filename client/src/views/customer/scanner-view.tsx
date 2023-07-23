@@ -1,5 +1,5 @@
 import { AbsoluteCenter, Container, Heading, Text, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Scanner from '../../components/Scanner';
 
 interface ScannerProps {

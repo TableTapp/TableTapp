@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Button, Center, Container, Flex, Image, Spacer, Stack, Text, VStack } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Container, Flex, Image, Spacer, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 import Logo from '../../../assets/logo-text.svg';
 import { ArrowDownIcon } from '@chakra-ui/icons';

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
 interface ScannerProps {
@@ -16,7 +17,7 @@ const Scanner: React.FC<ScannerProps> = (props: ScannerProps) => {
         }, false);
     
         scanner.render(success, error);
-    
+        
         function success(result: any) {
             scanner.clear();
             props.result(result);
@@ -25,6 +26,7 @@ const Scanner: React.FC<ScannerProps> = (props: ScannerProps) => {
         function error(err: any) {
             console.log(err)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
    

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { IconButton, Box, Flex, Image, Img, ButtonGroup, Text, Button, Circle, Center, AbsoluteCenter } from "@chakra-ui/react";
-import { AddIcon, DeleteIcon, MinusIcon } from '@chakra-ui/icons'
+import React, { useEffect, useState } from 'react';
+import { IconButton, Flex, Img, Text, Circle, Center } from "@chakra-ui/react";
+import { AddIcon } from '@chakra-ui/icons'
 
 interface ItemDisplayProps {
     add?: boolean;
@@ -10,6 +10,10 @@ interface ItemDisplayProps {
 export const ItemDisplay: React.FC<ItemDisplayProps> = (props: ItemDisplayProps) => {
     const { add, quantity } = props;
     const [itemQuantity, setItemQuantity] = useState<number>(quantity || 0);
+
+    useEffect(() => {
+        setItemQuantity(quantity || 0);
+    }, [quantity]);
 
     return (
         <Flex>

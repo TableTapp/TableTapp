@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // Sections
 import LandingSection from './sections/landing-section';

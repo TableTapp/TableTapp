@@ -1,7 +1,6 @@
-import { Heading, Table, TableContainer, Tbody, Td, Thead, Tr, Th, VStack, Tfoot, Button } from '@chakra-ui/react'
-import { ReactNode } from 'react';
+import { Table, TableContainer, Tbody, Td, Thead, Tr, Th, Tfoot, Button } from '@chakra-ui/react'
 import { ItemCard } from './ItemCard';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { IItem, IOrderItemBase } from '../utils/serverEntities';
 import { AddIcon } from '@chakra-ui/icons';
 
