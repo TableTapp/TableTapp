@@ -13,8 +13,9 @@ import menuRoutes from './routes/menuRoutes';
 import itemRoutes from './routes/itemRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import cartRoutes from './routes/cartRoutes';
-import authRoutes from './routes/authRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 import userRoutes from './routes/userRoutes';
+import authRoutes from './routes/authRoutes';
 import cookies from 'cookie-parser';
 
 const app = express();
@@ -63,6 +64,7 @@ const StartServer = () => {
     });
 
     /** Routes */
+
     app.use('/generic', genericRoutes);
     app.use('/customer', customerRoutes);
     app.use('/vendor', vendorRoutes);
@@ -72,6 +74,7 @@ const StartServer = () => {
     app.use('/orderItem', orderItemRoutes);
     app.use('/cart', cartRoutes);
     app.use('/menu', menuRoutes);
+    app.use('/category', categoryRoutes);
     app.use('/auth', authRoutes);
     app.use('/account', userRoutes);
 

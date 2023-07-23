@@ -35,7 +35,7 @@ const get = (model: Model<any>, populate?: string[]) => async (req: Request, res
     const id = req.params.id;
     try {
         const result = await model
-            .findOne<Document>({ _id: id })
+            .findOne<Document>({ _id: id }, {populate: { options: { strictPopulate: false}} })
             .populate(populate || []);
 
         if (!result) {
