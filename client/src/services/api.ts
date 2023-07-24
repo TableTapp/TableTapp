@@ -1,11 +1,30 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { ICartPopulated, IItem, IItemPopulated, ITableBase } from '../utils/serverEntities';
 
-const apiBaseUrl = 'http://127.0.0.1:9090';
+const apiClient = axios.create({
+    baseURL: 'http://127.0.0.1:9090', // Replace with your backend domain
+    withCredentials: true, // Allow cookies in cross-origin requests
+});
+
+async function postSignin(payload: any) {
+    try {
+        return await apiClient.post(`/auth/signin`, payload);
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function postSignup(payload: any) {
+    try {
+        return await apiClient.post(`/auth/signip`, payload);
+    } catch (error) {
+        throw error;
+    }
+}
 
 async function getCart(id: string) {
     try {
-        const response = await axios.get(`${apiBaseUrl}/cart/${id}`);
+        const response = await apiClient.get(`/cart/${id}`);
         const cartData: ICartPopulated = {
             OrderItems: response.data.result.OrderItems,
             TotalPrice: response.data.result.TotalPrice,
@@ -20,7 +39,7 @@ async function getCart(id: string) {
 
 async function putCart(id: string | undefined, payload: any) {
     try {
-        return (await axios.patch(`${apiBaseUrl}/cart/${id}`, payload)).data;
+        return (await apiClient.patch(`/cart/${id}`, payload)).data;
     } catch (error) {
         throw error;
     }
@@ -28,7 +47,7 @@ async function putCart(id: string | undefined, payload: any) {
 
 async function getItem(id: string, populate: boolean) {
     try {
-        const response = await axios.get(`${apiBaseUrl}/item/${id}`);
+        const response = await apiClient.get(`/item/${id}`);
         if (populate) {
             return <IItemPopulated> {
                 _id: response.data.result._id,
@@ -59,7 +78,7 @@ async function getItem(id: string, populate: boolean) {
 
 async function putItem(id: string, payload: any) {
     try {
-        return (await axios.patch(`${apiBaseUrl}/orderItem/${id}`, payload)).data; 
+        return (await apiClient.patch(`/orderItem/${id}`, payload)).data; 
     } catch (error) {
         throw error;
     }
@@ -67,7 +86,7 @@ async function putItem(id: string, payload: any) {
 
 async function postItem(payload: any) {
     try {
-        return (await axios.post(`${apiBaseUrl}/orderItem/`, payload)).data; 
+        return (await apiClient.post(`/orderItem/`, payload)).data; 
     } catch (error) {
         throw error;
     }  
@@ -75,7 +94,7 @@ async function postItem(payload: any) {
 
 async function getTable(id: string) {
     try {
-        const tableResponse = await axios.get(`${apiBaseUrl}/table/${id}`);
+        const tableResponse = await apiClient.get(`/table/${id}`);
         const table: ITableBase = {
             Customers: tableResponse.data.result.Customers,
             Status: tableResponse.data.result.Status,
@@ -91,7 +110,7 @@ async function getTable(id: string) {
 
 async function getMenu(id: string) {
     try {
-        return (await axios.get(`${apiBaseUrl}/menu/${id}`)).data;
+        return (await apiClient.get(`/menu/${id}`)).data;
     } catch (error) {
         throw error;
     }
@@ -99,6 +118,8 @@ async function getMenu(id: string) {
 
 
 export default {
+    postSignin,
+    postSignup,
     getCart,
     putCart,
     getItem,

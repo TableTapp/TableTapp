@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import axios from 'axios';
 import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
 import meta from "../../assets/meta.svg"
@@ -26,6 +25,7 @@ import {
 
 import { LockIcon, CloseIcon
 } from '@chakra-ui/icons'
+import api from "../../services/api";
 
 interface LoginProps {
     goToForgotPassword: () => void;
@@ -54,7 +54,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
         try {
         // Call axios API endpoint here
         // Pass email and password as parameters to the API endpoint
-            const response = await axios.post("http://127.0.0.1:9090/auth/signin", { Username: userEmail, Password: userPassword });
+            const response = await api.postSignin({ Username: userEmail, Password: userPassword });
             console.log(response);
             goToMenu();
         } catch(e){
