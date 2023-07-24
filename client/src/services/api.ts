@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ICartPopulated, IItem, IItemPopulated, ITableBase } from '../utils/serverEntities';
 
 const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:9090', // Replace with your backend domain
+    baseURL: 'http://127.0.0.1:9090',
     withCredentials: true, // Allow cookies in cross-origin requests
 });
 
