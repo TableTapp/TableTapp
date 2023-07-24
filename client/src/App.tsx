@@ -38,6 +38,7 @@ const CUSTOMER_FORGOT_PASSWORD = 'CUSTOMER_FORGOTPASSWORD';
 
 const RESTAURANT_MENU = 'RESTAURANT_MENU';
 
+
 function App() {
 	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
 	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
@@ -69,7 +70,7 @@ function App() {
 
 	const handleToGetStarted = () => {
 		setCurrentViewKey(CUSTOMER_GET_STARTED);
-	};
+	};2
 
 	const handleCreateAccount = () => {
 		setCurrentViewKey(CUSTOMER_CREATE_ACCOUNT);
