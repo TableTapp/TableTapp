@@ -1,6 +1,6 @@
 import { Box,  Container, Image, Spacer, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
-import { PersonCard } from '../../../components/PersonCard';
+import { PersonCard } from '../../../components/website/PersonCard';
 
 const TeamInfo: React.FC = () => {
 
@@ -28,8 +28,8 @@ const TeamInfo: React.FC = () => {
             <Stack direction={'column'} gap={10} alignItems={'center'}>
                 <Stack direction={'row'} padding={8} width={'90vw'}>
                     <Stack direction={'column'} justifyContent={'center'}>
-                        <Text fontSize='5xl' as='b' color={'#2D3748'}> Meet Team Team </Text>
-                        <Text fontSize={'2xl'} color={'#2D3748'}> We are a team of 4 students from the University of Victoria. </Text>
+                        <Text fontSize='5xl' as='b'> Meet Team Team </Text>
+                        <Text fontSize={'2xl'}> We are a team of 4 students from the University of Victoria. </Text>
                     </Stack>
                     <Spacer />
                     <Image borderRadius={13} height={'500'} aria-label='logo' src={'https://via.placeholder.com/500'} alt='Graphic'/>

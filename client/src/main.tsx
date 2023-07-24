@@ -12,7 +12,11 @@ const theme = extendTheme({
         display: 'flex',
         flexDirection: 'column',
         minHeight: "100vh",
+        color: '#2D3748',
       },
+      body: {
+        color: '#2D3748',
+      }
     }
   }
 });

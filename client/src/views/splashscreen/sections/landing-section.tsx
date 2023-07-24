@@ -1,4 +1,4 @@
-import { AbsoluteCenter, Box, Button, Container, Flex, Image, Spacer, Stack, Text } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Container, Flex, Heading, Image, Spacer, Stack } from '@chakra-ui/react';
 import React from 'react';
 import Logo from '../../../assets/logo-text.svg';
 import { ArrowDownIcon } from '@chakra-ui/icons';
@@ -6,7 +6,7 @@ import { ArrowDownIcon } from '@chakra-ui/icons';
 const LandingSection: React.FC = () => {
 	return (
 		<Container width={'100vw'} height={'100vh'} bg={'red.400'} maxWidth={'none'}>
-            <Box width={'100%'} padding={8}>
+            <Box width={'100%'} padding={8} bg={'red.400'}>
                 <Flex>
                     <Image height={'var(--chakra-sizes-12)'} aria-label='logo' src={Logo} alt='Logo'/>
                     <Spacer />
@@ -16,7 +16,7 @@ const LandingSection: React.FC = () => {
             <Box position={'absolute'} width={'70%'} height={'75vh'}>
                 <AbsoluteCenter>
                     <Stack direction={'column'}>
-                        <Text fontSize='6xl' as='b' color={'whiteAlpha.900'}> Some sort of zinger </Text>
+                        <Heading fontSize='6xl' as='b' color={'whiteAlpha.900'} paddingBottom={8}> Serving Success, one tap at a time </Heading>
                         <Stack direction={'row'} gap={5}>
                             <Button colorScheme={'gray'} size={'lg'}>Get Started</Button>
                             <Button colorScheme={'gray'} size={'lg'}  rightIcon={<ArrowDownIcon />}>Learn more</Button>
@@ -25,7 +25,6 @@ const LandingSection: React.FC = () => {
                 </AbsoluteCenter>
             </Box>
         </Container>
-        
 	);
 };
 
