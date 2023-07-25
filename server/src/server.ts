@@ -3,6 +3,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
+import cors, { CorsOptions } from 'cors';
 
 import genericRoutes from './routes/genericRoutes';
 import orderRoutes from './routes/orderRoutes';
@@ -16,7 +17,7 @@ import cartRoutes from './routes/cartRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
-import cookies from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -45,23 +46,21 @@ const StartServer = () => {
 
         next();
     });
-
+    app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
-    app.use(cookies());
 
-    /** Rules of our API */
-    app.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-
-        if (req.method == 'OPTIONS') {
-            res.header('Access-Control-Allow-Methods', 'POST, PATCH, DELETE, GET');
-            return res.status(200).json({});
-        }
-
-        next();
-    });
+    const allowedOrigins = ['http://localhost:5173'];
+    const corsOptions: CorsOptions = {
+        origin: (origin, callback) => {
+            const isAllowed = allowedOrigins.includes(origin || '');
+            callback(null, isAllowed);
+        },
+        credentials: true,
+        allowedHeaders: ['Authorization', 'Content-Type'],
+    };
+    
+    app.use(cors(corsOptions));
 
     /** Routes */
 
