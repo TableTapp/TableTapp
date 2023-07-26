@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Container } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 // Customer Views
 import ScannerView from './views/customer/scanner-view';
@@ -44,6 +44,7 @@ function App() {
 	const [platform, setPlatform] = useState<string>(CUSTOMER_KEY);
 	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
 	const [itemId, setItemId] = useState<string>('');
+	const [loggedIn, setLoggedIn] = useState<boolean>(false); 
 	const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
 	
 	const handleToRestaurant = () => {
@@ -51,8 +52,18 @@ function App() {
 		setCurrentViewKey(RESTAURANT_MENU);
 	}; 
 
-	const handleMenuBack = () => {
+	const handleToMenu = () => {
 		setCurrentViewKey(CUSTOMER_MENU);
+	};
+
+	const handleToMenuFromLogin = () => {
+		setCurrentViewKey(CUSTOMER_MENU);
+		setLoggedIn(true);
+	};
+
+	const handleToMenuFromGetStarted = () => {
+		setCurrentViewKey(CUSTOMER_MENU);
+		setLoggedIn(false);
 	};
 	
 	const handleToCart = () => {
@@ -103,6 +114,7 @@ function App() {
 			case CUSTOMER_MENU:
 				currentView = (
 					<MenuView
+						loggedIn={loggedIn}
 						cartId='64a61e1c2874514ada6c39c0'
 						tableId='64a61dba2874514ada6c39bc'
 						menuId='64a67f586e0c9689237cac3b'
@@ -114,9 +126,10 @@ function App() {
 			case CUSTOMER_ITEM_DETAILS:
 				currentView = (
 					<ItemView
+						loggedIn={loggedIn}
 						cart={cart}
 						id={itemId}
-						handleBack={handleMenuBack}
+						handleBack={handleToMenu}
 					/>
 				);
 				break;
@@ -125,7 +138,7 @@ function App() {
 					<CartView
 						handlePayment={handleToOrderStatus}
 						id='64a61e1c2874514ada6c39c0'
-						handleBack={handleMenuBack}
+						handleBack={handleToMenu}
 					/>
 				);
 				break;
@@ -135,10 +148,10 @@ function App() {
 				);
 				break;
 			case CUSTOMER_LOGIN:
-				currentView = <LoginView goToMenu={handleMenuBack} goToForgotPassword={handleToForgotPassword} goToGetStarted={handleToGetStarted}/>
+				currentView = <LoginView goToMenu={handleToMenuFromLogin} goToForgotPassword={handleToForgotPassword} goToGetStarted={handleToGetStarted}/>
 				break;
 			case CUSTOMER_GET_STARTED:
-				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleMenuBack} goToCreateAccount={handleCreateAccount}/>
+				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleToMenuFromGetStarted} goToCreateAccount={handleCreateAccount}/>
 				break;
 			case CUSTOMER_CREATE_ACCOUNT:
 				currentView = <AccountView goToCreateAccount={handleToConfirmEmail} goToStartedView={handleToGetStarted}/>
@@ -168,9 +181,9 @@ function App() {
 	}
 
 	return (
-		<Container h={'100%'} w={'100vw'} p={0} bg={'blackAlpha.50'}>
+		<Box w='100%' h='100%' p={0} bg={'blackAlpha.50'} margin={0} padding={0}>
 			{currentView}
-		</Container>
+		</Box>
 	);
 }
 

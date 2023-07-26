@@ -30,13 +30,14 @@ import _ from 'lodash';
 import api from '../../services/api';
 
 interface ItemViewProps {
+	loggedIn: boolean;
 	handleBack: () => void;
 	id: string;
 	cart: ICartPopulated;
 }
 
 const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
-	const { handleBack, id } = props;
+	const { handleBack, id, loggedIn } = props;
 	const [amount, setAmount] = useState<number>(1);
 	const [specialInstructions, setSpecialInstructions] = useState<string>('');
 	const [showSpecialInstructions, setShowSpecialInstructions] = useState<boolean>(false);
@@ -120,7 +121,7 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 				icon={<ArrowBackIcon />} 
 			/>
 			<Center>
-				<Button 
+				{loggedIn && <Button 
 					colorScheme='red' 
 					size='lg' 
 					position='fixed' 
@@ -131,7 +132,7 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 					onClick={handleAddItem}
 				>
 					<Flex width='80vw'>Add item <Spacer />${itemDetails.Price*amount}</Flex>
-				</Button>
+				</Button>}
 			</Center>
 			<VStack gap={2}>
 				<Img 
@@ -152,13 +153,13 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 							<Button leftIcon={<ChatIcon />} onClick={handleShowSpecialClick} colorScheme='gray' size='xs'>
 								Special Instruction
 							</Button>
-							{showSpecialInstructions && <Textarea
+							{(showSpecialInstructions && !loggedIn) && <Textarea
 								value={specialInstructions} 
 								onChange={handleSpecialInstructionsChange}
 								placeholder='Special Instructions ...'
 								size='lg'
 							/>}
-							<ButtonGroup>
+							{loggedIn && <ButtonGroup>
 								<IconButton 
 									aria-label='minus-one-btn' 
 									icon={<MinusIcon />} 
@@ -174,7 +175,7 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 									borderRadius='full' 
 									onClick={() => setAmount(amount+1)} 
 								/>
-							</ButtonGroup>
+							</ButtonGroup>}
 						</VStack>
 					</Center>
 				</Box>
