@@ -1,82 +1,51 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, SimpleGrid, Text, chakra, Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
 import Food from './Food_Pics/food.jpg';
 import EditItem from './EditItem';
 import AddItem from './AddItem';
 import axios from 'axios';
-
-interface IItem {
-  Id: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Quantity: number;
-  Category: string;
-}
+import { IItem } from '../utils/serverEntities';
 
 interface ItemProps {
   menuId: string;
 }
 
 const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
-  const {
-    menuId
-  } = props;
+  const { menuId } = props;
 
   const [menu, setMenu] = useState<IItem[]>([]);
 
   const getMenuItems = useCallback(async () => {
-    const menuResponse =  await axios.get(`http://127.0.0.1:9090/menu/${menuId}`)
-    const items: IItem[] = [];
     try {
-      menuResponse.data.result.Items.map(async (itemId: string) => {
-        const item = await axios.get(`http://127.0.0.1:9090/item/${itemId}`)
-        const itemResponse = {
-          Id: item.data.result._id,
-          Name: item.data.result.Name,
-          Description: item.data.result.Description,
-          Price: item.data.result.Price,
-          Quantity: item.data.result.Quantity,
-          Category: item.data.result.Category
+      const menuResponse = await axios.get(`http://127.0.0.1:9090/menu/${menuId}`);
+      const itemIds = menuResponse.data.result.Items;
+      const items: IItem[] = [];
+
+      for (const itemId of itemIds) {
+        const itemResponse = await axios.get(`http://127.0.0.1:9090/item/${itemId}`);
+        const itemData = itemResponse.data.result;
+        const item: IItem = {
+          Name: itemData.Name,
+          Description: itemData.Description,
+          Price: itemData.Price,
+          Category: itemData.Category,
         };
-        items.push(itemResponse);
-      });
+        items.push(item);
+      }
+
       setMenu(items);
-    } 
-    catch (error){
-      console.log(error)
-    } finally {
-        setMenu(items);
+      console.log(items)
+    } catch (error) {
+      console.log(error);
     }
   }, [menuId]);
 
-  const createNewItem = useCallback( async(item:IItem) => {
-    const payload = {
-      Name: item.Name,
-      Description: item.Description,
-      Price: item.Price,
-      Quantity: item.Quantity,
-      Category: item.Category
-    }
-    try{
-      console.log(item)
-      const response = await axios.post(`http://127.0.0.1:9090/item/`,payload)
-    }
-    catch (error){
-      console.log(error)
-    }
-  },[])
-
   useEffect(() => {
-    getMenuItems()
-  },[])
+    getMenuItems();
+  }, [getMenuItems]);
 
-  const [itemsList, setItemsList] = useState<IItem[]>(menu);
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [isAddItemModalOpen, setAddItemModalOpen] = useState(false);
-  
-
 
   const handleItemClick = (item: IItem) => {
     setSelectedItem(item);
@@ -87,18 +56,18 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
   };
 
   const handleSaveChanges = (updatedItem: IItem) => {
-    const updatedItems = itemsList.map((item) =>
-      item.Id === updatedItem.Id ? { ...item, ...updatedItem } : item
+    const updatedItems = menu.map((item) =>
+      item._id === updatedItem._id ? { ...item, ...updatedItem } : item
     );
 
-    setItemsList(updatedItems);
+    setMenu(updatedItems);
     handleCloseModal();
   };
 
   const handleDeleteItem = (itemId: string) => {
-    const updatedItems = itemsList.filter((item) => item.Id !== itemId);
-  
-    setItemsList(updatedItems);
+    const updatedItems = menu.filter((item) => item._id !== itemId);
+
+    setMenu(updatedItems);
     handleCloseModal();
   };
 
@@ -111,8 +80,8 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
   };
 
   const handleAddItem = (newItem: IItem) => {
-    createNewItem(newItem);
-    getMenuItems();
+    setMenu((prevMenu) => [...prevMenu, newItem]); // Add the new item to the menu list
+    handleCloseAddItemModal(); // Close the "Add Item" modal
   };
 
   return (
@@ -121,7 +90,7 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
         <SimpleGrid columns={4} spacing={8}>
           {menu.map((item) => (
             <Box
-              key={item.Id}
+              key={item._id}
               as="div"
               borderWidth="1px"
               borderRadius="10px"
@@ -212,7 +181,7 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
       <Modal isOpen={!!isAddItemModalOpen} onClose={handleCloseAddItemModal} size="xl">
         <ModalOverlay />
         <ModalContent width="450px">
-          <AddItem onAddItem={handleAddItem} onClose={handleCloseAddItemModal} />
+          <AddItem onAddItem={handleAddItem} onClose={handleCloseAddItemModal} setMenu={setMenu}/>
         </ModalContent>
       </Modal>
     </Box>

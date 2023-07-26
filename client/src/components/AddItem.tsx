@@ -11,44 +11,52 @@ import {
   Spacer,
   chakra,
 } from '@chakra-ui/react';
-
-interface IItem {
-  Id: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Quantity: number;
-  Category: string;
-}
+import axios from 'axios';
+import { IItem } from '../utils/serverEntities';
+import api from '../services/api';
 
 interface AddItemProps {
   onAddItem: (newItem: IItem) => void;
   onClose: () => void;
+  setMenu: React.Dispatch<React.SetStateAction<IItem[]>>; // Add this lin
 }
 
-const AddItem: React.FC<AddItemProps> = ({ onAddItem, onClose }) => {
+const AddItem: React.FC<AddItemProps> = ({ onAddItem, onClose, setMenu }) => {
   const [Name, setName] = useState('');
   const [Description, setDescription] = useState('');
   const [Price, setPrice] = useState<number>(0);
-  const [Category, setCategory] = useState('');
+  const [Category, setCategory] = useState('64a487eb9be7edb65c5c6bc8');
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     const newItem: IItem = {
-      Id:"",
-      Name,
-      Description,
-      Price,
-      Quantity: 0,
-      Category,
+      Name: Name,
+      Description: Description,
+      Price:Price,
+      Category:Category,
     };
-    onAddItem(newItem);
-    onClose();
+    try {
+      // Make an API request to create the new item on the backend
+      console.log(newItem)
+      const response = await api.postItem(newItem);
+      const createdItem: IItem = response.result;
+
+      // Update the menu state with the newly created item
+      setMenu((prevMenu) => [...prevMenu, createdItem]);
+
+      onClose(); // Close the modal after adding the item
+    } catch (error) {
+      console.log(error);
+      // Handle any error that occurred during the API request
+      // You can show an error message to the user if needed
+    }
+    onAddItem(newItem); // Call the onAddItem callback to add the new item to the list
+    onClose(); // Close the modal after adding the item
   };
 
   return (
     <Box p={4}>
       <Heading as="h3" size="md" mb={4}>
-        Add IItem
+        Add Item
       </Heading>
       <VStack spacing={4} align="start">
         <FormControl>
@@ -61,12 +69,12 @@ const AddItem: React.FC<AddItemProps> = ({ onAddItem, onClose }) => {
         </FormControl>
         <FormControl>
           <FormLabel>Price</FormLabel>
-          <Input value={Price.toString()} onChange={(e) => setPrice(Number(e.target.value))} type='number'/>
+          <Input value={Price.toString()} onChange={(e) => setPrice(Number(e.target.value))} type="number" />
         </FormControl>
         <FormControl>
           <FormLabel>Category</FormLabel>
           <Select value={Category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="specials">Specials</option>
+            <option value="64a487eb9be7edb65c5c6bc8">Category 3</option>
             <option value="drinks">Drinks</option>
             <option value="appetizers">Appetizers</option>
             <option value="entrees">Entrees</option>

@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Heading, VStack, FormControl, FormLabel, Input, Select, Button, Spacer, chakra } from '@chakra-ui/react';
-
-interface IItem {
-  Id: string;
-  Name: string;
-  Description: string;
-  Price: number;
-  Category: string;
-  Quantity:number;
-}
+import { IItem } from '../utils/serverEntities';
 
 interface EditItemProps {
   item: IItem;
@@ -35,7 +27,7 @@ const EditItem: React.FC<EditItemProps> = ({ item, onSaveChanges, onDelete, onCl
   };
 
   const handleDelete = () => {
-    onDelete(item.Id);
+    onDelete(item?._id as string);
   };
 
   return (
