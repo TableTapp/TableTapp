@@ -41,8 +41,8 @@ const RESTAURANT_MENU = 'RESTAURANT_MENU';
 const RESTAURANT_GET_STARTED = 'RESTAURANT_GETSTARTED';
 
 function App() {
-	const [platform, setPlatform] = useState<string>(RESTAURANT_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(RESTAURANT_GET_STARTED);
+	const [platform, setPlatform] = useState<string>(CUSTOMER_KEY);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
 	const [itemId, setItemId] = useState<string>('');
 	const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
 	

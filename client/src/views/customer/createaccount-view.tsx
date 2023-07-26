@@ -7,6 +7,7 @@ import {
     VStack,
     Input,
     InputGroup,
+    IconButton,
     InputRightElement,
     Text,
     Box,
@@ -44,8 +45,10 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
     const handlePasswordInput = (event:any) => {setUserPassword(event.target.value);};
 
     const handleCreateAccount = async () => {
+
         const name = userFirstName + " " + userLastName;
         const payload = {Name: name, Email: userEmail, Phone: userPhone, Password: userPassword}
+        console.log(payload);
         api.postSignup(payload);
         goToCreateAccount();
     };
@@ -88,7 +91,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                     pr='4.5rem'
                                     w = '100%'
                                     size='lg'
-                                    placeholder='Lase Name'
+                                    placeholder='Last Name'
                                     _placeholder={{}}
                                     onChange={handleLastNameInput}
                                 />
@@ -119,7 +122,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                         type={show ? 'text' : 'password'}
                                         placeholder='Password'
                                         _placeholder={{}}
-                                        onChange={handleFirstNameInput}
+                                        onChange={handlePasswordInput}
                                     />
                                     <InputRightElement width='4.5rem' marginTop='0.1rem'>
                                         <Button size='xs' onClick={handleClick}>

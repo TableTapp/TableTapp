@@ -16,7 +16,7 @@ async function postSignin(payload: any) {
 
 async function postSignup(payload: any) {
     try {
-        return await apiClient.post(`/auth/signip`, payload);
+        return await apiClient.post(`/auth/signup`, payload);
     } catch (error) {
         throw error;
     }
