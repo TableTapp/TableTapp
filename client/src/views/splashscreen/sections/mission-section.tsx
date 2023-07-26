@@ -5,7 +5,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 const MissionSection: React.FC = () => {
 	return (
-		<Container width={'100vw'} height={'50vh'} maxWidth={'none'} padding={0} marginBottom={20}>
+		<Container width={'100vw'} height={'50vh'} maxWidth={'none'} padding={0} marginBottom={40}>
             <Box zIndex={0} position={'absolute'} width={'100%'}>
                 <SvgComponent />
             </Box>
