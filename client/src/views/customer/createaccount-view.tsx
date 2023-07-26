@@ -1,6 +1,5 @@
 import { useState } from "react";
-import axios from 'axios';
-import Logo2 from "../../assets/Logo2.svg";
+import api from "../../services/api";
 
 import { 
     Flex,
@@ -8,18 +7,12 @@ import {
     VStack,
     Input,
     InputGroup,
-    InputLeftElement,
-    InputLeftAddonProps,
     InputRightElement,
     Text,
     Box,
-    Image,
     Heading,
     Center,
-    Divider,
     Link,
-    HStack,
-    InputLeftAddon
 } from "@chakra-ui/react";
 
 
@@ -46,9 +39,12 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
     const handleLastNameInput = (event:any) => {setUserLastName(event.target.value);};
     const handleEmailInput = (event:any) => {setUserEmail(event.target.value);};
     const handlePhoneInput = (event:any) => {setUserPhone(event.target.value);};
-    const handlePasswordInput = (event:any) => {setUserEmail(event.target.value);};
+    const handlePasswordInput = (event:any) => {setUserPassword(event.target.value);};
 
     const handleCreateAccount = async () => {
+        const name = userFirstName + " " + userLastName;
+        const payload = {Name: name, Email: userEmail, Phone: userPhone, Password: userPassword}
+        api.postSignup(payload);
         goToCreateAccount();
     };
 
@@ -81,7 +77,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                 
                                 <Box boxShadow='none' borderColor='red.300' borderBottomWidth='2px' w='70vw'>
                                     <InputGroup>
-                                        <Input size = 'lg' variant='filled' borderRadius='none' bg='#D4D9DF' color='#2D3748' placeholder="Password" _placeholder={{color: 'white' }} type={show ? 'text' : 'password'}/>
+                                        <Input size = 'lg' variant='filled' borderRadius='none' bg='#D4D9DF' color='#2D3748' placeholder="Password" _placeholder={{color: 'white' }} onChange={handlePasswordInput} type={show ? 'text' : 'password'}/>
                                         <InputRightElement width='4.5rem' marginTop='0.3rem'>
                                             <Button size='xs' onClick={handleClick}>
                                             {show ? 'Hide' : 'Show'}
