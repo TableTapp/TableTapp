@@ -26,14 +26,14 @@ const postSignup = async (req: Request, res: Response) => {
             maxAge: COOKIE_AGE
         });
 		res.status(200).json({
-			User: user._id,
+			UserId: user._id,
             Message: SigninMsgs.SignInSuccess,
             Token: accessToken
 		});
 	} catch (error: any) {
 		const errors = getSignupErrors(error);
 		res.status(400).json({
-			error
+			errors
 		});
 	}
 }
@@ -59,7 +59,7 @@ const postSignin = async (req: Request, res: Response) => {
             maxAge: COOKIE_AGE
         });
 		res.status(200).json({
-			User: user._id,
+			UserId: user._id,
 			Message: SigninMsgs.SignInSuccess,
             Token: accessToken
 		});
@@ -87,14 +87,17 @@ function getSignupErrors(err: any) {
 		username: '',
 		password: ''
 	};
-	// if (err.message.toLowerCase().includes('user validation failed')) {
-	// 	Object.values(err.errors).forEach(({ properties }) => {
-	// 		errors[properties.path] = properties.message;
-	// 	});
-	// }
-	// if (err.code === 11000) {
-	// 	errors.email = 'An account already exists with that email';
-	// }
+	console.log(err);
+	if (err.message.toLowerCase().includes("user validation failed")) {
+		const validationErrors: any = err.errors;
+		Object.values(validationErrors).forEach(({ properties }: any) => {
+		  errors[properties.path as keyof typeof errors] = properties.message;
+		});
+	}
+
+	if (err.code === 11000) {
+		errors.email = 'An account already exists with that email';
+	}
 	return errors;
 }
 
