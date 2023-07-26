@@ -1,13 +1,11 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-
 // UI Components
 import { 
     Button, 
     Center, 
     Flex, 
-    Slide, 
     Spacer, 
     VStack 
 } from '@chakra-ui/react';
@@ -24,6 +22,7 @@ import _ from 'lodash';
 import api from '../../services/api';
 
 interface MenuProps {
+    loggedIn: boolean;
     menuId: string;
     tableId: string;
     cartId: string;
@@ -38,7 +37,8 @@ enum TableStatus {
 }
 
 const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
-    const { 
+    const {
+        loggedIn, 
         menuId, 
         tableId, 
         cartId, 
@@ -99,7 +99,6 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
 
     useEffect(() => {
         _.delay(groupItems, 250);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menu, groupItems]);
 
     const handleViewCart = () => {
@@ -113,24 +112,26 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
     return (
         <>
             <Center>
-				<Button 
-					colorScheme='red' 
-					size='lg' 
-					position='fixed' 
-					bottom={0} 
-					marginBottom={4} 
-					boxShadow='2xl' 
-					zIndex={4} 
-					onClick={handleViewCart}
-				>
-					<Flex 
-                        width='80vw'
+                {loggedIn &&
+                    <Button 
+                        colorScheme='red' 
+                        size='lg' 
+                        position='fixed' 
+                        bottom={0} 
+                        marginBottom={4} 
+                        boxShadow='2xl' 
+                        zIndex={4} 
+                        onClick={handleViewCart}
                     >
-                        ({cart.OrderItems.length})Cart <Spacer />${cart.TotalPrice}
-                    </Flex>
-				</Button>
+                        <Flex 
+                            width='80vw'
+                        >
+                            ({cart.OrderItems.length})Cart <Spacer />${cart.TotalPrice}
+                        </Flex>
+                    </Button>
+                }
 			</Center> 
-			<VStack gap={2}>
+			<VStack width={'100%'} gap={2} padding={0}>
 				<Header 
                     menu 
                     headerOptions={{ 
@@ -141,15 +142,13 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
                 />
                     {groupedMenuItems.map((group) => {
                         return (
-                            // <Slide direction="top" in={true}>
-                                <ItemStack
-                                    addNewItem={()=>{return}} 
-                                    rowClick={itemClick} 
-                                    order={false} 
-                                    stackHeader={group[0].Category.Name} 
-                                    items={group}
-                                />
-                            // </Slide>
+                            <ItemStack
+                                addNewItem={()=>{return}} 
+                                rowClick={itemClick} 
+                                order={false} 
+                                stackHeader={group[0].Category.Name} 
+                                items={group}
+                            />
                         );
                     })
                     }
