@@ -29,7 +29,7 @@ const BackgroundSection: React.FC = () => {
             Title: 'Ergonomic and intuitive user experience',
             Description: 'Seamless simplicity: navigate effortlessly with our thoughtfully designed interface. Discover user-friendly perfection, where intuition meets precision, making ordering a breeze, even in the messiest of kitchens!',
             ButtonLabel: 'Learn More',
-            ImgSrc: 'https://via.placeholder.com/300',
+            ImgSrc: 'assets/simple-ui.jpg',
             reverse: true
         }
     ]
