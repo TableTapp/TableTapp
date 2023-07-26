@@ -7,19 +7,23 @@ const TeamInfo: React.FC = () => {
     const team = [
         {
             Name: 'Adil Zafar',
-            Title: 'Backend Developer, Security Expert'
+            Title: 'Backend Developer, Security Expert',
+            Path: "assets/adil.svg"
         },
         {
             Name: 'Aryan Sahel',
-            Title: 'Restaurant Front End Developer, Market Researcher'
+            Title: 'Restaurant Front End Developer, Market Researcher',
+            Path: "assets/aryan.svg"
         },
         {
             Name: 'Kai Herrero',
-            Title: 'Back of House/Login Expert, Graphic Design Front End Developer'
+            Title: 'Back of House/Login Expert, Graphic Design Front End Developer',
+            Path: "assets/kai.svg"
         },
         {
             Name: 'Kris Lemieux',
-            Title: 'Customer Expert, UX/UI Designer, Scrum master, Full stack developer'
+            Title: 'Customer Expert, UX/UI Designer, Scrum master, Full stack developer',
+            Path: "assets/Kris.svg"
         }
     ];
 
