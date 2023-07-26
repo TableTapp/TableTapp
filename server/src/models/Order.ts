@@ -26,14 +26,14 @@ const OrderSchema: Schema = new Schema(
         CustomerId: {
             type: Schema.Types.ObjectId,
             ref: 'Customer',
-            require: true
+            required: true
         },
         OrderItems: {
             type: [{
                 type: Schema.Types.ObjectId,
                 ref: 'OrderItem'
             }],
-            require: true
+            required: true
         },
         Status: {
             type: String,

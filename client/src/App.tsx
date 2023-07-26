@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Container, Slide } from '@chakra-ui/react';
+import { useState } from 'react'
+import { Container } from '@chakra-ui/react';
 
 // Customer Views
 import ScannerView from './views/customer/scanner-view';
@@ -18,11 +18,12 @@ import ConfirmView from './views/customer/confirm-view';
 import { ICart } from './utils/serverEntities';
 
 // Restaurant Views
+import RestaurantMenuView from './views/restaurant/restaurant-menu-view';
 
 const CUSTOMER_KEY = 'CUSTOMER';
 const RESTAURANT_KEY = 'RESTAURANT';
 
-// Customer Views
+// Customer Keys
 const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
 const CUSTOMER_MENU = 'CUSTOMER_MENU';
 const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
@@ -35,13 +36,21 @@ const CUSTOMER_CREATE_ACCOUNT = 'CUSTOMER_CREATEACCOUNT';
 const CUSTOMER_CONFIRM_EMAIL = 'CUSTOMER_CONFIRMEMAIL';
 const CUSTOMER_FORGOT_PASSWORD = 'CUSTOMER_FORGOTPASSWORD';
 
+// Restaurant Keys
+const RESTAURANT_MENU = 'RESTAURANT_MENU';
+const RESTAURANT_GET_STARTED = 'RESTAURANT_GETSTARTED';
 
 function App() {
-	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
+	const [platform, setPlatform] = useState<string>(RESTAURANT_KEY);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(RESTAURANT_GET_STARTED);
 	const [itemId, setItemId] = useState<string>('');
 	const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
 	
+	const handleToRestaurant = () => {
+		setPlatform(RESTAURANT_KEY);
+		setCurrentViewKey(RESTAURANT_MENU);
+	}; 
+
 	const handleMenuBack = () => {
 		setCurrentViewKey(CUSTOMER_MENU);
 	};
@@ -79,7 +88,7 @@ function App() {
 
 	const handleToConfirmEmail = () => {
 		setCurrentViewKey(CUSTOMER_CONFIRM_EMAIL);
-	}
+	};
 
 	const handleToOrderStatus = () => {
 		setCurrentViewKey(CUSTOMER_ORDER_STATUS);
@@ -142,6 +151,18 @@ function App() {
 				break;
 			default:
 				console.log("Error Customer key does not exist");
+				break;
+		}
+	} else if (platform == RESTAURANT_KEY) {
+		switch (currentViewKey) {
+			case RESTAURANT_GET_STARTED:
+				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleToRestaurant} goToCreateAccount={handleCreateAccount}/>;
+				break;
+			case RESTAURANT_MENU:
+				currentView = <RestaurantMenuView />;
+				break;
+			default:
+				console.log("Error restaurant key does not exist");
 				break;
 		}
 	}
