@@ -44,8 +44,8 @@ const DesignSection: React.FC = () => {
             Title: 'Simple',
             points: [
                 'Ergonimic',
-                'Colorful',
-                'Visually Distinctive',
+                'User Friendly',
+                'Minimal Design',
             ]
         },
     ];
