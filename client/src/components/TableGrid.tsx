@@ -14,9 +14,8 @@ import React, {useState, useEffect} from 'react';import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Icon,
 } from '@chakra-ui/react';
-import { InfoIcon, WarningIcon } from '@chakra-ui/icons';
+import { WarningIcon } from '@chakra-ui/icons';
 
 interface TableInfo {
   number: string;
@@ -73,11 +72,9 @@ const TableGrid: React.FC<TableGridProps> = ({ tableData, onTableClick }) => {
 
   useEffect(() => {
     showRandomNotification();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-
-
-
   return (
     <Box p={4} sx={{ userSelect: 'none' }}>
       <Heading

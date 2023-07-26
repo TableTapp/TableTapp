@@ -25,7 +25,7 @@ import {
 
 // Utils	
 import { ItemAddOns } from '../../components/ItemAddOns';
-import { ICart, ICartPopulated, IItem, IOrderItem, IOrderItemPopulated } from '../../utils/serverEntities';
+import { ICart, ICartPopulated, IItem, IOrderItemPopulated } from '../../utils/serverEntities';
 import _ from 'lodash';
 import api from '../../services/api';
 
@@ -89,6 +89,7 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 		}
 	}	
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const handleSpecialInstructionsChange = (e: any) => {
 		setSpecialInstructions(e.target.value);
 	};

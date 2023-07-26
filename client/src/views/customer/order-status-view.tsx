@@ -74,15 +74,16 @@ function OrderProgress () {
 
 const OrderStatusView: React.FC<OrderStatusProps> = (props: OrderStatusProps) => {
 // make a post request creating a new table session with this customer
-
+	const { handleBack } = props;
 	const orderNumber = "1234567890";
 	return (
 		<VStack gap={2} height={'100vh'}>
 			<Header 
-				item 
+				cart 
 				headerOptions={{ 
 					title: 'Order Status', 
-					subtitle: `Order Number: ${orderNumber}`
+					subtitle: `Order Number: ${orderNumber}`,
+					onCartClose: handleBack
 				}}
 			/>
 			<Flex width='100vw' height='50vh' justifyContent='left' alignItems='center'>

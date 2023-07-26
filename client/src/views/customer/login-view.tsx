@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
@@ -49,13 +50,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const handlePasswordInput = (event: any) => {setUserPassword(event.target.value);};
 
     const handleLogin =  async () => {
-
-        //console.log(userEmail);
-        //console.log(userPassword);
-
         try {
-        // Call axios API endpoint here
-        // Pass email and password as parameters to the API endpoint
             const response = await api.postSignin({ Username: userEmail, Password: userPassword });
             console.log(response);
             goToMenu();
@@ -102,9 +97,9 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                     marginTop='2vw'
                 />
                     <VStack marginTop='12vh'>
-                        <Box align='center' marginBottom='4rem'>
+                        <Center  marginBottom='4rem'>
                             <Image src={Logo2} boxSize='40%'/>
-                        </Box>
+                        </Center>
                         <Heading size='xl' color='#2D3748' textAlign='center' padding='1rem'>
                             Sign In
                         </Heading>

@@ -24,10 +24,7 @@ import {
     InputRightAddon,
     Select,
     DrawerFooter,
-    Alert,
-    AlertIcon,
-    Slide,
-    useDisclosure
+    useToast
 } from '@chakra-ui/react';
 import { MdCreditCard } from 'react-icons/md'
 import { FaGooglePay, FaApplePay } from "react-icons/fa";
@@ -46,27 +43,24 @@ export const PaymentDrawer: React.FC<PaymentDrawerProps> = (props: PaymentDrawer
     const [isApplePay, setIsApplePay] = useState<boolean>(false);
     const [isGooglePay, setIsGooglePay] = useState<boolean>(false);
     const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const errorToast = useToast();
 
     const handleCard = () => {
         setIsCard(!isCard);
         setIsApplePay(false);
         setIsGooglePay(false);
-        onClose();
     };
 
     const handleApplePay = () => {
         setIsApplePay(!isApplePay);
         setIsCard(false);
         setIsGooglePay(false);
-        onClose();
     };
 
     const handleGooglePay = () => {
         setIsGooglePay(!isGooglePay);
         setIsCard(false);
         setIsApplePay(false);
-        onClose();
     };
 
     const handlePayment = () => {
@@ -74,7 +68,12 @@ export const PaymentDrawer: React.FC<PaymentDrawerProps> = (props: PaymentDrawer
             setPaymentLoading(true);
             _.delay(payed, 3000);
         } else {
-            onOpen();
+            errorToast({
+                position: 'top',
+                title: `Please Select a payment type`,
+                status: 'error',
+                isClosable: true,
+            });
         }
     };
 
@@ -149,12 +148,6 @@ export const PaymentDrawer: React.FC<PaymentDrawerProps> = (props: PaymentDrawer
             </VStack>
           </DrawerBody>
           <DrawerFooter>
-                <Slide direction='bottom' in={isOpen} style={{ zIndex: 10 }}>
-                    <Alert status='error'>
-                        <AlertIcon />
-                            Please Select a payment type
-                    </Alert>
-                </Slide>
                 <Button isLoading={paymentLoading} colorScheme='red' w={"100%"} onClick={handlePayment}>Pay ${paymentTotal ||0.00}</Button>
           </DrawerFooter>
         </DrawerContent>

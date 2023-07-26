@@ -1,5 +1,3 @@
-import { useState } from "react";
-import axios from 'axios';
 import Logo2 from "../../assets/Logo2.svg";
 
 // Components
@@ -11,10 +9,7 @@ import {
     Box,
     Image,
     Heading,
-    Center,
-    Divider,
-    Link,
-    HStack
+    Center
 } from "@chakra-ui/react";
 
 interface getStartedProps {
@@ -43,9 +38,9 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
             <Center>
                 <Box bg='red.400' w='100vw' h='100vh' borderRadius='none' overflow='hidden'>
                     <VStack marginTop='12vh'>
-                        <Box align='center'>
+                        <Center>
                             <Image src={Logo2} boxSize='50%'/>
-                        </Box>
+                        </Center>
                         <Heading size='xl' color='white' textAlign='center'>
                             TableTapp
                         </Heading>
@@ -80,14 +75,14 @@ const StartedView: React.FC<getStartedProps> = (props: getStartedProps) => {
                             View Menu
                         </Button>
                     </VStack>
-                    <Box align ='center' marginTop='1vh'>
+                    <Center marginTop='1vh'>
                         <Text color='white' align='center'>
                             Or you can create a {' '}
                             <Button as = 'u' size='m' colorScheme='gray.100' _hover={{bg: 'gray.200'}} onClick={handleCreateAccount} variant='link'>
                                 new account
                             </Button>
                         </Text>
-                    </Box>
+                    </Center>
                 </Box>
             </Center>
         </Flex>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Flex, Badge } from '@chakra-ui/react';
+import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Flex } from '@chakra-ui/react';
 
 interface Customer {
   ranking: number;

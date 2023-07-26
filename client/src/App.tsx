@@ -144,7 +144,7 @@ function App() {
 				break;
 			case CUSTOMER_ORDER_STATUS:
 				currentView = (
-					<OrderStatusView />
+					<OrderStatusView handleBack={handleToMenu}/>
 				);
 				break;
 			case CUSTOMER_LOGIN:

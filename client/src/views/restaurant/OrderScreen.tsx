@@ -26,17 +26,6 @@ const OrderScreen: React.FC = () => {
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  const boxStyles = {
-    baseStyle: {
-      // Your existing base styles for the box
-      // ...
-    },
-    hover: {
-      cursor: 'pointer', // Show pointer cursor on hover
-      boxShadow: '0px 0px 8px 0px rgba(0, 0, 0, 0.4)', // Add a darker shadow on hover
-      // Add any other styles you want to apply on hover
-    },
-  };
 
   const handleOrderClick = (order: Order) => {
     setSelectedOrder(order);

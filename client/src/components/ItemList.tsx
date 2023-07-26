@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Box, SimpleGrid, Text, chakra, Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
-import Food from './Food_Pics/food.jpg';
 import EditItem from './EditItem';
 import AddItem from './AddItem';
 import axios from 'axios';
@@ -61,7 +60,8 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
     }
     try{
       console.log(item)
-      const response = await axios.post(`http://127.0.0.1:9090/item/`,payload)
+      const response = await axios.post(`http://127.0.0.1:9090/item/`, payload);
+      console.log(response);
     }
     catch (error){
       console.log(error)
@@ -70,6 +70,7 @@ const ItemList: React.FC<ItemProps> = (props: ItemProps) => {
 
   useEffect(() => {
     getMenuItems()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const [itemsList, setItemsList] = useState<IItem[]>(menu);

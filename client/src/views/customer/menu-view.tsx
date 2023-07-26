@@ -99,7 +99,6 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
 
     useEffect(() => {
         _.delay(groupItems, 250);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menu, groupItems]);
 
     const handleViewCart = () => {

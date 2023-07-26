@@ -25,12 +25,12 @@ interface ForgotPasswordProps {
 const ForgotPasswordView: React.FC<ForgotPasswordProps> = (props: ForgotPasswordProps) => {
     const [userEmail, setUserEmail] = useState("");
     const {goToLogin} = props;
-    var emailEntry;
 
     const handleSendEmail = async () => {
         //api call for sending an email
-        emailEntry = true;
+        console.log(userEmail)
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEmailEntry = (event:any) => {setUserEmail(event.target.value);};
 
     const handleToLogin = async () => {
