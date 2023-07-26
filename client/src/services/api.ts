@@ -14,7 +14,7 @@ async function postSignin(payload: any) {
 async function postSignup(payload: any, isCustomer: boolean = true) {
     try {
         const response = await apiClient.post(`/auth/signup`, payload);
-        const userId = response.data.result.User;
+        const userId = response.data.result.UserId;
         if (isCustomer)
             return await postCustomer({User: userId});
         return await postVendor({User: userId});

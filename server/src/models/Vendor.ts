@@ -10,10 +10,8 @@ export interface IVendor extends IVendorBase, Document { };
 const VendorSchema: Schema = new Schema(
     {
         User: {
-            type: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }
+          type: Schema.Types.ObjectId,
+          ref: 'User'
         }
     },
     {
@@ -24,7 +22,7 @@ const VendorSchema: Schema = new Schema(
 
 VendorSchema.pre("save", async function (next) {
     try {
-      if (this.User && typeof this.User === "string") {
+      if (this.User) {
         const user = await User.findById(this.User);
         if (user) {
           this.User = user;
@@ -34,6 +32,11 @@ VendorSchema.pre("save", async function (next) {
     } catch (err: any) {
       next(err);
     }
+  });
+
+  VendorSchema.pre('findOne', function (next) { 
+    this.populate("User", { options: { strictPopulate: false }});
+    next();
   });
 
 export default mongoose.model<IVendorBase>('Vendor', VendorSchema);

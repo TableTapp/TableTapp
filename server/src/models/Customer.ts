@@ -10,11 +10,9 @@ export interface ICustomer extends ICustomerBase, Document { };
 const CustomerSchema: Schema = new Schema(
     {
         User: {
-            type: {
-                type: Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
-            }
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          required: true
         }
     },
     {
@@ -23,18 +21,24 @@ const CustomerSchema: Schema = new Schema(
     }
 );
 
-// CustomerSchema.pre("save", async function (next) {
-//     try {
-//       if (this.User) {
-//         const user = await User.findById(this.User);
-//         if (user) {
-//           this.User = user;
-//         }
-//       }
-//       next();
-//     } catch (err: any) {
-//       next(err);
-//     }
-//   });
+CustomerSchema.pre("save", async function (next) {
+    try {
+      if (this.User) {
+        const user = await User.findById(this.User);
+        if (user) {
+          this.User = user;
+        }
+      }
+      next();
+    } catch (err: any) {
+      next(err);
+    }
+  });
+
+  CustomerSchema.pre('findOne', function (next) { 
+    this.populate("User", { options: { strictPopulate: false }});
+    next();
+  });
+
 
 export default mongoose.model<ICustomerBase>('Customer', CustomerSchema);
