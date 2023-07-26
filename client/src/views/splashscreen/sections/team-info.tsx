@@ -23,7 +23,7 @@ const TeamInfo: React.FC = () => {
         {
             Name: 'Kris Lemieux',
             Title: 'Customer Expert, UX/UI Designer, Scrum master, Full stack developer',
-            Path: "assets/Kris.svg"
+            Path: "assets/kris.svg"
         }
     ];
 
@@ -42,7 +42,7 @@ const TeamInfo: React.FC = () => {
                     {team.map((person, index) => {
                         return ( 
                             <>
-                                <PersonCard ImgSrc='fsdafsd' key={index} Name={person.Name} Title={person.Title} /> 
+                                <PersonCard ImgSrc={person.Path} key={index} Name={person.Name} Title={person.Title} /> 
                                 { index !== 3 ? <Spacer /> : <></> }
                             </>
                         )

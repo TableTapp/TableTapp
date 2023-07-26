@@ -28,7 +28,7 @@ export const FeatureCard: React.FC<FeatureCardProps> = (props: FeatureCardProps)
     );
     return (
         <ScaleFade initialScale={0.8} whileHover={{scale: 1.05}} in={inViewport} transition={{ enter: { duration: 0.3 } }}>
-            <Card ref={ref}>
+            <Card ref={ref} maxWidth='400' height='450'>
                 <Image padding={10} borderRadius={5}  height={{md: '200', sm: '150', lg: '300'}} aria-label='logo' objectFit='cover' src={ImgSrc} alt='Graphic'/>
                 <CardBody>
                     <Stack direction={'column'} gap={1}>

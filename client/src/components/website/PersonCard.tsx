@@ -15,10 +15,10 @@ interface GenericProps {
 }
 
 export const PersonCard: React.FC<GenericProps> = (props: GenericProps) => {
-    const { Name, Title } = props;
+    const { Name, Title, ImgSrc } = props;
     return (
         <Card maxWidth={300}>
-            <Image borderRadius={5}  height={'300'} aria-label='logo' objectFit='cover' src={'https://via.placeholder.com/300'} alt='Graphic'/>
+            <Image borderRadius={5}  height={'300'} aria-label='logo' objectFit='cover' src={ImgSrc} alt='Graphic'/>
             <CardBody maxWidth={300}>
                 <Stack direction={'column'} gap={1}>
                     <Heading size='md'>{Name}</Heading>

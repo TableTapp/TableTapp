@@ -152,7 +152,7 @@ const ResultSection: React.FC = () => {
 					</Square>
 				</Stack>
 				<Text>
-					Description of the release notes
+					The following are the release notes for the initial rollout (v1.0) of TableTapp.
 				</Text>
 			</Stack>
 			<Accordion allowMultiple width={'90%'}>

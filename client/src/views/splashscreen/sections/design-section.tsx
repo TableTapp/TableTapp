@@ -9,17 +9,17 @@ const DesignSection: React.FC = () => {
     const featureInfo = [
         {
             Title: 'Front of House',
-            Description: 'blurb',
+            Description: '“Graphic and informational design to enable your staff to deliver the best service possible without the expense of traversing technology.” ',
             Image: '/assets/foh.png'
         },
         {
             Title: 'Back of House',
-            Description: 'blurb',
+            Description: '“Our accessible back of house KDS allows the kitchen to easily view tickets. Our design showcases order information plainly so that efficiency can be your number one priory”',
             Image: '/assets/boh.png'
         },
         {
             Title: 'Customer',
-            Description: 'blurb',
+            Description: '“Ease of access to every aspect of your restaurant’s menu so customers don’t miss a single aspect of your resturant’s experience!                     ”',
             Image: '/assets/customer.png'
         }
     ];
@@ -43,9 +43,9 @@ const DesignSection: React.FC = () => {
         {
             Title: 'Simple',
             points: [
-                '',
-                '',
-                ' ',
+                'Ergonimic',
+                'Colorful',
+                'Visually Distinctive',
             ]
         },
     ];

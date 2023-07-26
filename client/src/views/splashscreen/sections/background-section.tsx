@@ -8,21 +8,21 @@ const BackgroundSection: React.FC = () => {
             Title: 'Lessen the work load on your staff',
             Description: 'The power of efficiency, in the palm of your hands. Experience a seamless workload solution tailored to the needs of your team. Unlock limitless productivity, boost performance, and accelerate your business - all just a tap away!',
             ButtonLabel: 'Learn More',
-            ImgSrc: 'https://via.placeholder.com/300',
+            ImgSrc: 'assets/lessen-work-load.svg',
             reverse: false
         },
         {
-            Title: 'Seamless integration between the font and back of house',
+            Title: 'Seamless integration between the front and back of house',
             Description: 'Automate order ticketing, manage your inventory, and seamlessly integrate your front-of-house and back-of-house operations to unleash your staff’s full potential!',
             ButtonLabel: 'Learn More',
-            ImgSrc: 'https://via.placeholder.com/300',
+            ImgSrc: 'assets/seamless-integration.svg',
             reverse: true
         },
         {
             Title: 'Customer ordering experience that rivals industry leaders',
             Description: 'Revolutionize how customers order! Step into a new era of unparalleled convenience with our cutting-edge order placement application. Grant your customers the freedom to order independently, elevating your business and redefining industry standards.',
             ButtonLabel: 'Learn More',
-            ImgSrc: 'https://via.placeholder.com/300',
+            ImgSrc: 'assets/kds.svg',
             reverse: false
         },
         {
