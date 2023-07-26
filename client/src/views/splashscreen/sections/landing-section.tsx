@@ -26,7 +26,7 @@ const LandingSection: React.FC<LandingSectionProps> = (props: LandingSectionProp
                 <Flex>
                     <Image height={'var(--chakra-sizes-12)'} aria-label='logo' src={Logo} alt='Logo'/>
                     <Spacer />
-                    <Button colorScheme={'gray'} size={'lg'} onClick={toCustomerLogin}>Login to Customer</Button>
+                    <Button colorScheme={'gray'} size={'lg'} onClick={toCustomerLogin} marginEnd={5}>Login to Customer</Button>
                     <Button colorScheme={'gray'} size={'lg'} onClick={toRestaurantLogin}>Login to Vendor</Button>
                 </Flex>
             </Box>
