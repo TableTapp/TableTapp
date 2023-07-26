@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IUser } from "./User";
+import User, { IUser } from "./User";
 
 export interface ICustomerBase {
     User: IUser;
@@ -12,7 +12,8 @@ const CustomerSchema: Schema = new Schema(
         User: {
             type: {
                 type: Schema.Types.ObjectId,
-                ref: 'User'
+                ref: 'User',
+                required: true
             }
         }
     },
@@ -21,5 +22,19 @@ const CustomerSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+// CustomerSchema.pre("save", async function (next) {
+//     try {
+//       if (this.User) {
+//         const user = await User.findById(this.User);
+//         if (user) {
+//           this.User = user;
+//         }
+//       }
+//       next();
+//     } catch (err: any) {
+//       next(err);
+//     }
+//   });
 
 export default mongoose.model<ICustomerBase>('Customer', CustomerSchema);

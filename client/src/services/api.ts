@@ -14,9 +14,29 @@ async function postSignin(payload: any) {
     }
 }
 
-async function postSignup(payload: any) {
+async function postSignup(payload: any, isCustomer: boolean = true) {
     try {
-        return await apiClient.post(`/auth/signup`, payload);
+        const response = await apiClient.post(`/auth/signup`, payload);
+        const userId = response.data.result.User;
+        if (isCustomer)
+            return await postCustomer({User: userId});
+        return await postVendor({User: userId});
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function postVendor(payload: any) {
+    try {
+        return await apiClient.post(`/vendor/`, payload);
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function postCustomer(payload: any) {
+    try {
+        return await apiClient.post(`/customer/`, payload);
     } catch (error) {
         throw error;
     }

@@ -33,7 +33,7 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
 		if (user) {
             req.body = {
                 ...req.body,
-                user: user,
+                UserId: user._id,
             };
 			return next();
 		}

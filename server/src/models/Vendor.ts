@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IUser } from "./User";
+import User, { IUser } from "./User";
 
 export interface IVendorBase {
     User: IUser;
@@ -21,5 +21,19 @@ const VendorSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
+VendorSchema.pre("save", async function (next) {
+    try {
+      if (this.User && typeof this.User === "string") {
+        const user = await User.findById(this.User);
+        if (user) {
+          this.User = user;
+        }
+      }
+      next();
+    } catch (err: any) {
+      next(err);
+    }
+  });
 
 export default mongoose.model<IVendorBase>('Vendor', VendorSchema);
