@@ -1,16 +1,33 @@
-import { AbsoluteCenter, Box, Button, Container, Flex, Heading, Image, Spacer, Stack } from '@chakra-ui/react';
+import { 
+    AbsoluteCenter, 
+    Box, 
+    Button, 
+    Container, 
+    Flex, 
+    Heading, 
+    Image, 
+    Spacer, 
+    Stack 
+} from '@chakra-ui/react';
 import React from 'react';
 import Logo from '../../../assets/logo-text.svg';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 
-const LandingSection: React.FC = () => {
+interface LandingSectionProps {
+    toCustomerLogin: () => void;
+    toRestaurantLogin: () => void;
+}
+
+const LandingSection: React.FC<LandingSectionProps> = (props: LandingSectionProps) => {
+    const {toCustomerLogin, toRestaurantLogin} = props;
 	return (
 		<Container width={'100vw'} height={'100vh'} bg={'red.400'} maxWidth={'none'}>
             <Box width={'100%'} padding={8} bg={'red.400'}>
                 <Flex>
                     <Image height={'var(--chakra-sizes-12)'} aria-label='logo' src={Logo} alt='Logo'/>
                     <Spacer />
-                    <Button colorScheme={'gray'} size={'lg'}>Login</Button>
+                    <Button colorScheme={'gray'} size={'lg'} onClick={toCustomerLogin}>Login to Customer</Button>
+                    <Button colorScheme={'gray'} size={'lg'} onClick={toRestaurantLogin}>Login to Vendor</Button>
                 </Flex>
             </Box>
             <Box position={'absolute'} width={'70%'} height={'75vh'}>

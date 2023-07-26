@@ -10,10 +10,16 @@ import BackgroundSection from './sections/background-section';
 import DesignSection from './sections/design-section';
 import ResultSection from './sections/results-section';
 
-const LandingPage: React.FC = () => {
+interface LandingPageProps {
+    goToCustomer: () => void;
+    goToRestaurant: () => void;
+}
+
+const LandingPage: React.FC<LandingPageProps> = (props: LandingPageProps) => {
+    const { goToCustomer, goToRestaurant } = props;
 	return (
 		<Stack direction={'column'} p={0} maxWidth={'none'} gap={'none'}>
-            <LandingSection />
+            <LandingSection toCustomerLogin={goToCustomer} toRestaurantLogin={goToRestaurant}/>
             <MissionSection />
             <BackgroundSection />
             <DesignSection />
