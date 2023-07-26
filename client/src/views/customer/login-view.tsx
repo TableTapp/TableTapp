@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
 import meta from "../../assets/meta.svg"
@@ -21,9 +21,10 @@ import {
     Center,
     Divider,
     HStack,
+    useToast
 } from "@chakra-ui/react";
 
-import { LockIcon, CloseIcon
+import { LockIcon, ArrowBackIcon
 } from '@chakra-ui/icons'
 import api from "../../services/api";
 
@@ -38,13 +39,14 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const {goToForgotPassword, goToMenu, goToGetStarted } = props;
+    const errorToast = useToast();
 
     //show password when clicking "show"
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
 
-    const handleUsernameInput = (event:any) => {setUserEmail(event.target.value);};
-    const handlePasswordInput = (event:any) => {setUserPassword(event.target.value);};
+    const handleUsernameInput = (event: any) => {setUserEmail(event.target.value);};
+    const handlePasswordInput = (event: any) => {setUserPassword(event.target.value);};
 
     const handleLogin =  async () => {
 
@@ -58,6 +60,11 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
             console.log(response);
             goToMenu();
         } catch(e){
+            errorToast({
+                title: `Username or password is incorrect`,
+                status: 'error',
+                isClosable: true,
+            });
             console.log("Error: ", e); // Update the error state
         } 
     }
@@ -84,6 +91,16 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
         <Flex>
             <Center>
                 <Box bg = 'white' w='100vw' h='100vh' borderWidth='1px' borderRadius='lg' overflow='hidden' >
+                <IconButton
+                    aria-label="none"
+                    variant='outline'
+                    color='red.400'
+                    isRound={true}
+                    icon={<ArrowBackIcon/>}
+                    onClick={handleBack}
+                    marginLeft='2vw'
+                    marginTop='2vw'
+                />
                     <VStack marginTop='12vh'>
                         <Box align='center' marginBottom='4rem'>
                             <Image src={Logo2} boxSize='40%'/>
@@ -144,20 +161,6 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={meta} boxSize='100%'/>} onClick={handleMeta}/>
                             <IconButton variant='ghost' aria-label="none" size='sm' icon={<Image src={apple} boxSize='100%' onClick={handleApple}/>}/>
                         </HStack>
-                        <Button
-                            colorScheme='red.400' 
-                            color='red.400'
-                            size='lg'
-                            marginTop='7vh'
-                            w='70vw'
-                            variant='outline'
-                            _hover={{
-                                bg: 'red.300',
-                                }}
-                            onClick={handleBack}
-                            >
-                            Back to Get Started
-                        </Button>
                     </VStack>
                 </Box>
             </Center>
