@@ -7,6 +7,14 @@ import ItemView from './views/customer/item-view';
 import MenuView from './views/customer/menu-view';
 import CartView from './views/customer/cart-view';
 import OrderStatusView from './views/customer/order-status-view';
+
+//Login Views
+import LoginView from './views/customer/login-view';
+import StartedView from './views/customer/started-view';
+import AccountView from './views/customer/createaccount-view';
+import ForgotPasswordView from './views/customer/forgotpassword-view';
+import ConfirmView from './views/customer/confirm-view';
+
 import { ICart } from './utils/serverEntities';
 
 // Restaurant Views
@@ -15,20 +23,26 @@ import RestaurantMenuView from './views/restaurant/restaurant-menu-view';
 const CUSTOMER_KEY = 'CUSTOMER';
 const RESTAURANT_KEY = 'RESTAURANT';
 
+// Customer Views
 const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
 const CUSTOMER_MENU = 'CUSTOMER_MENU';
 const CUSTOMER_ITEM_DETAILS = 'CUSTOMER_ITEM_DETAILS';
-const CUSTOMER_CART = 'CUSTOMER_CART';
 const CUSTOMER_ORDER_STATUS = 'CUSTOMER_ORDER_STATUS';
+const CUSTOMER_CART = 'CUSTOMER_CART';
+
 const CUSTOMER_LOGIN = 'CUSTOMER_LOGIN';
+const CUSTOMER_GET_STARTED = 'CUSTOMER_GETSTARTED';
+const CUSTOMER_CREATE_ACCOUNT = 'CUSTOMER_CREATEACCOUNT';
+const CUSTOMER_CONFIRM_EMAIL = 'CUSTOMER_CONFIRMEMAIL';
+const CUSTOMER_FORGOT_PASSWORD = 'CUSTOMER_FORGOTPASSWORD';
+
 
 const RESTAURANT_MENU = 'RESTAURANT_MENU';
 
 
 function App() {
-	const [platform, setPlatfrom] = useState<string>(RESTAURANT_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(RESTAURANT_MENU);
-
+	const [platform, setPlatfrom] = useState<string>(CUSTOMER_KEY);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
 	const [itemId, setItemId] = useState<string>('');
 	const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
 	
@@ -48,8 +62,28 @@ function App() {
 
 	const handleScannerResult = (scanResult: string) => {
 		console.log(`App.tsx ${scanResult}`);
-		setCurrentViewKey(CUSTOMER_MENU);
+		setCurrentViewKey(CUSTOMER_GET_STARTED);
 	};
+
+	const handleToLogin = () => {
+		setCurrentViewKey(CUSTOMER_LOGIN);
+	};
+
+	const handleToGetStarted = () => {
+		setCurrentViewKey(CUSTOMER_GET_STARTED);
+	};
+
+	const handleCreateAccount = () => {
+		setCurrentViewKey(CUSTOMER_CREATE_ACCOUNT);
+	};
+
+	const handleToForgotPassword = () => {
+		setCurrentViewKey(CUSTOMER_FORGOT_PASSWORD);
+	};
+
+	const handleToConfirmEmail = () => {
+		setCurrentViewKey(CUSTOMER_CONFIRM_EMAIL);
+	}
 
 	const handleToOrderStatus = () => {
 		setCurrentViewKey(CUSTOMER_ORDER_STATUS);
@@ -94,6 +128,21 @@ function App() {
 				currentView = (
 					<OrderStatusView />
 				);
+				break;
+			case CUSTOMER_LOGIN:
+				currentView = <LoginView goToMenu={handleMenuBack} goToForgotPassword={handleToForgotPassword} goToGetStarted={handleToGetStarted}/>
+				break;
+			case CUSTOMER_GET_STARTED:
+				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleMenuBack} goToCreateAccount={handleCreateAccount}/>
+				break;
+			case CUSTOMER_CREATE_ACCOUNT:
+				currentView = <AccountView goToCreateAccount={handleToConfirmEmail} goToStartedView={handleToGetStarted}/>
+				break;
+			case CUSTOMER_FORGOT_PASSWORD:
+				currentView = <ForgotPasswordView goToLogin={handleToLogin}/>
+				break;
+			case CUSTOMER_CONFIRM_EMAIL:
+				currentView = <ConfirmView goToLogin={handleToLogin} goToGetStarted={handleToGetStarted}/>
 				break;
 			default:
 				console.log("Error Customer key does not exist");

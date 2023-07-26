@@ -17,19 +17,18 @@ import { ItemStack } from '../../components/ItemStack';
 // Utils
 import { 
     ITableBase, 
-    ICart, 
     IItemPopulated,
     ICartPopulated
 } from '../../utils/serverEntities';
-import axios from 'axios';
 import _ from 'lodash';
+import api from '../../services/api';
 
 interface MenuProps {
     menuId: string;
     tableId: string;
     cartId: string;
     goToCart: () => void;
-    goToItem: (ItemId: string, cart: ICart) => void;
+    goToItem: (ItemId: string, cart: ICartPopulated) => void;
 }
 
 enum TableStatus {
@@ -58,43 +57,22 @@ const MenuView: React.FC<MenuProps> = (props: MenuProps) => {
     const [cart, setCart] = useState<ICartPopulated>({OrderItems: [], TotalPrice: 0});
 
     const getTable = useCallback(async () => {
-        const tableResponse = await axios.get(`http:///127.0.0.1:9090/table/${tableId}`);
-        const table: ITableBase = {
-            Customers: tableResponse.data.result.Customers,
-            Status: tableResponse.data.result.Status,
-            Seats: tableResponse.data.result.Seats,
-            TableNumber: tableResponse.data.result.TableNumber
-        };
+        const table = await api.getTable(tableId);
         setTableDetails(table);
     }, [tableId]);
 
     const getCart = useCallback(async () => {
-        const cartResponse = await axios.get(`http://127.0.0.1:9090/cart/${cartId}`);
-        const cart: ICartPopulated = {
-            _id: cartResponse.data.result._id,
-            OrderItems: cartResponse.data.result.OrderItems,
-            TotalPrice: cartResponse.data.result.TotalPrice
-        };
+        const cart = await api.getCart(cartId);
         setCart(cart);
     }, [cartId]);
 
     const getMenuItems = useCallback(async () => {
-        const menuResponse = await axios.get(`http://127.0.0.1:9090/menu/${menuId}`);
+        const menuData = await api.getMenu(menuId);
         const items: IItemPopulated[] = [];
         try {
-            menuResponse.data.result.Items.map(async (itemId: string) => {
-                const item = await axios.get(`http://127.0.0.1:9090/item/${itemId}`);
-                const itemResponse: IItemPopulated = {
-                    _id: item.data.result._id,
-                    Name: item.data.result.Name,
-                    Description: item.data.result.Description,
-                    Price: item.data.result.Price,
-                    Category: {
-                        Name: item.data.result.Category.Name,
-                        _id: item.data.result.Category._id
-                    }
-                };
-                items.push(itemResponse);
+            menuData.result.Items.map(async (itemId: string) => {
+                const item = await api.getItem(itemId, true) as IItemPopulated;
+                items.push(item);
             });
             setMenu(items);
         } finally {
