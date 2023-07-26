@@ -1,27 +1,55 @@
-import {  Heading, Square, Stack, Text } from '@chakra-ui/react';
+import { Text, List, ListItem, ListIcon, Box } from '@chakra-ui/react';
 import React from 'react';
+import { FiCornerDownRight } from "react-icons/fi";
+interface IFeature {
+    feature: string;
+    featureDescription: string;
+    keyFeatures: string[];
+    workingOn: string[];
+}
 
 interface FeatureCardProps {
-    Title: string;
-    Description: string;
+    Features: IFeature;
 }
 
 const ReleaseNote: React.FC<FeatureCardProps> = (props: FeatureCardProps) => {
-    const { Title, Description } = props;
+    const { Features } = props;
+   
 	return (
-		<Stack direction={'column'} gap={2} alignItems={'start'}>
-			<Stack direction={'row'} alignItems={'center'}>
-                <Square borderRadius={10} size='30px' bg={'red.400'}>
-                    <Text as={'b'} color={'whiteAlpha.900'}>
-                        1
-                    </Text>
-                </Square>
-                <Heading justifyContent={'start'} alignItems={'start'} size={'lg'}>{Title}</Heading>
-            </Stack>
-            <Text>
-                {Description}
-            </Text>
-        </Stack>
+        <>
+            <Text fontSize={'large'} > <Box as={'b'}>{Features.feature}</Box> - {Features.featureDescription}</Text>
+            <Box padding={3}>
+                <Text fontSize={'large'} > Key Features:</Text>
+                <List paddingLeft={3}>
+                {
+                    Features.keyFeatures.map((feature, index) => {
+                        return (
+                            <ListItem key={index}>
+                                <ListIcon as={FiCornerDownRight} fontSize={'large'}/>
+                                {feature}
+                            </ListItem>
+                        )
+                    })   
+                }
+                </List>
+            </Box>
+            <Box padding={3}>
+                <Text fontSize={'large'} > What were working on:</Text>
+                <List paddingLeft={3}>
+                {
+                    Features.workingOn.map((feature, index) => {
+                        return (
+                            <ListItem key={index}>
+                                <ListIcon as={FiCornerDownRight} fontSize={'large'}/>
+                                {feature}
+                            </ListItem>
+                        )
+                    })   
+                }
+                </List>
+            </Box>
+           
+        </>
 	);
 };
 

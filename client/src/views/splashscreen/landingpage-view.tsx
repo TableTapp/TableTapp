@@ -9,6 +9,7 @@ import MissionSection from './sections/mission-section';
 import BackgroundSection from './sections/background-section';
 import DesignSection from './sections/design-section';
 import ResultSection from './sections/results-section';
+
 const LandingPage: React.FC = () => {
 	return (
 		<Stack direction={'column'} p={0} maxWidth={'none'} gap={'none'}>
@@ -19,7 +20,7 @@ const LandingPage: React.FC = () => {
             <ResultSection />
             <TeamInfo />
             <FooterSection />
-        </Stack>
+        </Stack>  
 	);
 };
 
