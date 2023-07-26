@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from 'axios';
 import Logo2 from "../../assets/Logo2.svg";
 import apple from "../../assets/apple.svg"
@@ -21,7 +21,8 @@ import {
     InputRightElement,
     Center,
     Divider,
-    HStack
+    HStack,
+    useToast
 } from "@chakra-ui/react";
 
 import { LockIcon, ArrowBackIcon
@@ -38,6 +39,7 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const {goToForgotPassword, goToMenu, goToGetStarted } = props;
+    const errorToast = useToast();
 
     //show password when clicking "show"
     const [show, setShow] = useState(false)
@@ -58,6 +60,11 @@ const LoginView: React.FC<LoginProps> = (props: LoginProps) => {
             console.log(response);
             goToMenu();
         } catch(e){
+            errorToast({
+                title: `Username or password is incorrect`,
+                status: 'error',
+                isClosable: true,
+            });
             console.log("Error: ", e); // Update the error state
         } 
     }

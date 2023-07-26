@@ -85,6 +85,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                     focusBorderColor='red.400'
                                     pr='4.5rem'
                                     w = '100%'
+                                    size='lg'
                                     placeholder='First Name'
                                     _placeholder={{}}
                                     onChange={handleFirstNameInput}
@@ -93,6 +94,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                     focusBorderColor='red.400'
                                     pr='4.5rem'
                                     w = '100%'
+                                    size='lg'
                                     placeholder='Lase Name'
                                     _placeholder={{}}
                                     onChange={handleLastNameInput}
@@ -101,6 +103,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                     focusBorderColor='red.400'
                                     pr='4.5rem'
                                     w = '100%'
+                                    size='lg'
                                     placeholder='Email Address'
                                     _placeholder={{}}
                                     onChange={handleEmailInput}
@@ -109,6 +112,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                     focusBorderColor='red.400'
                                     pr='4.5rem'
                                     w = '100%'
+                                    size='lg'
                                     placeholder='Phone Number'
                                     _placeholder={{}}
                                     onChange={handlePhoneInput}
@@ -118,6 +122,7 @@ const AccountView: React.FC<createAccountProps> = (props: createAccountProps) =>
                                         focusBorderColor='red.400'
                                         pr='4.5rem'
                                         w = '100%'
+                                        size='lg'
                                         type={show ? 'text' : 'password'}
                                         placeholder='Password'
                                         _placeholder={{}}
