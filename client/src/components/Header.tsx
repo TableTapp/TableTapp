@@ -9,11 +9,7 @@ import {
     VStack
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-
-interface ITableBase {
-	Customers: string[],
-	Status: string
-}
+import { ITableBase } from '../utils/serverEntities';
 
 interface IHeaderOptions {
     title: string;
@@ -34,7 +30,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
     const numberOfOrders = menu && headerOptions.tableDetails ? headerOptions.tableDetails.Customers.length : ''; 
 
 	return (
-        <Container w='100vw' color='gray.700' bg='white' padding={6} background='white'>
+        <Container margin={0} w='100%' color='gray.700' bg='white' padding={6} background='white'>
             <Flex w='88vw'>
                 <VStack alignItems={'left'} textAlign={'left'} gap={0.5}>
                     <Heading>{headerOptions.title}</Heading>

@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useState } from 'react';
+
+// UI Components
 import {
     Box,
     Button,
@@ -12,37 +15,78 @@ import {
     VStack,
 	Textarea
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { AddIcon, ArrowBackIcon, ChatIcon, MinusIcon } from '@chakra-ui/icons';
 import Header from '../../components/Header';
-import { ItemOptions } from '../../components/ItemOptions';
-import { IItem, IItemResponse, IOrderItemBase } from '../../utils/serverEntities';
+import {
+	AddIcon, 
+	ArrowBackIcon, 
+	ChatIcon, 
+	MinusIcon 
+} from '@chakra-ui/icons';
+
+// Utils	
+import { ItemAddOns } from '../../components/ItemAddOns';
+import { ICart, ICartPopulated, IItem, IOrderItemPopulated } from '../../utils/serverEntities';
+import _ from 'lodash';
+import api from '../../services/api';
 
 interface ItemViewProps {
+	loggedIn: boolean;
 	handleBack: () => void;
 	id: string;
+	cart: ICartPopulated;
 }
 
 const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
-	const { handleBack, id } = props;
+	const { handleBack, id, loggedIn } = props;
 	const [amount, setAmount] = useState<number>(1);
-	const [specialInstructions, setSpecialInstructions] = useState<string>();
+	const [specialInstructions, setSpecialInstructions] = useState<string>('');
 	const [showSpecialInstructions, setShowSpecialInstructions] = useState<boolean>(false);
-
+	const [cart, setCart] = useState<ICartPopulated>(props.cart);
 	const [itemDetails, setItemDetails] = useState<IItem>({
-		Id: '9798',
-		Name: 'Item',
-		Description: 'Item description',
-		Price: 6.99,
-		Category: 'Category'
+		_id: '',
+		Name: '',
+		Description: '',
+		Price: 0,
+		Category: ''
 	});
 
+
+	const getItem = useCallback(async () => {
+        const item = await api.getItem(id, false) as IItem;
+		setItemDetails(item)
+	}, []);
+
+
 	const addItem = async () => {
-		const payload: IOrderItemBase = {
+		let orderItemData;
+		let orderItemId = '';
+		let priceSign = 1;
+		const payload = {
 			ItemId: id,
-			Quantity: amount
+			Quantity: amount,
+			AdditionalRequests: specialInstructions,
 		};
-		await axios.post<IOrderItemBase>(`http://127.0.0.1:9090/item/`, payload);
+		const addItem = _.map(cart.OrderItems, (oi: IOrderItemPopulated) => {
+			console.log(oi.ItemId._id, id)
+			if (oi.ItemId._id === id) {
+				orderItemId = oi._id as string;
+				priceSign = oi.Quantity < amount ? -1 : 1;
+			}
+			return oi.ItemId._id
+		});
+		console.log(addItem, id, addItem.includes(id))
+		if (addItem.includes(id)) {
+			orderItemData = await api.putItem(orderItemId, payload);
+			console.log('Item already in cart');
+		} else {
+			orderItemData = await api.postItem(payload);
+			const cartPayload: ICart = {
+                OrderItems: [...cart.OrderItems, orderItemData.result ? orderItemData.result._id : orderItemData.results._id],
+				TotalPrice: _.map(cart.OrderItems, (oi: IOrderItemPopulated) => oi.ItemId.Price * oi.Quantity).reduce((a, b) => a + b, 0) + (itemDetails.Price * amount * priceSign),
+			};
+			const cartData = await api.putCart(cart._id, cartPayload);
+			setCart(cartData.result);
+		}
 	}	
 
 
@@ -62,12 +106,8 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 
 	useEffect(() => {
 		// Perform any initialization or side effects here
-		async function getItemDetails() {
-			const response = await axios.get<IItemResponse>(`http://127.0.0.1:9090/item/${id}`);
-			setItemDetails(response.data.results)
-		}
-		getItemDetails();
-	}, [id]);
+		getItem();
+	}, [getItem]);
 
 	// Render your view component here
 	return (
@@ -83,8 +123,8 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 				icon={<ArrowBackIcon />} 
 			/>
 			<Center>
-				<Button 
-					colorScheme='blue' 
+				{loggedIn && <Button 
+					colorScheme='red' 
 					size='lg' 
 					position='fixed' 
 					bottom={0} 
@@ -94,7 +134,7 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 					onClick={handleAddItem}
 				>
 					<Flex width='80vw'>Add item <Spacer />${itemDetails.Price*amount}</Flex>
-				</Button>
+				</Button>}
 			</Center>
 			<VStack gap={2}>
 				<Img 
@@ -104,25 +144,40 @@ const ItemView: React.FC<ItemViewProps> = (props: ItemViewProps) => {
 					height='20vh'
 				/>
 				<Header item headerOptions={{ title: itemDetails.Name, subtitle: itemDetails.Description }}/>
-				<ItemOptions itemOptions={{items:[{Option: 'addon 1', Id: '1', Price: 2.3}, {Option: 'addon 2', Id: '1', Price: 2.3}], category: 'addon category'}}/>
+				{itemDetails.AddOns && <ItemAddOns itemOptions={{
+					AddOns: itemDetails.AddOns, 
+					category: 'addon category'
+				}}
+				/>}
 				<Box bg='white' w={'100vw'} h={60}>
 					<Center h={40}>
 						<VStack>
-							<Button leftIcon={<ChatIcon />} colorScheme='gray' size='xs'>
+							<Button leftIcon={<ChatIcon />} onClick={handleShowSpecialClick} colorScheme='gray' size='xs'>
 								Special Instruction
 							</Button>
-							{showSpecialInstructions && <Textarea
+							{(showSpecialInstructions && !loggedIn) && <Textarea
 								value={specialInstructions} 
 								onChange={handleSpecialInstructionsChange}
 								placeholder='Special Instructions ...'
-								size='md'
-								onClick={handleShowSpecialClick}
+								size='lg'
 							/>}
-							<ButtonGroup>
-								<IconButton aria-label='minus-one-btn' icon={<MinusIcon />} size='sm' borderRadius='full' onClick={() => setAmount(amount-1)} />
+							{loggedIn && <ButtonGroup>
+								<IconButton 
+									aria-label='minus-one-btn' 
+									icon={<MinusIcon />} 
+									size='sm' 
+									borderRadius='full' 
+									onClick={() => setAmount(amount-1)} 
+								/>
 									<Text as={'b'} p={0.5}>{amount}</Text>
-								<IconButton aria-label='plus-one-btn' icon={<AddIcon />} size='sm' borderRadius='full' onClick={() => setAmount(amount+1)} />
-							</ButtonGroup>
+								<IconButton 
+									aria-label='plus-one-btn' 
+									icon={<AddIcon />} 
+									size='sm' 
+									borderRadius='full' 
+									onClick={() => setAmount(amount+1)} 
+								/>
+							</ButtonGroup>}
 						</VStack>
 					</Center>
 				</Box>
