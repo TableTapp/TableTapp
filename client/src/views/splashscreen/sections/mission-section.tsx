@@ -20,6 +20,7 @@ const MissionSection: React.FC = () => {
                         variant={'solid'} 
                         bg={'red.400'} 
                         color={'whiteAlpha.900'}
+                        isDisabled
                     >
                         Learn More
                     </Button>

@@ -50,7 +50,7 @@ const DesignSection: React.FC = () => {
         },
     ];
 	return (
-        <Stack direction={'column'} gap={10} padding={40}>
+        <Stack direction={'column'} gap={10} paddingX={40}>
             <Heading fontSize='6xl'>Features</Heading>
             <Flex direction={'row'} width={'100%'}>
                 {featureInfo.map((feature, index) => {

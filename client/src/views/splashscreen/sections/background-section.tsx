@@ -35,7 +35,7 @@ const BackgroundSection: React.FC = () => {
     ]
 
 	return (
-		<Stack direction={'column'}>
+		<Stack direction={'column'} marginTop={20}>
             {background.map((item, index) => {
                 return (
                     <Background

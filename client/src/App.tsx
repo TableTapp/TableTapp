@@ -15,13 +15,14 @@ import AccountView from './views/customer/createaccount-view';
 import ForgotPasswordView from './views/customer/forgotpassword-view';
 import ConfirmView from './views/customer/confirm-view';
 
-import { ICart } from './utils/serverEntities';
+import { ICartPopulated } from './utils/serverEntities';
 
 // Restaurant Views
 import RestaurantMenuView from './views/restaurant/restaurant-menu-view';
 
 // Landing Page View
 import LandingPage from './views/splashscreen/landingpage-view';
+import UnderConstructionView from './views/splashscreen/under-construction-view';
 
 // Customer Keys
 const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
@@ -40,6 +41,10 @@ const CUSTOMER_FORGOT_PASSWORD = 'CUSTOMER_FORGOTPASSWORD';
 const RESTAURANT_MENU = 'RESTAURANT_MENU';
 const RESTAURANT_GET_STARTED = 'RESTAURANT_GETSTARTED';
 
+// Website Keys
+const WEBSITE_LANDING_PAGE = 'WEBSITE_LANDINGPAGE';
+const WEBSITE_UNDER_CONSTRUCTION = 'WEBSITE_UNDERCONSTRUCTION';
+
 // Platform Keys
 const CUSTOMER_KEY = 'CUSTOMER';
 const RESTAURANT_KEY = 'RESTAURANT';
@@ -47,10 +52,10 @@ const WEBSTIE_KEY = 'WEBSITE';
 
 function App() {
 	const [platform, setPlatform] = useState<string>(WEBSTIE_KEY);
-	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
+	const [currentViewKey, setCurrentViewKey] = useState<string>(WEBSITE_LANDING_PAGE);
 	const [itemId, setItemId] = useState<string>('');
 	const [loggedIn, setLoggedIn] = useState<boolean>(false); 
-	const [cart, setCart] = useState<ICart>({OrderItems: [], TotalPrice: 0});
+	const [cart, setCart] = useState<ICartPopulated>({OrderItems: [], TotalPrice: 0});
 	
 	const handleToRestaurant = () => {
 		setPlatform(RESTAURANT_KEY);
@@ -75,7 +80,7 @@ function App() {
 		setCurrentViewKey(CUSTOMER_CART);
 	};
 
-	const handleToItem = (itemId: string, cart: ICart) => {
+	const handleToItem = (itemId: string, cart: ICartPopulated) => {
 		setItemId(itemId);
 		setCart(cart);
 		setCurrentViewKey(CUSTOMER_ITEM_DETAILS);
@@ -111,19 +116,35 @@ function App() {
 	};
 
 	const handleToRestaurantFromWebsite = () => {
-		setPlatform(RESTAURANT_KEY);
-		setCurrentViewKey(RESTAURANT_GET_STARTED);
+		setPlatform(WEBSTIE_KEY);
+		setCurrentViewKey(WEBSITE_UNDER_CONSTRUCTION);
 	};
 
 	const handleToCustomerFromWebsite = () => {
-		setPlatform(CUSTOMER_KEY);
-		setCurrentViewKey(CUSTOMER_GET_STARTED);
+		setPlatform(WEBSTIE_KEY);
+		setCurrentViewKey(WEBSITE_UNDER_CONSTRUCTION);
+	};
+
+	const handleToLandingPage = () => {
+		setPlatform(WEBSTIE_KEY);
+		setCurrentViewKey(WEBSITE_LANDING_PAGE);
 	};
 
 	let currentView = <></>;
-	if (platform == WEBSTIE_KEY) {
-		currentView = <LandingPage goToCustomer={handleToCustomerFromWebsite} goToRestaurant={handleToRestaurantFromWebsite}/>;
-	} else if(platform == CUSTOMER_KEY) {
+	if (platform === WEBSTIE_KEY) {
+		switch (currentViewKey) {
+			case WEBSITE_LANDING_PAGE:
+				currentView = <LandingPage goToContactSales={handleToCustomerFromWebsite} goToCustomer={handleToCustomerFromWebsite} goToRestaurant={handleToRestaurantFromWebsite}/>;
+				break;
+			case WEBSITE_UNDER_CONSTRUCTION:
+				currentView = <UnderConstructionView backToLandingPage={handleToLandingPage} />;
+				break;
+			default:
+				console.log("Error website key does not exist");
+				break;
+		}
+
+	} else if(platform === CUSTOMER_KEY) {
 		switch (currentViewKey) {
 			case CUSTOMER_SCANNER:
 				currentView = <ScannerView scannerResult={handleScannerResult}/>;
@@ -183,7 +204,7 @@ function App() {
 				console.log("Error Customer key does not exist");
 				break;
 		}
-	} else if (platform == RESTAURANT_KEY) {
+	} else if (platform === RESTAURANT_KEY) {
 		switch (currentViewKey) {
 			case RESTAURANT_GET_STARTED:
 				currentView = <StartedView goToLogin={handleToLogin} goToGetStarted={handleToRestaurant} goToCreateAccount={handleCreateAccount}/>;

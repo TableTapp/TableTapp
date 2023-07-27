@@ -39,13 +39,13 @@ export const Background: React.FC<BackgroundProps> = (props: BackgroundProps) =>
                     {!reverse ? <Image borderRadius={30} width={'40%'} height={'300'} aria-label='logo' src={ImgSrc} alt='Graphic'/> : <Stack direction={'column'} gap={5} width={'40%'}>
                         <Heading color={'#2D3748'}>{Title}</Heading>
                         <Text color={'#2D3748'}>{Description}</Text>
-                        <Button width={'-moz-fit-content'} rightIcon={<ArrowForwardIcon />} variant={'solid'} bg={'red.400'} color={'whiteAlpha.900'}>{ButtonLabel}</Button>
+                        <Button isDisabled width={'-moz-fit-content'} rightIcon={<ArrowForwardIcon />} variant={'solid'} bg={'red.400'} color={'whiteAlpha.900'}>{ButtonLabel}</Button>
                     </Stack>}
                     <Spacer />
                     {!reverse ? <Stack direction={'column'} gap={5} width={'40%'}>
                         <Heading color={'#2D3748'}>{Title}</Heading>
                         <Text color={'#2D3748'}>{Description}</Text>
-                        <Button width={'-moz-fit-content'} rightIcon={<ArrowForwardIcon />} variant={'solid'} bg={'red.400'} color={'whiteAlpha.900'}>{ButtonLabel}</Button>
+                        <Button isDisabled width={'-moz-fit-content'} rightIcon={<ArrowForwardIcon />} variant={'solid'} bg={'red.400'} color={'whiteAlpha.900'}>{ButtonLabel}</Button>
                     </Stack> :
                     <Image borderRadius={30} width={'40%'} height={'300'} aria-label='logo' src={ImgSrc} alt='Graphic'/>}
             </Flex>

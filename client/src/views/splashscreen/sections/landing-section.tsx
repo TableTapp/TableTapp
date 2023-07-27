@@ -16,12 +16,13 @@ import { ArrowDownIcon } from '@chakra-ui/icons';
 interface LandingSectionProps {
     toCustomerLogin: () => void;
     toRestaurantLogin: () => void;
+    toContactSales: () => void;
 }
 
 const LandingSection: React.FC<LandingSectionProps> = (props: LandingSectionProps) => {
-    const {toCustomerLogin, toRestaurantLogin} = props;
+    const {toCustomerLogin, toRestaurantLogin, toContactSales} = props;
 	return (
-		<Container width={'100vw'} height={'100vh'} bg={'red.400'} maxWidth={'none'}>
+		<Container width={'100%'} height={'100vh'} bg={'red.400'} maxWidth={'none'}>
             <Box width={'100%'} padding={8} bg={'red.400'}>
                 <Flex>
                     <Image height={'var(--chakra-sizes-12)'} aria-label='logo' src={Logo} alt='Logo'/>
@@ -35,7 +36,7 @@ const LandingSection: React.FC<LandingSectionProps> = (props: LandingSectionProp
                     <Stack direction={'column'}>
                         <Heading fontSize='6xl' as='b' color={'whiteAlpha.900'} paddingBottom={8}> Serving Success, one tap at a time </Heading>
                         <Stack direction={'row'} gap={5}>
-                            <Button colorScheme={'gray'} size={'lg'}>Get Started</Button>
+                            <Button colorScheme={'gray'} size={'lg'} onClick={toContactSales}>Contact Sales</Button>
                             <Button colorScheme={'gray'} size={'lg'}  rightIcon={<ArrowDownIcon />}>Learn more</Button>
                         </Stack>
                     </Stack>

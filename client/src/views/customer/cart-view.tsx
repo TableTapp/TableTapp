@@ -30,7 +30,6 @@ interface cartViewProps {
 	handleBack: () => void;
     handlePayment: () => void;
 	id: string;
-    itemsId: string;
 }
 
 

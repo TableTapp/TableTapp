@@ -98,6 +98,29 @@ const ResultSection: React.FC = () => {
 		}	
 	];
 
+	const customerNotes = [
+		{
+			feature: 'Menu',
+			featureDescription: 'Seamlessly integrated and customizable menu that showcases your restaurant’s items with the ease of being in the customers pocket.',
+			keyFeatures: [
+				'Item Addons: Get access to a list of kitchen approved addons',
+				'Item Customization: Customize your order to your liking',
+				'Item Details: Get access to a detailed description of each item',
+				'Item Images: Get a visual representation of each item'
+			],
+			workingOn: [
+				'Responsive Design: allows the UI to scale to any screen resolution perfectly',
+				'Menu Searching: search a whole menu by key word only'
+			]
+		},
+		{
+			feature: 'Cart',
+			featureDescription: 'Visual breakdown of items added to card with their respective prices.',
+			keyFeatures: [],
+			workingOn: []
+		}
+	];
+
 	const releaseNotesSecurity = [
 		{
 			feature: 'Secure Authentication',
@@ -133,7 +156,7 @@ const ResultSection: React.FC = () => {
 
 	return (
 		<>
-		<Flex direction={'column'} gap={10} alignItems={'start'} paddingStart={40}>
+		<Flex direction={'column'} gap={10} alignItems={'start'} paddingX={40} marginTop={20}>
 			<Stack direction={'column'} gap={1}>
 				<Stack direction={'row'} alignItems={'center'}>
 					<Text fontSize={'2xl'}> 
@@ -155,7 +178,7 @@ const ResultSection: React.FC = () => {
 					The following are the release notes for the initial rollout (v1.0) of TableTapp.
 				</Text>
 			</Stack>
-			<Accordion allowMultiple width={'90%'}>
+			<Accordion allowMultiple width={'100%'}>
 					<AccordionItem >
 							<AccordionButton>
 								<Flex as="span" flex='1' justifyItems={'left'} alignItems={'center'}>
@@ -169,6 +192,13 @@ const ResultSection: React.FC = () => {
 								<AccordionIcon />
 							</AccordionButton>
 						<AccordionPanel pb={4}>
+						{
+							customerNotes.map((feature, index) => {
+								return (
+									<ReleaseNote key={index} Features={feature}/>
+								)
+							})
+						}
 						</AccordionPanel>
 					</AccordionItem>
 					<AccordionItem >
