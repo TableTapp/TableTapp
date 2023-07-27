@@ -22,6 +22,10 @@ export const ItemDisplay: React.FC<ItemDisplayProps> = (props: ItemDisplayProps)
         setItemQuantity(quantity || 0);
     }, [quantity]);
 
+    useEffect(() => {
+        setItemQuantity(quantity || 0);
+    }, [quantity]);
+
     return (
         <Flex>
             <Center marginStart={5}>

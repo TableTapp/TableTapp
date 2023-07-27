@@ -29,7 +29,6 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
     
     const numberOfOrders = menu && headerOptions.tableDetails ? headerOptions.tableDetails.Customers.length : ''; 
 
-
 	return (
         <Container margin={0} w='100%' color='gray.700' bg='white' padding={6} background='white'>
             <Flex w='88vw'>

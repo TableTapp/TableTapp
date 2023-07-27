@@ -20,8 +20,8 @@ import { ICart } from './utils/serverEntities';
 // Restaurant Views
 import RestaurantMenuView from './views/restaurant/restaurant-menu-view';
 
-const CUSTOMER_KEY = 'CUSTOMER';
-const RESTAURANT_KEY = 'RESTAURANT';
+// Landing Page View
+import LandingPage from './views/splashscreen/landingpage-view';
 
 // Customer Keys
 const CUSTOMER_SCANNER = 'CUSTOMER_SCANNER'; 
@@ -40,8 +40,13 @@ const CUSTOMER_FORGOT_PASSWORD = 'CUSTOMER_FORGOTPASSWORD';
 const RESTAURANT_MENU = 'RESTAURANT_MENU';
 const RESTAURANT_GET_STARTED = 'RESTAURANT_GETSTARTED';
 
+// Platform Keys
+const CUSTOMER_KEY = 'CUSTOMER';
+const RESTAURANT_KEY = 'RESTAURANT';
+const WEBSTIE_KEY = 'WEBSITE';
+
 function App() {
-	const [platform, setPlatform] = useState<string>(CUSTOMER_KEY);
+	const [platform, setPlatform] = useState<string>(WEBSTIE_KEY);
 	const [currentViewKey, setCurrentViewKey] = useState<string>(CUSTOMER_GET_STARTED);
 	const [itemId, setItemId] = useState<string>('');
 	const [loggedIn, setLoggedIn] = useState<boolean>(false); 
@@ -105,8 +110,20 @@ function App() {
 		setCurrentViewKey(CUSTOMER_ORDER_STATUS);
 	};
 
+	const handleToRestaurantFromWebsite = () => {
+		setPlatform(RESTAURANT_KEY);
+		setCurrentViewKey(RESTAURANT_GET_STARTED);
+	};
+
+	const handleToCustomerFromWebsite = () => {
+		setPlatform(CUSTOMER_KEY);
+		setCurrentViewKey(CUSTOMER_GET_STARTED);
+	};
+
 	let currentView = <></>;
-	if (platform == CUSTOMER_KEY) {
+	if (platform == WEBSTIE_KEY) {
+		currentView = <LandingPage goToCustomer={handleToCustomerFromWebsite} goToRestaurant={handleToRestaurantFromWebsite}/>;
+	} else if(platform == CUSTOMER_KEY) {
 		switch (currentViewKey) {
 			case CUSTOMER_SCANNER:
 				currentView = <ScannerView scannerResult={handleScannerResult}/>;

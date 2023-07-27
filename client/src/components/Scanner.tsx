@@ -18,7 +18,7 @@ const Scanner: React.FC<ScannerProps> = (props: ScannerProps) => {
         }, false);
     
         scanner.render(success, error);
-    
+        
         function success(result: any) {
             scanner.clear();
             props.result(result);
@@ -27,6 +27,7 @@ const Scanner: React.FC<ScannerProps> = (props: ScannerProps) => {
         function error(err: any) {
             console.log(err)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
    
